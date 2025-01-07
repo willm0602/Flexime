@@ -1,4 +1,8 @@
 import type { Config } from "tailwindcss";
+import typography from '@tailwindcss/typography';
+import daisyui from 'daisyui';
+
+console.log('TAILWIND LOADING');
 
 export default {
   content: [
@@ -14,5 +18,11 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    daisyui,
+    typography,
+  ],
+  daisyui: {
+    themes: ['luxury']
+  }
 } satisfies Config;
