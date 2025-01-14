@@ -1,101 +1,38 @@
 /**
- * Resume format to follow JSON Resume format
- * https://jsonresume.org/schema
- */
+ * Custom format for resumes to be more compact and easier to edit
+*/
 
-export interface Location {
-    address: string,
-    postalCode: string,
-    city: string,
-    countryCode: string,
-    region: string       
+import JSONResume, { Education, Profile, Work } from './jsonResume';
+
+interface CompanyExperience {
+    companyName: string,
+    positions: Work[],
+    skills: string[]
 }
 
-export interface Profile {
-    network: string,
-    username?: string,
-    url: string
-}
-
-interface Experience {
-    position: string,
-    url?: string,
-    startDate: string, // ISO 8601 format
-    endDate?: string, // ISO 8601 format
-    summary?: string,
-    highlights: string[]
-}
-
-export interface Work extends Experience{
-    name: string
-}
-
-export interface Volunteer extends Experience{
-    organization: string
-}
-
-export interface Education {
-    institution: string,
-    url?: string,
-    area: string,
-    studyType: string,
-    startDate: string, // ISO 8601 Format
-    endDate?: string, // ISO 8601 Format
-    score?: string,
-    courses?: string[]
-}
-
-export interface Award {
-    title: string,
-    date: string, // ISO 8601 Format
-    issuer?: string,
-    url?: string
-}
-
-export interface Publication {
+export default interface Resume {
     name: string,
-    publisher?: string,
-    releaseDate: string, // ISO-8601 Format
-    url: string,
-    summary: string
-}
-
-export interface Skill {
-    name: string,
-    level: string,
-    keywords: string[]
-}
-
-export interface Project {
-    name: string,
-    startDate?: string // ISO-8601 Format
-    endDate?: string // ISO-8601 Format
-    description: string,
-    highlights: string[],
-    url: string[]
-}
-
-export interface ResumeBasics {
-    name: string,
-    label?: string,
-    image?: string,
-    email: string,
-    phone: string,
-    url?: string,
-    summary?: string,
-    location?: Location,
     profiles: Profile[],
-}
-
-export interface Resume {
-    basics: ResumeBasics,
-    work: Work[],
-    volunteer: Volunteer[],
+    title?: string,
+    email?: string,
+    phone?: string,
     education: Education[],
-    awards: Award[],
-    publications: Publication[],
-    skills: Skill[],
-    projects: Project[]
+    skills: string[],
+    workExperience: CompanyExperience[]
 }
 
-export default Resume;
+export function resumeFromJSONResume(jsonResume: JSONResume) {
+    const name: string = jsonResume.basics.name;
+    const profiles: Profile[] = jsonResume.basics.profiles;
+    const title: string | undefined = jsonResume.basics.label;
+    const email: string = jsonResume.basics.email;
+    const phone: string
+
+    return {
+        name,
+        profiles,
+        title,
+        email,
+        phone,
+    }
+}

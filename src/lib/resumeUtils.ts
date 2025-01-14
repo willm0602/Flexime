@@ -1,4 +1,4 @@
-import Resume from "./resume";
+import Resume from './resume'
 
 const DEFAULT_RESUME: Resume = {
     basics: {
@@ -6,7 +6,7 @@ const DEFAULT_RESUME: Resume = {
         label: '',
         email: '',
         phone: '',
-        profiles: []
+        profiles: [],
     },
     work: [],
     volunteer: [],
@@ -14,7 +14,7 @@ const DEFAULT_RESUME: Resume = {
     awards: [],
     publications: [],
     skills: [],
-    projects: []
-};
+    projects: [],
+}
 
-export {DEFAULT_RESUME};
+export { DEFAULT_RESUME }
