@@ -2,31 +2,36 @@
  * Custom format for resumes to be more compact and easier to edit
 */
 
-import JSONResume, { Education, Profile, Work } from './jsonResume';
+import JSONResume, { Education, Profile, Work, Skill } from './jsonResume';
+import Togglable from '@/lib/togglable';
+import { TogglableList } from '@/lib/togglable';
 
 interface CompanyExperience {
     companyName: string,
-    positions: Work[],
-    skills: string[]
+    positions: TogglableList<Work>
+    skills: Skill[]
 }
 
 export default interface Resume {
     name: string,
-    profiles: Profile[],
-    title?: string,
-    email?: string,
-    phone?: string,
-    education: Education[],
-    skills: string[],
-    workExperience: CompanyExperience[]
+    profiles: TogglableList<Profile>,
+    title: Togglable<string | undefined>,
+    email: Togglable<string | undefined>,
+    phone: Togglable<string>,
+    education: TogglableList<Education>
+    skills: TogglableList<Skill>
+    workExperience: TogglableList<CompanyExperience>
 }
 
-export function resumeFromJSONResume(jsonResume: JSONResume) {
+export function resumeFromJSONResume(jsonResume: JSONResume): Resume {
     const name: string = jsonResume.basics.name;
-    const profiles: Profile[] = jsonResume.basics.profiles;
-    const title: string | undefined = jsonResume.basics.label;
-    const email: string = jsonResume.basics.email;
-    const phone: string
+    const profiles = new TogglableList(jsonResume.basics.profiles);
+    const title = new Togglable(jsonResume.basics.label);
+    const email = new Togglable(jsonResume.basics.email);
+    const phone = new Togglable(jsonResume.basics.phone);
+    const education = new TogglableList(jsonResume.education);
+    const skills = new TogglableList(jsonResume.skills);
+
 
     return {
         name,
