@@ -62,8 +62,8 @@ export interface Publication {
 
 export interface Skill {
     name: string
-    level: string
-    keywords: string[]
+    level?: string
+    keywords?: string[]
 }
 
 export interface Project {

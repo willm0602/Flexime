@@ -1,10 +1,11 @@
-import Resume from '@/lib/resume'
+import JSONResume from '@/lib/jsonResume';
+import Resume, { resumeFromJSONResume } from '@/lib/resume'
 import resumeIsValid from '@/lib/validateResume'
 import { InformationCircleIcon } from '@heroicons/react/16/solid'
 import { ChangeEventHandler } from 'react'
 
 type HomePageHeaderProps = {
-    setResume: (resume: Resume) => void
+    setResume: (resume: JSONResume) => void
     setConfiguredResume: (resume: Resume) => void
 }
 
@@ -19,13 +20,15 @@ export default function HomePageHeader(props: HomePageHeaderProps) {
                 try {
                     const data = JSON.parse(text)
                     if (resumeIsValid(data)) {
-                        const resume = data as Resume
-                        setResume(resume)
+                        const jsonResume = data as JSONResume;
+                        const resume = resumeFromJSONResume(jsonResume)
+                        setResume(jsonResume)
                         setConfiguredResume(resume);
                     } else {
                         console.error('Resume is not valid')
                     }
-                } catch {
+                } catch (e) {
+                    console.error(e);
                     window.alert('file is invalid')
                 }
             })
@@ -34,7 +37,7 @@ export default function HomePageHeader(props: HomePageHeaderProps) {
 
     return (
         <>
-            <h1 className="text-5xl">Your Best Self</h1>
+            <h1 className="text-5xl">Flexime</h1>
 
             <label htmlFor="load-resume">Load in a JSON Resume</label>
             <div className="flex mb-12">

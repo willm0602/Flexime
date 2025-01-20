@@ -1,42 +1,54 @@
 
-export default class Togglable<T> {
-  val: T;
-  on: boolean
+export default interface Togglable<T> {
+  val: T,
+  isOn: boolean
+}
 
-  constructor(val: T, on: boolean = true) {
-    this.val = val;
-    this.on = on;
-  }
+export type TogglableList<T> = Togglable<Togglable<T>[]>;
 
-  get(): T | undefined {
-    if (this.on) {
-      return this.val;
-    }
-  }
-
-  toggle(): void {
-    this.on = !this.on;
-  }
-
-  setVal(val: T) {
-    this.val = val;
-  }
-
-  getOr(onOff: CallableFunction): T | undefined {
-    if (this.on) {
-      return this.val;
-    }
-
-    onOff(this.val);
+export function togglable<T>(val: T): Togglable<T> {
+  return {
+    val,
+    isOn: true
   }
 }
 
-export class TogglableList<T> extends Togglable<Togglable<T>[]> {
-  constructor(vals: T[]) {
-    const individualToggles = vals.map((val) => {
-      return new Togglable(val);
-    });
-    super(individualToggles);
-  }
+export function togglableList<T>(vals: T[] | undefined): TogglableList<T> {
+  const togglableVals: Togglable<T>[] = vals ? vals.map((val) => {
+    return {
+      val,
+      isOn: true
+    };
+  }) : [];
+  return {
+    val: togglableVals,
+    isOn: true
+  };
 }
 
+export function getIncludedVals<T>(togglableList?: TogglableList<T>): T[] {
+
+  if (!togglableList)
+    return [];
+
+  if (!togglableList.isOn)
+    return [];
+
+  const togglables = togglableList.val;
+  const vals = togglables.filter((val) => {
+    return val.isOn
+  }).map((togglable) => {
+    return togglable.val
+  });
+
+  return vals;
+}
+
+export function isTogglable<T>(value: unknown): value is Togglable<T> {
+  return (
+    typeof value == 'object' &&
+    value != null &&
+    'val' in value &&
+    'isOn' in value
+  )
+}

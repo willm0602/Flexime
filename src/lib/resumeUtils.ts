@@ -1,6 +1,6 @@
-import Resume from './resume'
+import JSONResume from '@/lib/jsonResume';
 
-const DEFAULT_RESUME: Resume = {
+const DEFAULT_RESUME: JSONResume = {
     basics: {
         name: '',
         label: '',
