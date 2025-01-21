@@ -1,28 +1,32 @@
 
 export default interface Togglable<T> {
   val: T,
-  isOn: boolean
+  isOn: boolean,
+  title: string
 }
 
 export type TogglableList<T> = Togglable<Togglable<T>[]>;
 
-export function togglable<T>(val: T): Togglable<T> {
+export function togglable<T>(val: T, title: string): Togglable<T> {
   return {
     val,
-    isOn: true
+    isOn: true,
+    title
   }
 }
 
-export function togglableList<T>(vals: T[] | undefined): TogglableList<T> {
-  const togglableVals: Togglable<T>[] = vals ? vals.map((val) => {
+export function togglableList<T>(vals: T[] | undefined, title: string, getTitle?: (togglable: T, idx: number) => string): TogglableList<T> {
+  const togglableVals: Togglable<T>[] = vals ? vals.map((val: T, idx: number) => {
     return {
       val,
-      isOn: true
+      isOn: true,
+      title: getTitle ? getTitle(val, idx) : `${idx}`
     };
   }) : [];
   return {
     val: togglableVals,
-    isOn: true
+    isOn: true,
+    title
   };
 }
 
