@@ -12,7 +12,7 @@ export default function EducationComponent(props: {
     return `${month}/${year}`;
   }
 
-  return <div className='mb-4'>
+  return <div className='mb-1'>
     <h3 className='w-full font-semibold'>{school.institution} <span className='font-normal'>({formatDate(school.startDate)}) - ({formatDate(school.endDate)})</span></h3>
     <span>{school.studyType} of {school.area}</span>
   </div>

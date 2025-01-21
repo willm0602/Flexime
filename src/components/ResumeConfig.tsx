@@ -21,7 +21,7 @@ export default function ResumeConfig(
   return <div className='w-full flex'>
     <div className='flex-grow-1'>
       <h2 className='mt-0'>Configure Resume</h2>
-      <ul>
+      <ul className='pl-0'>
         {Object.entries(resume).map(([key, val]) => {
           if (!isTogglable(val)) {
             return;

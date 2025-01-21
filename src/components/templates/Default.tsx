@@ -23,7 +23,7 @@ const DefaultTemplate: GeneratedResume = (props: GeneratedResumeProps) => {
   const projects = getIncludedVals(resume.personalProjects);
   const education = getIncludedVals(resume.education);
 
-  return <div className='w-full h-full bg-white text-gray-600 not-prose p-4'>
+  return <div className='w-full min-h-full bg-white text-gray-600 not-prose p-4'>
     <h1 className='text-center mono mb-0 text-2xl font-bold' > {resume.name}</h1 >
     <div className='w-full flex justify-between text-xs pb-2'>
       {resume.phone.isOn && <span>

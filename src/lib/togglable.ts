@@ -49,6 +49,7 @@ export function isTogglable<T>(value: unknown): value is Togglable<T> {
     typeof value == 'object' &&
     value != null &&
     'val' in value &&
-    'isOn' in value
+    'isOn' in value &&
+    value['val'] != null
   )
 }
