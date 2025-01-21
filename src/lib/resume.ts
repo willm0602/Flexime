@@ -2,7 +2,7 @@
  * Custom format for resumes to be more compact and easier to edit
 */
 
-import JSONResume, { Education, Profile, Work, Skill, Project } from './jsonResume';
+import JSONResume, { Education, Profile, Skill, Project } from './jsonResume';
 import Togglable, { togglableList } from '@/lib/togglable';
 import type { TogglableList } from '@/lib/togglable';
 import { togglable } from './togglable';

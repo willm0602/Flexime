@@ -31,7 +31,7 @@ export function TogglableListElement<P extends Togglable<Togglable<unknown>[]>>(
     };
     toggles[index] = newToggle;
     const newParent: P = {
-      isOn: parent.isOn,
+      ...parent,
       val: toggles
     } as P;
     setParent(newParent);
@@ -43,7 +43,7 @@ export function TogglableListElement<P extends Togglable<Togglable<unknown>[]>>(
         <input type="checkbox"
           checked={toggle.isOn}
           onChange={() => { toggleAtIndex(idx) }} />
-        <label className='ml-1'>{idx + 1}.</label>
+        <label className='ml-1'>{toggle.title}</label>
       </li>
     })}
   </ul>
@@ -84,7 +84,7 @@ export default function ToggleField<P, F extends keyof P>(props: ToggleFieldProp
           onChange={toggleField}
         />
         <label className="font-bold ml-2 capitalize">
-          {ToggleLabels[fieldName] || fieldName}
+          {togglable.title}
         </label>
       </div>
 
