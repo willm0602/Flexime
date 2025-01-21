@@ -1,6 +1,16 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Flexime
 
-## Getting Started
+## What is this?
+
+This is a web application built with [Next.js](https://nextjs.org) to allow
+users to build resumes tailored to certain positions, using certain projects
+and skills when applicable.
+
+This project allows users to upload a [JSON Resume](https://jsonresume.org/schema)
+file which will be parsed into a custom format to be more modular so individuals
+can select certain components to include.
+
+## Getting Started With Developing
 
 First, run the development server:
 
@@ -20,17 +30,14 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+## Credits
 
-To learn more about Next.js, take a look at the following resources:
+The primary author for this project is William Migdol.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Parts of this project were inspired by [MegaResume](https://github.com/NicksPatties/megaresume)
+by Nick Patti. Several thanks go out to him for being available for consulting
+for this project.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## License
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project uses the [OpenGL License](https://github.com/TheCherno/OpenGL/blob/master/LICENSE)
