@@ -1,4 +1,3 @@
-import { TogglableList } from "./togglable"
 import { Work } from "./jsonResume"
 import { Skill } from "./jsonResume"
 

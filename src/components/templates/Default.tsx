@@ -1,62 +1,50 @@
+import { Font, Page, Text, View, StyleSheet, Document } from "@react-pdf/renderer";
 import type { GeneratedResume, GeneratedResumeProps } from "@/lib/generatedResume";
-import getCompaniesFromWork from "@/lib/getCompaniesFromWork";
-import Resume from '@/lib/resume';
-import { getIncludedVals } from "@/lib/togglable";
-import WorkComponent from "./components/default/Work";
-import ProjectComponent from './components/default/Project';
-import EducationComponent from './components/default/Education';
-import { Project, Education } from '@/lib/jsonResume';
+
+// Register a font (e.g., Roboto)
+Font.register({
+  family: "Roboto",
+  src: "https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu4mxK.woff2",
+});
 
 const DefaultTemplate: GeneratedResume = (props: GeneratedResumeProps) => {
-
   const { resume } = props;
+  console.log("Using default template");
 
-  function ResumeSection(props: { children?: React.ReactNode, title: string }) {
-    return <div className='block justify-evenly w-full text-xs solid border-t-2 pb-2'>
-      <h2 className='w-full text-center font-semibold my-2 text-base'>{props.title}</h2>
-      {props.children}
-    </div>
-  }
+  const styles = StyleSheet.create({
+    page: {
+      padding: 30,
+    },
+    section: {
+      marginBottom: 10,
+    },
+    title: {
+      fontSize: 24,
+      marginBottom: 10,
+      fontFamily: "Roboto", // Specify the font family
+    },
+    content: {
+      fontSize: 12,
+      lineHeight: 1.6,
+      fontFamily: "Roboto", // Specify the font family
+    },
+  });
 
-  const profiles = getIncludedVals(resume.profiles);
-  const companies = getIncludedVals(resume.workExperience);
-  const projects = getIncludedVals(resume.personalProjects);
-  const education = getIncludedVals(resume.education);
-
-  return <div className='w-full min-h-full bg-white text-gray-600 not-prose p-4'>
-    <h1 className='text-center mono mb-0 text-2xl font-bold' > {resume.name}</h1 >
-    <div className='w-full flex justify-between text-xs pb-2'>
-      {resume.phone.isOn && <span>
-        {resume.phone.val}
-      </span>}
-      {resume.email.isOn &&
-        <span>
-          {resume.email.val}
-        </span>
-      }
-      {profiles.map((profile, idx) => {
-        return <span key={`profile-${idx}`}><a className='underline' href={profile.url}>{profile.network}</a></span>
-      })}
-    </div>
-
-    {resume.workExperience.isOn && <ResumeSection title="Work Experience">
-      {companies.map((company, idx) => {
-        return <WorkComponent key={`work-${idx}`} company={company} />
-      })}
-    </ResumeSection>}
-
-    {resume.education.isOn && <ResumeSection title="Education">
-      {education.map((school: Education, idx: number) => {
-        return <EducationComponent school={school} key={`school-${idx}`} />
-      })}
-    </ResumeSection>}
-
-    {resume.personalProjects.isOn && <ResumeSection title="Personal Projects">
-      {projects.map((project: Project, idx: number) => {
-        return <ProjectComponent project={project} key={idx} />
-      })}
-    </ResumeSection>}
-  </div >
+  return (
+    <Document>
+      <Page style={styles.page}>
+        <View style={styles.section}>
+          <Text style={styles.title}>React PDF Example</Text>
+        </View>
+        <View style={styles.section}>
+          <Text style={styles.content}>
+            This is an example of a PDF generated on the client side using the
+            @react-pdf/renderer library.
+          </Text>
+        </View>
+      </Page>
+    </Document>
+  );
 };
 
 export default DefaultTemplate;

@@ -1,4 +1,4 @@
-import { Project } from "@/lib/resume";
+import type { Project } from "@/lib/jsonResume";
 
 export default function ProjectComponent(
   props: { project: Project }
@@ -11,7 +11,7 @@ export default function ProjectComponent(
       <span className='italic'>{project.description}</span>
     </span>
     <ul className='list-disc ml-8'>
-      {project.highlights.map((highlight, idx) => {
+      {(project.highlights || []).map((highlight: string, idx: number) => {
         return <li key={`highlight-${idx}`}>{highlight}</li>
       })}
     </ul>

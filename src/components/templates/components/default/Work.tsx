@@ -1,10 +1,11 @@
 import PositionComponent from '@/components/templates/components/default/Position';
 import CompanyExperience from "@/lib/companyExperience";
+import Togglable from '@/lib/togglable';
+import type { Work } from '@/lib/jsonResume';
 
-export default function WorkComponent(props: { company: CompanyExperience }) {
+export default function WorkComponent(props: { company: Togglable<CompanyExperience> }) {
   const { company } = props;
-  const work = company.positions || [];
-  console.log(company);
+  const work: Togglable<Work, string>[] = (company.children || []).filter(togglableRole => togglableRole.isOn);
 
   return <div>
     <div className='flex justify-between'>
