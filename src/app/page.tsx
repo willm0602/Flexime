@@ -12,8 +12,6 @@ const LOCAL_STORAGE_KEY = 'saved-resume';
 function loadInitResume(): JSONResume {
     const resumeDataFromLS = window.localStorage.getItem(LOCAL_STORAGE_KEY);
     if (resumeDataFromLS) {
-        console.log('Using resume from LS')
-        console.log(JSON.parse(resumeDataFromLS));
         return JSON.parse(resumeDataFromLS) as JSONResume;
     }
     console.log('Using default resume')

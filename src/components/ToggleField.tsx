@@ -1,58 +1,18 @@
 import type Togglable from "@/lib/togglable";
 import { useState } from "react";
+import { togglable } from '../lib/togglable';
 
-type ToggleFieldProps<P, F extends keyof P> = {
+type ToggleFieldProps<P, F extends keyof P, C> = {
   parent: P;
   fieldName: F & string;
-  togglable: Togglable<P[F]>;
+  togglable: Togglable<P[F], C>;
   setParent: (parent: P) => void;
   indent?: number; // Optional indentation for nested fields
 };
 
-type ToggleListProps<P> = {
-  parent: P,
-  setParent: (parent: P) => void,
-}
-
-const ToggleLabels: Record<string, string> = {
-  workExperience: "Work Experience",
-  personalProjects: "Personal Projects",
-};
-
-export function TogglableListElement<P extends Togglable<Togglable<unknown>[]>>(props: ToggleListProps<P>) {
-  const { parent, setParent } = props;
-
-  const toggleAtIndex = (index: number) => {
-    const toggles = parent.val as P['val'];
-    const oldToggle: Togglable<unknown> = toggles[index];
-    const newToggle: Togglable<unknown> = {
-      ...oldToggle,
-      isOn: !oldToggle.isOn
-    };
-    toggles[index] = newToggle;
-    const newParent: P = {
-      ...parent,
-      val: toggles
-    } as P;
-    setParent(newParent);
-  }
-
-  return <ul className='list-none'>
-    {parent.val.map((toggle, idx) => {
-      return <li key={`toggle-${idx}`}>
-        <input type="checkbox"
-          checked={toggle.isOn}
-          onChange={() => { toggleAtIndex(idx) }} />
-        <label className='ml-1'>{toggle.title}</label>
-      </li>
-    })}
-  </ul>
-}
-
-export default function ToggleField<P, F extends keyof P>(props: ToggleFieldProps<P, F>) {
+export default function ToggleField<P, F extends keyof P, C = unknown>(props: ToggleFieldProps<P, F, C>) {
   const { parent, togglable, fieldName, setParent, indent = 0 } = props;
-
-  const [currTogglable, $setCurrentTogglable] = useState<Togglable<P[F]>>(togglable);
+  const [currTogglable, $setCurrentTogglable] = useState<Togglable<P[F], C>>(togglable);
 
   const setCurrentTogglable = (updatedTogglable: Togglable<P[F]>) => {
     $setCurrentTogglable(updatedTogglable);
@@ -66,7 +26,7 @@ export default function ToggleField<P, F extends keyof P>(props: ToggleFieldProp
   };
 
   const toggleField = () => {
-    const updatedTogglable: Togglable<P[F]> = {
+    const updatedTogglable: Togglable<P[F], C> = {
       ...currTogglable,
       isOn: !currTogglable.isOn,
     };
@@ -89,9 +49,74 @@ export default function ToggleField<P, F extends keyof P>(props: ToggleFieldProp
       </div>
 
       {/* Render nested fields if currTogglable.val is a TogglableList */}
-      {Array.isArray(currTogglable.val) && <TogglableListElement parent={togglable} setParent={setCurrentTogglable} />}
+      {currTogglable.children && currTogglable.children.map((togglable, idx) => {
+        return <ToggleChildField
+          togglable={currTogglable}
+          index={idx}
+          setTogglable={setCurrentTogglable}
+          indent={indent + 1}
+          key={`togglable-${idx}`}
+        />
+      })}
 
     </>
   );
 }
 
+type ToggleChildFieldProps<C> = {
+  togglable: Togglable<unknown, C>,
+  index: number,
+  setTogglable: CallableFunction,
+  indent: number
+}
+
+function ToggleChildField<C>(props: ToggleChildFieldProps<C>) {
+  const { indent, togglable, setTogglable, index } = props;
+
+  const toggleField = () => {
+    const childToUpdate = (togglable.children || [])[index];
+    childToUpdate.isOn = !childToUpdate.isOn;
+    const children = togglable.children || [];
+    children[index] = childToUpdate;
+    const updatedTogglable: Togglable<unknown, C> = {
+      ...togglable,
+      children
+    };
+    setTogglable(updatedTogglable);
+  }
+
+  const setChild = (child: Togglable<C>) => {
+    const children = togglable.children || [];
+    const updatedChildren = children;
+    updatedChildren[index] = child;
+    const updatedTogglable = {
+      ...togglable,
+      children: updatedChildren
+    };
+    setTogglable(updatedTogglable);
+  }
+
+  const child = (togglable.children || [])[index];
+  const subchildren = child.children || [];
+
+  return (
+    <div style={{ marginLeft: `${indent / 2}em` }}>
+      <input
+        type="checkbox"
+        checked={togglable.children?.[index]?.isOn || false}
+        onChange={toggleField}
+      />
+      <label className="font-bold ml-2 capitalize">
+        {togglable.children?.[index]?.title || "Unnamed"}
+      </label>
+      {subchildren.map((subchild, index) => {
+        return <ToggleChildField key={`togglable-${index}`}
+          togglable={child}
+          setTogglable={setChild}
+          indent={indent + 1}
+          index={index}
+        />
+      })}
+    </div>
+  );
+}

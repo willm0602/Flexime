@@ -2,12 +2,24 @@
  * Custom format for resumes to be more compact and easier to edit
 */
 
-import JSONResume, { Education, Profile, Skill, Project } from './jsonResume';
-import Togglable, { togglableList } from '@/lib/togglable';
+import JSONResume, { Education, Profile, Skill, Project, Work, Location } from './jsonResume';
+import Togglable from '@/lib/togglable';
 import type { TogglableList } from '@/lib/togglable';
 import { togglable } from './togglable';
 import CompanyExperience from './companyExperience';
 import getCompaniesFromWork from './getCompaniesFromWork';
+
+type TogglableRole = Togglable<Work, string>
+type TogglableCompany = Togglable<CompanyExperience, TogglableRole>
+type TogglableWork = Togglable<undefined, TogglableCompany>
+
+type TogglableProject = Togglable<Project, string>;
+
+function truncate(text: string, maxLen: number): string {
+    if (text.length < maxLen)
+        return text
+    return text.substring(0, maxLen) + '...'
+}
 
 export default interface Resume {
     name: string,
@@ -15,17 +27,23 @@ export default interface Resume {
     title: Togglable<string | undefined>,
     email: Togglable<string | undefined>,
     phone: Togglable<string | undefined>,
+    location: Togglable<Location | undefined>,
     education: TogglableList<Education>,
     skills: TogglableList<Skill>,
-    workExperience: TogglableList<CompanyExperience>,
-    personalProjects: TogglableList<Project>
+    workExperience: TogglableWork,
+    personalProjects: TogglableList<TogglableProject>
 }
 
 export function resumeFromJSONResume(jsonResume: JSONResume): Resume {
     const name: string = jsonResume.basics.name;
-    const profiles: TogglableList<Profile> = togglableList(jsonResume.basics.profiles, 'Profiles', (profile) => { return `${profile.network}` })
+    const profiles: TogglableList<Profile> = togglable(undefined, 'Profiles', (jsonResume.basics?.profiles || []).map((profile) => {
+        return togglable(profile, profile.network);
+    }))
     if (jsonResume.basics.url) {
-        profiles.val.push({
+        if (!profiles.children) {
+            profiles.children = [];
+        }
+        profiles.children.push({
             val: {
                 network: 'Personal Site',
                 url: jsonResume.basics.url
@@ -34,18 +52,35 @@ export function resumeFromJSONResume(jsonResume: JSONResume): Resume {
             title: 'Personal Site'
         })
     }
-    const title = togglable(jsonResume.basics.summary, 'Title');
+    const title = togglable(jsonResume.basics.label, 'Title');
+    const location = togglable(jsonResume.basics.location, 'Location');
     const email = togglable(jsonResume.basics.email, 'Email');
     const phone = togglable(jsonResume.basics.phone, 'Phone');
-    const education = togglableList(jsonResume.education, 'Education', (school) => school.institution);
-    const skills = togglableList(jsonResume.skills, 'Skills', (skill) => skill.name);
-    const workExperience = togglableList(getCompaniesFromWork(jsonResume.work), 'Work Experience', (company) => company.companyName);
-    const personalProjects = togglableList(jsonResume.projects, 'Personal Projects', (project) => project.name);
+    const education = togglable(undefined, 'Education', (jsonResume.education || []).map((education: Education) => {
+        return togglable(education, education.institution);
+    }));
+    const skills = togglable(undefined, 'Skills', (jsonResume.skills || []).map((skill) => {
+        return togglable(skill, skill.name);
+    }));
+    const companyExperience = getCompaniesFromWork(jsonResume.work);
+    const workExperience: TogglableWork = togglable(undefined, 'Work Experience', (companyExperience).map((company) => {
+        return togglable(company, company.companyName, company.positions.map((work) => {
+            return togglable(work, work.position, work.highlights.map((highlight) => {
+                return togglable(highlight, truncate(highlight, 20))
+            }))
+        }))
+    }));
+    const personalProjects = togglable(undefined, 'Personal Projects', (jsonResume.projects || []).map((project) => {
+        return togglable(project.highlights, project.name, project.highlights.map((highlight) => {
+            return togglable(highlight, truncate(highlight, 25))
+        }))
+    }));
 
     return {
         name,
         profiles,
         title,
+        location,
         email,
         phone,
         education,
