@@ -1,41 +1,54 @@
 
-export type ListItemProps<P, C> = {
-  val: C,
-  parent: P,
-  setParent: (newParent: P) => void,
-  idx: number,
-  fieldName: keyof P
+export type ListItemProps<T> = {
+  val: T,
+  vals: T[],
+  setList: (newVals: T[]) => void,
+  idx: number
 }
 
-export type ListItem<P, C> = (props: ListItemProps<P, C>) => React.ReactNode
+export type ListItem<T> = (props: ListItemProps<T>) => React.ReactNode
 
-type EditListProps<P, C, L extends P[keyof P] & Array<C>> = {
-  vals: L
-  fieldName: keyof P,
-  parent: P,
-  setParent: (newParent: P) => void,
-  RenderItem: ListItem<P, C>,
-  defaultChild: C
+type EditListProps<T> = {
+  vals: T[]
+  setList: (newList: T[]) => void,
+  RenderItem: ListItem<T>,
+  defaultChild: T
 };
 
-export default function EditList<P, C, L extends P[keyof P] & Array<C>>(props: EditListProps<P, C, L>) {
-  const { vals, fieldName, parent, setParent, RenderItem, defaultChild } = props;
+export default function EditList<T>(props: EditListProps<T>) {
+  const { vals, setList, RenderItem, defaultChild } = props;
 
   const addNew = () => {
     const newChild = { ...defaultChild };
-    const newParent = { ...parent };
-    newParent[fieldName].push(newChild);
-    setParent(newParent);
+    setList([
+      ...vals,
+      newChild
+    ]);
+  }
+
+  const confirmThenRemove = (idxToRemove: number) => {
+    // TODO: replace with a custom dialog
+    const shouldRemove = window.confirm('This will remove this permanently from your resume, are you sure you wish to proceed?')
+
+    if (shouldRemove) {
+      const updatedChildren = vals.filter((_, idx) => {
+        return idx != idxToRemove;
+      });
+      setList(updatedChildren);
+    }
   }
 
   return <div>
     {vals.map((val, idx) => {
-      return <RenderItem val={val}
-        parent={parent}
-        setParent={setParent}
-        key={`edit-list-${idx}`}
-        fieldName={fieldName}
-        idx={idx} />
+      return <div className='flex items-center border-solid border-slate-500 border-2 my-4 p-4' key={`edit-list-${idx}`}>
+        <button className='btn btn-xs btn-warning mr-12'
+          onClick={() => { confirmThenRemove(idx) }}
+        >Remove</button>
+        <RenderItem val={val}
+          vals={vals}
+          setList={setList}
+          idx={idx} />
+      </div>
     })}
     <button onClick={addNew}>Add</button>
   </div>

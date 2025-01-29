@@ -5,6 +5,7 @@ import { DEFAULT_RESUME } from "@/lib/resumeUtils";
 import Link from "next/link";
 import Tabpane from "@/components/Tabpane";
 import EditBasics from "@/components/pageSpecific/profile/EditBasics";
+import EditWorkExperience from '@/components/pageSpecific/profile/EditWork';
 
 const RESUME_KEY = 'saved-resume';
 
@@ -25,7 +26,7 @@ export default function ConfigureProfile() {
         },
         work: {
           text: 'Work Experience',
-          content: <h1>Work</h1>
+          content: <EditWorkExperience resume={resume} setResume={setResume} />
         }
       }}
     />
