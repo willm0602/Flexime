@@ -72,6 +72,14 @@ const SectionLabel = (props: { sectionName: string }) => {
   </>
 }
 
+const reformatDate = (datestr: string | undefined) => {
+  if (!datestr)
+    return '';
+  const [year, month] = datestr.split('-');
+  const abbreviatedYear = parseInt(year) % 100;
+  return `${month}/${abbreviatedYear}`
+}
+
 const RoleComponent = (props: { highlights: Togglable<string>[], title: string, work: Work }) => {
   const { highlights, title, work } = props;
   const { startDate, endDate } = work;
@@ -79,7 +87,7 @@ const RoleComponent = (props: { highlights: Togglable<string>[], title: string, 
   const usedHighlights = highlights.filter((hl) => hl.isOn).map((hl) => hl.val)
 
   return <View>
-    <Text style={styles.subsubheader}>{title} ({startDate} - {endDate})</Text>
+    <Text style={styles.subsubheader}>{title} ({reformatDate(startDate)} - {reformatDate(endDate)})</Text>
     <UL items={usedHighlights} />
   </View>
 }
@@ -102,7 +110,7 @@ const WorkComponent = (props: { company: Togglable<CompanyExperience> }) => {
 const EducationComponent = (props: { school: Education }) => {
   const { school } = props;
   return <View>
-    <Text style={styles.subsubheader}>{school.institution} ({school.startDate} - {school.endDate})</Text>
+    <Text style={styles.subsubheader}>{school.institution} ({reformatDate(school.startDate)} - {reformatDate(school.endDate)})</Text>
     <Text>{school.studyType} of {school.area}</Text>
   </View>
 }

@@ -30,10 +30,10 @@ export default function ResumeConfig(
   }
 
   return <div className='w-full flex'>
-    <div className='flex-grow-1'>
+    <div className='flex-4'>
       <div className='flex'>
-        <a className='btn' href={getResumePDFLink()} target="_blank">View Resume</a>
-        <a className='btn' href="/profile">Modify Profile Here</a>
+        <a className='btn btn-accent no-underline mr-4' href={getResumePDFLink()} target="_blank">View Resume</a>
+        <a className='btn btn-secondary no-underline' href="/profile">Modify Profile Here</a>
       </div>
       <ul className='pl-0'>
         {Object.entries(resume).map(([key, val]) => {
@@ -53,10 +53,10 @@ export default function ResumeConfig(
         })}
       </ul>
     </div>
-    <div>
+    <div className='flex-1'>
       <button className='btn btn-primary ml-12 mb-4' onClick={updateCurrUrl}>Update</button>
-      <div className='ml-12 w-[68em] h-[73em]'>
-        <iframe width={'100%'} height={'100%'} src={currURL} />
+      <div className='ml-12 min-h-full'>
+        <iframe width={'100%'} height={'100%'} src={currURL} className='min-h-[72em]' />
       </div>
     </div>
   </div>

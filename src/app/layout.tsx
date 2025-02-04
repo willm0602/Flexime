@@ -23,7 +23,7 @@ export default function RootLayout({
     children: React.ReactNode
 }>) {
     return (
-        <html lang="en" data-theme="luxury">
+        <html lang="en" data-theme="business">
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased prose max-w-full`}
             >

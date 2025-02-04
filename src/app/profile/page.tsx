@@ -27,6 +27,10 @@ export default function ConfigureProfile() {
         work: {
           text: 'Work Experience',
           content: <EditWorkExperience resume={resume} setResume={setResume} />
+        },
+        education: {
+          text: 'Education',
+          content: <h1>Edit Education</h1>
         }
       }}
     />

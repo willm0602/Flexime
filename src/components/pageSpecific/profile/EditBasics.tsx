@@ -65,7 +65,7 @@ const EditSimpleBasicField = (props: EditBasicsProps & { fieldName: keyof Resume
 }
 
 const EditProfile: ListItem<Profile> = (props: ListItemProps<Profile>) => {
-  const { val, vals, idx, setList } = props;
+  const { val, vals, idx, setList, confirmThenRemove } = props;
 
   const [profile, setCurrProfile] = useState<Profile>(val);
   const [network, $setNetwork] = useState<string>(profile.network);
@@ -94,10 +94,13 @@ const EditProfile: ListItem<Profile> = (props: ListItemProps<Profile>) => {
     updatedChildren[idx] = profile;
     setList(updatedChildren);
   }
+
   return <div>
     <h3
       className='mt-0'
-    >{val.network}</h3>
+    >{val.network} <button className='btn btn-xs btn-error'
+      onClick={() => { confirmThenRemove() }}
+    >Remove</button></h3>
     <div className='flex'>
       <EditField
         defaultValue={network}
@@ -217,6 +220,7 @@ export default function EditBasics(props: EditBasicsProps) {
       vals={profiles}
       setList={setProfiles}
       RenderItem={EditProfile}
+      addBtnText='Add Profile'
       defaultChild={{
         network: '',
         url: ''
