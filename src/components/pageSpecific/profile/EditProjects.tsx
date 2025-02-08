@@ -1,0 +1,87 @@
+import EditList, { ListItem, ListItemProps } from "@/components/EditList";
+import EditProfileProps from "./EditProfileProps";
+import { Project } from "@/lib/jsonResume";
+import TitleWithRemove from "./TitleWithRemove";
+import { useState } from "react";
+import EditableText from "@/components/EditableText";
+
+const DefaultProject: Project = {
+    name: "Untitled Project",
+    description: "",
+    highlights: [],
+    url: []
+}
+
+const EditHighlight: ListItem<string> = (props) => {
+    const {removeItem, setItem, val} = props;
+
+    return <EditableText
+            defaultVal={val}
+            dispatch={setItem}
+            label="Highlight"
+            remove={removeItem}
+    />
+
+}
+
+const RenderProject: ListItem<Project> = (props) => {
+    const {removeItem, setItem} = props;
+    const project = props.val;
+    const [name, dispatchName] = useState<string>(project.name);
+    const [highlights, dispatchHighlights] = useState<string[]>(project.highlights);
+    
+    const setHighlights = (newHighlights: string[]) => {
+        dispatchHighlights(newHighlights);
+        setItem({
+            ...project,
+            highlights: newHighlights
+        })
+    }
+
+    const setName = (newName: string) => {
+        setItem({
+            ...project,
+            name: newName
+        });
+        dispatchName(newName);
+    }
+
+    return <>
+        <TitleWithRemove title={name} remove={removeItem}/>
+        <EditableText
+            defaultVal={name}
+            dispatch={setName}
+            label={""}            
+        />
+        <EditList
+            vals={highlights}
+            setList={setHighlights}
+            RenderItem={EditHighlight}
+            defaultChild="Untitled Highlight"
+            addBtnText="Add Highlight"
+            containerClassName="mb-4"
+        />
+    </>
+}
+
+
+export default function EditProjects(props: EditProfileProps){
+    const {resume, dispatchResume} = props;
+    const [projects, dispatchProjects] = useState<Project[]>(resume.projects);
+
+    const setProjects = (newProjects: Project[]) => {
+        dispatchResume({
+            ...resume,
+            projects: newProjects
+        })
+    }
+    return <div role="tabpanel" className="mt-12">
+        <h2>Edit Projects</h2>
+        <EditList 
+            vals={projects}
+            setList={setProjects}
+            RenderItem={RenderProject}
+            addBtnText="Add Project"
+            defaultChild={DefaultProject}/>
+    </div>
+}

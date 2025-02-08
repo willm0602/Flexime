@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   page: {
     flexDirection: 'column',
     fontFamily: 'Times-Roman',
-    padding: 18,
+    padding: 24,
     fontSize: 12
   },
   title: {
@@ -72,6 +72,14 @@ const SectionLabel = (props: { sectionName: string }) => {
   </>
 }
 
+const reformatDate = (datestr: string | undefined) => {
+  if (!datestr)
+    return '';
+  const [year, month] = datestr.split('-');
+  const abbreviatedYear = parseInt(year) % 100;
+  return `${month}/${abbreviatedYear}`
+}
+
 const RoleComponent = (props: { highlights: Togglable<string>[], title: string, work: Work }) => {
   const { highlights, title, work } = props;
   const { startDate, endDate } = work;
@@ -79,7 +87,7 @@ const RoleComponent = (props: { highlights: Togglable<string>[], title: string, 
   const usedHighlights = highlights.filter((hl) => hl.isOn).map((hl) => hl.val)
 
   return <View>
-    <Text style={styles.subsubheader}>{title} ({startDate} - {endDate})</Text>
+    <Text style={styles.subsubheader}>{title} ({reformatDate(startDate)} - {reformatDate(endDate)})</Text>
     <UL items={usedHighlights} />
   </View>
 }
@@ -102,7 +110,7 @@ const WorkComponent = (props: { company: Togglable<CompanyExperience> }) => {
 const EducationComponent = (props: { school: Education }) => {
   const { school } = props;
   return <View>
-    <Text style={styles.subsubheader}>{school.institution} ({school.startDate} - {school.endDate})</Text>
+    <Text style={styles.subsubheader}>{school.institution} ({reformatDate(school.startDate)} - {reformatDate(school.endDate)})</Text>
     <Text>{school.studyType} of {school.area}</Text>
   </View>
 }
@@ -125,8 +133,14 @@ const ResumeComponent = (props: { resume: Resume }) => {
   }).map((togglableProfile) => togglableProfile.val);
 
   const workExperience = (resume.workExperience.isOn) ? ((resume.workExperience.children || []).filter((company) => company.isOn)) : []
+  
   const education = (resume.education.isOn) ? (resume.education.children || []).filter((school) => school.isOn).map((togglableSchool) => togglableSchool.val) : []
+  
   const personalProjects = (resume.personalProjects.isOn) ? (resume.personalProjects.children || []).filter((proj) => proj.isOn) : [];
+
+  const skills = ((resume.skills.isOn) ? resume.skills.children || [] : []).filter((skill) => {
+    return skill.isOn
+  });
 
   return <Document>
     <Page style={styles.page} size='A4'>
@@ -153,7 +167,7 @@ const ResumeComponent = (props: { resume: Resume }) => {
         {/* Work */}
         {workExperience && <> <SectionLabel sectionName="Work Experience" /><View>
           {workExperience.map((togglableCompany, companyIdx) => {
-            return <View key={`company-${companyIdx}`}>
+            return <View key={`company-${companyIdx}`} style={{marginTop: 12}}>
               <WorkComponent company={togglableCompany} />
             </View>
           })}
@@ -170,6 +184,10 @@ const ResumeComponent = (props: { resume: Resume }) => {
         {personalProjects.map((proj, idx) => {
           return <ProjectComponent proj={proj} key={`proj-${idx}`} />
         })}
+
+        {/* Skills */}
+        <SectionLabel sectionName="Skills"/>
+        <View><Text>{skills.map((togglableSkill) => togglableSkill.val.name).join(', ')}</Text></View>
       </View>
     </Page>
 

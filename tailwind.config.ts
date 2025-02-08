@@ -20,6 +20,6 @@ export default {
     },
     plugins: [daisyui, typography],
     daisyui: {
-        themes: ['luxury'],
+        themes: ['business'],
     },
 } satisfies Config

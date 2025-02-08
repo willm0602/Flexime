@@ -1,0 +1,96 @@
+import { Dispatch, useState } from "react"
+
+type EditableTextProps = {
+    defaultVal: string,
+    dispatch: Dispatch<string>,
+    label: string,
+    remove?: CallableFunction
+};
+
+export default function EditableText(props: EditableTextProps){
+    const {defaultVal, dispatch, label, remove} = props;
+
+    const [isInEditMode, dispatchEdit] = useState<boolean>(false);
+    const [currVal, setVal] = useState(defaultVal);
+
+    return <>
+        {isInEditMode ? <EditField val={currVal}
+                                    setVal={setVal}
+                                    dispatch={dispatch}
+                                    label={label}
+                                    dispatchEdit={dispatchEdit} />
+                        : <EditFieldDisplay
+                            val={currVal}
+                            remove={remove}
+                            dispatchEdit={dispatchEdit}
+                        />     
+        }</>
+}
+
+type EditFieldProps = {
+    val: string,
+    setVal: Dispatch<string>,
+    dispatch: Dispatch<string>,
+    dispatchEdit: Dispatch<boolean>,
+    label: string,
+};
+
+function EditField(props: EditFieldProps){
+    const {
+        val,
+        setVal,
+        dispatch,
+        dispatchEdit,
+        label
+    } = props;
+
+    const [currVal, setCurrVal] = useState(val);
+    const saveField = () => {
+        setVal(currVal);
+        dispatch(currVal);
+        dispatchEdit(false);
+    }
+
+    return <div className="min-w-fit">
+        <input
+            defaultValue={currVal}
+            className="input input-bordered input-sm"
+            onChange={(e) => {
+                setCurrVal(e.target.value);
+            }}
+            placeholder={label}
+        /> 
+        <br/>
+        <button
+            className="btn btn-main btn-sm btn-secondary mt-2"
+            onClick={saveField}
+        >Save</button>
+        <button
+            className="btn btn-main btn-sm btn-warning ml-4"
+            onClick={() => {dispatchEdit(false);}}
+        >Cancel</button>
+    </div>
+}
+
+type EditFieldDisplayProps = {
+    val: string,
+    dispatchEdit: Dispatch<boolean>,
+    remove?: CallableFunction
+}
+
+function EditFieldDisplay(props: EditFieldDisplayProps){
+    const {val, dispatchEdit, remove} = props;
+    return <div>
+        <label
+            className="font-bold"
+        >{val}</label>
+        <br/>
+        <button
+            className="btn btn-info btn-xs"
+            onClick={() => {dispatchEdit(true);}}
+        >Edit</button>
+        {remove && <button onClick={()=>remove()}
+                           className="btn btn-error btn-xs ml-4"
+                >Remove</button>}
+    </div>
+}

@@ -22,7 +22,7 @@ const EditField = (props: EditFieldProps) => {
       onChange={(e) => { onChange(e.target.value) }}
     />
     <button className='btn btn-xs btn-primary'
-      onClick={onSave}
+      onClick={() => {onSave()}}
     >Save</button>
   </label>
 
@@ -40,11 +40,12 @@ const EditSimpleBasicField = (props: EditBasicsProps & { fieldName: keyof Resume
   const [currVal, setCurrVal] = useState(initVal);
 
   const updateResume = () => {
-    const basics = resume.basics;
-    basics[fieldName] = currVal;
     setResume({
       ...resume,
-      basics
+      basics: {
+        ...resume.basics,
+        [fieldName]: currVal
+      }
     })
 
   }
@@ -63,24 +64,57 @@ const EditSimpleBasicField = (props: EditBasicsProps & { fieldName: keyof Resume
 
 }
 
-const EditProfile: ListItem<ResumeBasics, Profile> = (props: ListItemProps<ResumeBasics, Profile>) => {
-  const { val, idx, parent, setParent, fieldName } = props;
+const EditProfile: ListItem<Profile> = (props: ListItemProps<Profile>) => {
+  const { val, vals, idx, setList, confirmThenRemove } = props;
 
-  const [currVal, setCurrVal] = useState(val);
+  const [profile, setCurrProfile] = useState<Profile>(val);
+  const [network, $setNetwork] = useState<string>(profile.network);
+  const [url, $setURL] = useState<string>(profile.url);
+
+  const setNetwork = (newNetwork: string) => {
+    $setNetwork(network);
+    setCurrProfile({
+      ...profile,
+      network: newNetwork
+    });
+  }
+
+  const setURL = (url: string) => {
+    $setURL(url);
+    setCurrProfile({
+      ...profile,
+      url
+    });
+  }
 
   const updateResume = () => {
-    const newParent: typeof parent = parent;
-    newParent[fieldName][idx] = currVal;
-    setParent(newParent);
+    const updatedChildren = [
+      ...vals,
+    ];
+    updatedChildren[idx] = profile;
+    setList(updatedChildren);
   }
+
   return <div>
-    <h3>{val.network}</h3>
-    <EditField
-      defaultValue={currVal.network}
-      placeholder='Network / Site Name'
-      onChange={setCurrVal}
-      onSave={updateResume}
-    />
+    <h3
+      className='mt-0'
+    >{val.network} <button className='btn btn-xs btn-error'
+      onClick={() => { confirmThenRemove() }}
+    >Remove</button></h3>
+    <div className='flex'>
+      <EditField
+        defaultValue={network}
+        placeholder='Network / Site Name'
+        onChange={setNetwork}
+        onSave={updateResume}
+      />
+      <EditField
+        defaultValue={url}
+        placeholder='URL'
+        onChange={setURL}
+        onSave={updateResume}
+      />
+    </div>
 
 
   </div>
@@ -136,20 +170,20 @@ const EditLocation = (props: EditBasicsProps) => {
 
 export default function EditBasics(props: EditBasicsProps) {
   const { resume, setResume } = props;
-  const [basics, $setBasics] = useState(resume.basics);
-
-  const setBasics = (newBasics: ResumeBasics) => {
-    const updatedResume: Resume = {
+  const [profiles, $setProfiles] = useState<Profile[]>(resume.basics.profiles);
+  const setProfiles = (profiles: Profile[]) => {
+    $setProfiles(profiles);
+    setResume({
       ...resume,
-      basics: newBasics
-    };
-
-    setResume(updatedResume);
-    $setBasics(newBasics)
+      basics: {
+        ...resume.basics,
+        profiles
+      }
+    })
   }
 
   return <div role="tabpanel" className='mt-4'>
-    <h1>Edit Basics</h1>
+    <h2>Edit Basics</h2>
     <div className='flex flex-wrap gap-y-4'>
       <EditSimpleBasicField resume={resume}
         setResume={setResume}
@@ -182,12 +216,11 @@ export default function EditBasics(props: EditBasicsProps) {
     />
 
     <h2>Profiles</h2>
-    <EditList<ResumeBasics, Profile, Profile[]>
-      vals={basics.profiles}
-      parent={basics}
-      fieldName='profiles'
-      setParent={setBasics}
+    <EditList<Profile>
+      vals={profiles}
+      setList={setProfiles}
       RenderItem={EditProfile}
+      addBtnText='Add Profile'
       defaultChild={{
         network: '',
         url: ''

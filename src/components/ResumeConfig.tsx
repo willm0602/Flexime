@@ -29,11 +29,28 @@ export default function ResumeConfig(
     setCurrURL(getResumePDFLink());
   }
 
-  return <div className='w-full flex'>
-    <div className='flex-grow-1'>
+  const openInNewTab = () => {
+    const form = document.getElementById('resume-config-form');
+    if(!form)
+      return;
+    console.log('FORM IS', form);
+    form.setAttribute('target', '_blank');
+    form.submit();
+    form.setAttribute('target', 'resume-preview');
+  }
+
+  return <form className='w-full flex'
+               method="POST"
+               target="resume-preview"
+               action={getResumePDFLink()}
+               id="resume-config-form"
+  >
+    <div className='flex-4'>
       <div className='flex'>
-        <a className='btn' href={getResumePDFLink()} target="_blank">View Resume</a>
-        <a className='btn' href="/profile">Modify Profile Here</a>
+        <button className='btn btn-accent no-underline mr-4'
+                role='button'
+                onClick={() => {openInNewTab()}}>View Resume</button>
+        <a className='btn btn-secondary no-underline' href="/profile">Modify Profile Here</a>
       </div>
       <ul className='pl-0'>
         {Object.entries(resume).map(([key, val]) => {
@@ -53,11 +70,11 @@ export default function ResumeConfig(
         })}
       </ul>
     </div>
-    <div>
+    <div className='flex-1'>
       <button className='btn btn-primary ml-12 mb-4' onClick={updateCurrUrl}>Update</button>
-      <div className='ml-12 w-[68em] h-[73em]'>
-        <iframe width={'100%'} height={'100%'} src={currURL} />
+      <div className='ml-12 min-h-full'>
+        <iframe width={'100%'} height={'100%'} className='min-h-[72em]' name="resume-preview" id='resume-preview'/>
       </div>
     </div>
-  </div>
+  </form>
 }
