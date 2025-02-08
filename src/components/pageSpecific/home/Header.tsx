@@ -1,8 +1,5 @@
 import JSONResume from '@/lib/jsonResume';
 import Resume, { resumeFromJSONResume } from '@/lib/resume'
-import resumeIsValid from '@/lib/validateResume'
-import { InformationCircleIcon } from '@heroicons/react/16/solid'
-import { ChangeEventHandler } from 'react'
 
 type HomePageHeaderProps = {
     setResume: (resume: JSONResume) => void

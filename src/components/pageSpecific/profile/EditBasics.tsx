@@ -22,7 +22,7 @@ const EditField = (props: EditFieldProps) => {
       onChange={(e) => { onChange(e.target.value) }}
     />
     <button className='btn btn-xs btn-primary'
-      onClick={onSave}
+      onClick={() => {onSave()}}
     >Save</button>
   </label>
 
@@ -183,7 +183,7 @@ export default function EditBasics(props: EditBasicsProps) {
   }
 
   return <div role="tabpanel" className='mt-4'>
-    <h1>Edit Basics</h1>
+    <h2>Edit Basics</h2>
     <div className='flex flex-wrap gap-y-4'>
       <EditSimpleBasicField resume={resume}
         setResume={setResume}

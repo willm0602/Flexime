@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import type Resume from "@/lib/resume";
 import Templates from "@/lib/templates";
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
   // Get resume data from the query string
   const query = req.nextUrl.searchParams;
   const resumeAsStr = query.get('resume');

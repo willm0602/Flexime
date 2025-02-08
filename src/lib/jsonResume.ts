@@ -79,8 +79,8 @@ export interface ResumeBasics {
     name: string
     label?: string
     image?: string
-    email: string
-    phone: string
+    email?: string
+    phone?: string
     url?: string
     summary?: string
     location?: Location

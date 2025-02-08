@@ -1,26 +1,34 @@
+import { twMerge } from "tailwind-merge";
 
-const DEFAULT_ADD_BTN_TEXT = 'Add'
+const DEFAULT_ADD_BTN_TEXT = 'Add';
+const DEFAULT_WRAPPER_CLASS = 'w-full flex flex-col';
+const DEFAULT_ITEM_CLASS = 'flex flex-col border-solid border-slate-500 border-2 my-4 p-4'
 
 export type ListItemProps<T> = {
   val: T,
   vals: T[],
-  setList: (newVals: T[]) => void
+  setList: (newVals: T[]) => void,
+  setItem: (newVal: T) => void,
   idx: number,
-  confirmThenRemove: () => boolean
+  confirmThenRemove: () => boolean,
+  removeItem: () => void
 }
 
 export type ListItem<T> = (props: ListItemProps<T>) => React.ReactNode
 
 type EditListProps<T> = {
-  vals: T[]
+  vals?: T[]
   setList: (newList: T[]) => void,
   RenderItem: ListItem<T>,
   defaultChild: T,
-  addBtnText?: string
+  addBtnText?: string,
+  containerClassName?: string,
+  itemWrapperClass?: string
 };
 
 export default function EditList<T>(props: EditListProps<T>) {
-  const { vals, setList, RenderItem, defaultChild, addBtnText } = props;
+  const { setList, RenderItem, containerClassName, defaultChild, addBtnText, itemWrapperClass } = props;
+  const vals = props.vals || [];
 
   const addNew = () => {
     setList([
@@ -38,13 +46,23 @@ export default function EditList<T>(props: EditListProps<T>) {
     setList(updatedChildren);
     return true;
   }
-  return <div className='w-full'>
+  return <div className={twMerge(containerClassName, DEFAULT_WRAPPER_CLASS)}>
     {vals.map((val, idx) => {
-      return <div className='flex items-center border-solid border-slate-500 border-2 my-4 p-4' key={`edit-list-${idx}`}>
+      return <div className={twMerge(DEFAULT_ITEM_CLASS, itemWrapperClass)} key={`edit-list-${idx}`}>
         <RenderItem val={val}
           vals={vals}
+          setItem={(updatedVal: T) => {
+            const updatedList = [...vals];
+            updatedList[idx] = updatedVal;
+            setList(updatedList);
+          }}
           setList={setList}
           confirmThenRemove={confirmThenRemoveAtIdx(idx)}
+          removeItem={() => {
+            const updatedVals = vals;
+            updatedVals.splice(idx, 1);
+            setList(updatedVals);
+          }}
           idx={idx} />
       </div>
     })}
