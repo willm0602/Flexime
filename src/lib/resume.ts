@@ -31,15 +31,15 @@ export default interface Resume {
     education: TogglableList<Education>,
     skills: TogglableList<Skill>,
     workExperience: TogglableWork,
-    personalProjects: TogglableProject[]
+    personalProjects: TogglableList<TogglableProject>
 }
 
 export function resumeFromJSONResume(jsonResume: JSONResume): Resume {
-    const name: string = jsonResume.basics.name;
+    const name: string = jsonResume.basics?.name || 'Name';
     const profiles: TogglableList<Profile> = togglable(undefined, 'Profiles', (jsonResume.basics?.profiles || []).map((profile) => {
         return togglable(profile, profile.network);
     }))
-    if (jsonResume.basics.url) {
+    if (jsonResume.basics?.url) {
         if (!profiles.children) {
             profiles.children = [];
         }
@@ -52,10 +52,10 @@ export function resumeFromJSONResume(jsonResume: JSONResume): Resume {
             title: 'Personal Site'
         })
     }
-    const title = togglable(jsonResume.basics.label, 'Title');
-    const location = togglable(jsonResume.basics.location, 'Location');
-    const email = togglable(jsonResume.basics.email, 'Email');
-    const phone = togglable(jsonResume.basics.phone, 'Phone');
+    const title = togglable(jsonResume.basics?.label, 'Title');
+    const location = togglable(jsonResume.basics?.location, 'Location');
+    const email = togglable(jsonResume.basics?.email, 'Email');
+    const phone = togglable(jsonResume.basics?.phone, 'Phone');
     const education = togglable(undefined, 'Education', (jsonResume.education || []).map((education: Education) => {
         return togglable(education, education.institution);
     }));

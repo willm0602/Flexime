@@ -1,9 +1,9 @@
 import CompanyExperience from "./companyExperience";
 import { Skill, Work } from "./jsonResume";
 
-export default function getCompaniesFromWork(work: Work[]): CompanyExperience[] {
+export default function getCompaniesFromWork(work: Work[] | undefined): CompanyExperience[] {
   const companyNames: Record<string, Work[]> = {};
-  work.forEach((position: Work) => {
+  (work || []).forEach((position: Work) => {
     const companyName: string = position.name;
     const existingRoles: Work[] = companyNames[companyName] || [];
     const newRoles = [...existingRoles, position];
