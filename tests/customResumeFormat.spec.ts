@@ -3,6 +3,7 @@
 import {test, expect} from '@playwright/test';
 import JSONResume, { Project } from '@/lib/jsonResume';
 import { resumeFromJSONResume } from '@/lib/resume';
+import sampleResumes from './sampleResumes';
 
 const testResumeConverter = async (baseResume: JSONResume) => {
     const resume = resumeFromJSONResume(baseResume);
@@ -17,9 +18,13 @@ const testResumeConverter = async (baseResume: JSONResume) => {
     expect(resume.personalProjects.title).toBe('Personal Projects');
     const resumeProjects: Project[] = (resume.personalProjects.children || []).map((togglableProject) => {
         return togglableProject.val.val;
-    }); 
+    });
+    expect(resumeProjects).toBe(baseResume.projects);
 };
 
 test('Ensure the resume converter method works for an empty dictionary', async () => {
-    testResumeConverter({});
+    sampleResumes.forEach(async (resume) => {
+        await testResumeConverter(resume);
+    })
+
 })
