@@ -88,14 +88,14 @@ export interface ResumeBasics {
 }
 
 export interface Resume {
-    basics: ResumeBasics
-    work: Work[]
-    volunteer: Volunteer[]
-    education: Education[]
-    awards: Award[]
-    publications: Publication[]
-    skills: Skill[]
-    projects: Project[]
+    basics?: ResumeBasics
+    work?: Work[]
+    volunteer?: Volunteer[]
+    education?: Education[]
+    awards?: Award[]
+    publications?: Publication[]
+    skills?: Skill[]
+    projects?: Project[]
 }
 
 export default Resume

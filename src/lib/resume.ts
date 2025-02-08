@@ -31,7 +31,7 @@ export default interface Resume {
     education: TogglableList<Education>,
     skills: TogglableList<Skill>,
     workExperience: TogglableWork,
-    personalProjects: TogglableList<TogglableProject>
+    personalProjects: TogglableProject[]
 }
 
 export function resumeFromJSONResume(jsonResume: JSONResume): Resume {
