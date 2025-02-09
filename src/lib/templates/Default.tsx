@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   page: {
     flexDirection: 'column',
     fontFamily: 'Times-Roman',
-    padding: 24,
+    padding: 32,
     fontSize: 12
   },
   title: {

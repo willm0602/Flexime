@@ -22,6 +22,9 @@ export async function POST(req: NextRequest) {
     resp.headers.set(
       'content-type', 'application/pdf',
     );
+    resp.headers.set(
+      'content-disposition', 'inline; filename="resume.pdf"'
+    )
     return resp;
   } catch (error) {
 
