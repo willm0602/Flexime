@@ -151,9 +151,9 @@ const ResumeComponent = (props: { resume: Resume }) => {
         {/* Basics */}
         <View style={styles.basics} >
           {/* Location */}
-          {resume.location && resume.location.isOn && <Text>
-            {resume.location.val?.city} {resume.location.val?.region}, {resume.location.val?.countryCode}
-          </Text>}
+          {(resume.location && resume.location.isOn) ? <Text>
+            {resume.location.val?.city} {resume.location.val?.region} {resume.location.val?.countryCode}
+          </Text> : undefined}
 
           {/* Contact info */}
           {resume.phone.isOn && resume.phone.val && <Text>{resume.phone.val}</Text>}

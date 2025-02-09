@@ -20,7 +20,7 @@ export default function ResumeConfig(
   const Template = Templates[templateName];
 
   function getResumePDFLink() {
-    return `/api/pdf/?resume=${JSON.stringify(resume)}`
+    return `/api/pdf/`
   }
 
   const [currURL, setCurrURL] = useState<string>(getResumePDFLink());
@@ -45,6 +45,10 @@ export default function ResumeConfig(
                action={getResumePDFLink()}
                id="resume-config-form"
   >
+    <input type="hidden"
+           name="resume_data"
+           value={JSON.stringify(resume)}
+    />
     <div className='flex-4'>
       <div className='flex'>
         <button className='btn btn-accent no-underline mr-4'

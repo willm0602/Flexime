@@ -12,7 +12,7 @@ const DefaultSkill: Skill = {
 
 export default function EditSkills(props: EditProfileProps){
     const {resume, dispatchResume} = props;
-    const [skills, dispatchSkills] = useState(resume.skills);
+    const [skills, dispatchSkills] = useState((resume.skills || []));
     const [skillToAdd, setSkillToAdd] = useState<string>('');
 
     const setSkills = (skills: Skill[]) => {

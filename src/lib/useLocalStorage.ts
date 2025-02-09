@@ -4,7 +4,7 @@ export default function useLocalStorage<T>(
     localStorageKey: string,
     defaultVal: T
 ): [T, (newVal: T) => void]{
-    const initValAsStr = localStorage.getItem(localStorageKey) || '{}';
+    const initValAsStr = localStorage.getItem(localStorageKey) || '';
     let initVal;
     try{
         initVal = JSON.parse(initValAsStr) as T;

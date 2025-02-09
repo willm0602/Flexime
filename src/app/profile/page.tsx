@@ -36,7 +36,7 @@ export default function ConfigureProfile() {
     <div className="flex">
       <Link href="/" className='btn no-underline'>Return Home</Link>
       <LoadResume setResume={setResume}/>
-      <a href={exportURL} className="btn no-underline btn-secondary ml-4" download={`${resume.basics.name} resume.json`}>Export Profile</a>
+      <a href={exportURL} className="btn no-underline btn-secondary ml-4" download={`${resume.basics?.name || ''} resume.json`}>Export Profile</a>
     </div>
 
     <Tabs.Root defaultValue="basics" className="mt-12">

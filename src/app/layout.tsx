@@ -25,6 +25,9 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" data-theme="business">
+            <head>
+                <title>Flexime</title>
+            </head>
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased prose max-w-full`}
             >
