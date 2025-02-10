@@ -4,11 +4,11 @@
  */
 
 export interface Location {
-    address: string
-    postalCode: string
-    city: string
-    countryCode: string
-    region: string
+    address?: string
+    postalCode?: string
+    city?: string
+    countryCode?: string
+    region?: string
 }
 
 export interface Profile {
@@ -88,7 +88,7 @@ export interface ResumeBasics {
 }
 
 export interface Resume {
-    basics?: ResumeBasics
+    basics: ResumeBasics
     work?: Work[]
     volunteer?: Volunteer[]
     education?: Education[]

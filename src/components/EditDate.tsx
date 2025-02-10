@@ -1,19 +1,3 @@
-{/* <div className="flex-col flex">
-    <label>Start Date</label>
-    <input
-        className="input input-sm"
-        type="date"
-        defaultValue={parseDate(job.startDate)}
-        onChange={(e) => {
-            const newDate = e.target.value;
-            setItem({
-                ...job,
-                startDate: newDate
-            });
-        }}
-    />
-</div> */}
-
 type EditDateProps = {
     defaultDate?: string,
     dispatch: (newVal: string) => void,
@@ -23,7 +7,7 @@ type EditDateProps = {
 export default function EditDate(props: EditDateProps){
     const {defaultDate, dispatch, label} = props;
 
-    return <div className="block"><label>{label}</label><br/>
+    return <div className="block"><label className="text-xs">{label}</label><br/>
     <input
         className="input input-sm input-bordered"
         type="date"

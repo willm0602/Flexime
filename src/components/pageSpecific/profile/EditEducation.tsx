@@ -68,21 +68,34 @@ const EditDegree: ListItem<Education> = (props) => {
                     }}
                     label='GPA'
                     step={0.1}
-                    digits={1}
+                    digits={2}
                     minVal={0}
                     maxVal={5}              
                 />
 
-                <EditDate
-                    dispatch={(startDate) => {
-                        setItem({
-                            ...val,
-                            startDate
-                        });
-                    }}
-                    label='Start Date'
-                    defaultDate={val.startDate}
-                />
+                <div className='flex gap-x-8'>
+                    <EditDate
+                        dispatch={(startDate) => {
+                            setItem({
+                                ...val,
+                                startDate
+                            });
+                        }}
+                        label='Start Date'
+                        defaultDate={val.startDate}
+                    />
+
+                    <EditDate
+                        dispatch={(endDate) => {
+                            setItem({
+                                ...val,
+                                endDate
+                            });
+                        }}
+                        label='End Date'
+                        defaultDate={val.endDate}
+                    />
+                </div>
             </div>
         </>
     )

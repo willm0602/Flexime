@@ -30,10 +30,9 @@ export default function ResumeConfig(
   }
 
   const openInNewTab = () => {
-    const form = document.getElementById('resume-config-form');
+    const form = document.getElementById('resume-config-form') as HTMLFormElement;
     if(!form)
       return;
-    console.log('FORM IS', form);
     form.setAttribute('target', '_blank');
     form.submit();
     form.setAttribute('target', 'resume-preview');

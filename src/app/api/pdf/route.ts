@@ -5,7 +5,7 @@ import Templates from "@/lib/templates";
 export async function POST(req: NextRequest) {
   // Get resume data from the query string
   const body = await req.formData();
-  const resumeAsStr = body.get('resume_data') || '';
+  const resumeAsStr = body.get('resume_data') as string;
 
   if (!resumeAsStr) {
     return NextResponse.json({ message: "No resume data provided" }, { status: 400 });

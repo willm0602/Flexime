@@ -2,7 +2,7 @@ import { Dispatch, useState } from "react"
 
 type EditableTextProps = {
     defaultVal: string,
-    dispatch: Dispatch<string>,
+    dispatch: (val: string) => void,
     label: string,
     remove?: CallableFunction
 };
@@ -23,6 +23,7 @@ export default function EditableText(props: EditableTextProps){
                             val={currVal}
                             remove={remove}
                             dispatchEdit={dispatchEdit}
+                            label={label}
                         />     
         }</>
 }
@@ -75,12 +76,14 @@ function EditField(props: EditFieldProps){
 type EditFieldDisplayProps = {
     val: string,
     dispatchEdit: Dispatch<boolean>,
-    remove?: CallableFunction
+    remove?: CallableFunction,
+    label: string
 }
 
 function EditFieldDisplay(props: EditFieldDisplayProps){
-    const {val, dispatchEdit, remove} = props;
+    const {val, dispatchEdit, remove, label} = props;
     return <div>
+        <label className="text-xs">{label}</label><br/>
         <label
             className="font-bold"
         >{val}</label>

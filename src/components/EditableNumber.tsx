@@ -32,6 +32,7 @@ export default function EditableNumber(props: EditableNumberProps){
                             remove={remove}
                             digits={digits}
                             dispatchEdit={dispatchEdit}
+                            label={label}
                         />     
         }</>
 }
@@ -99,14 +100,16 @@ type EditFieldDisplayProps = {
     dispatchEdit: Dispatch<boolean>,
     remove?: CallableFunction,
     digits: number,
+    label: string
 }
 
 function EditFieldDisplay(props: EditFieldDisplayProps){
-    const {val, dispatchEdit, remove, digits} = props;
+    const {val, dispatchEdit, remove, digits, label} = props;
     return <div>
+        <label className="text-xs">{label}</label><br/>
         <label
             className="font-bold"
-        >{val.toFixed(digits)}</label>
+        >{val.toPrecision(digits)}</label>
         <br/>
         <button
             className="btn btn-info btn-xs"

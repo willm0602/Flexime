@@ -10,19 +10,9 @@ export default function getCompaniesFromWork(work: Work[] | undefined): CompanyE
     companyNames[companyName] = newRoles;
   })
   const companies = Object.entries(companyNames).map(([companyName, roles]) => {
-    const skills = new Set<Skill>();
-    for(const role of roles){
-      const roleSkills = role.summary?.split(' ') || [];
-      for(const skill of roleSkills){
-        skills.add({
-          name: skill
-        });
-      }
-    }
     const company: CompanyExperience = {
       companyName,
       positions: roles,
-      skills: ([...skills])
     }
 
     return company;

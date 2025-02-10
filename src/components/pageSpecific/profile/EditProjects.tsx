@@ -51,7 +51,7 @@ const RenderProject: ListItem<Project> = (props) => {
         <EditableText
             defaultVal={name}
             dispatch={setName}
-            label={""}            
+            label="Title"            
         />
         <EditList
             vals={highlights}
@@ -67,7 +67,7 @@ const RenderProject: ListItem<Project> = (props) => {
 
 export default function EditProjects(props: EditProfileProps){
     const {resume, dispatchResume} = props;
-    const [projects, dispatchProjects] = useState<Project[]>(resume.projects);
+    const [projects, dispatchProjects] = useState<Project[]>(resume.projects || []);
 
     const setProjects = (newProjects: Project[]) => {
         dispatchResume({
