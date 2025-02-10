@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react';
-import Resume from '@/lib/resume';
+import Resume, { resumeFromJSONResume } from '@/lib/resume';
 import { DEFAULT_RESUME } from '@/lib/resumeUtils';
 import ResumeConfig from '@/components/ResumeConfig';
 import useLocalStorage from '@/lib/useLocalStorage';
@@ -10,7 +10,9 @@ const LOCAL_STORAGE_KEY = 'saved-resume';
 
 export default function Home() {
     const [configuredResume, setConfiguredResume] = useState<Resume | null>(null);
-    const [initResume] = useLocalStorage(LOCAL_STORAGE_KEY, DEFAULT_RESUME);
+    const [initResume] = useLocalStorage(LOCAL_STORAGE_KEY, DEFAULT_RESUME, (jsonResume) => {
+        setConfiguredResume(resumeFromJSONResume(jsonResume))
+    });
 
     if (!(initResume && configuredResume))
         return '...loading';
