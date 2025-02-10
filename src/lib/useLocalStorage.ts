@@ -15,13 +15,18 @@ function safeParse<T>(text: string, defaultVal: T): T {
 
 export default function useLocalStorage<T>(
     localStorageKey: string,
-    defaultVal: T
+    defaultVal: T,
+    onLoad?: (val: T) => void
 ): [T, (newVal: T) => void] {
     const [val, setVal] = useState<T>(() => {
         // Initialize state with value from localStorage or defaultVal
-        if (typeof window !== "undefined") {
+        if (window) {
             const valFromLocalStorage = localStorage.getItem(localStorageKey);
-            return valFromLocalStorage ? safeParse(valFromLocalStorage, defaultVal) : defaultVal;
+            const parsedVal = valFromLocalStorage ? safeParse(valFromLocalStorage, defaultVal) : defaultVal;
+            if (onLoad) {
+                onLoad(parsedVal); // Call onLoad synchronously during initialization
+            }
+            return parsedVal;
         }
         return defaultVal;
     });
