@@ -20,7 +20,7 @@ export default function useLocalStorage<T>(
 ): [T, (newVal: T) => void] {
     const [val, setVal] = useState<T>(() => {
         // Initialize state with value from localStorage or defaultVal
-        if (window) {
+        if (typeof window !== "undefined") {
             const valFromLocalStorage = localStorage.getItem(localStorageKey);
             const parsedVal = valFromLocalStorage ? safeParse(valFromLocalStorage, defaultVal) : defaultVal;
             if (onLoad) {
