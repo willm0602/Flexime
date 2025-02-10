@@ -1,4 +1,4 @@
-import EditList, { ListItem, ListItemProps } from '@/components/EditList'
+import EditList, { ListItem } from '@/components/EditList'
 import EditProfileProps from './EditProfileProps'
 import { useState } from 'react'
 import { Education } from '@/lib/jsonResume'

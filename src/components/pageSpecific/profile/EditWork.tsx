@@ -1,6 +1,6 @@
 import EditableText from '@/components/EditableText'
-import EditList, { ListItem, ListItemProps } from '@/components/EditList'
-import Resume, { Work } from '@/lib/jsonResume'
+import EditList, { ListItem } from '@/components/EditList'
+import { Work } from '@/lib/jsonResume'
 import { useState } from 'react'
 import EditProfileProps from './EditProfileProps'
 import EditDate from '@/components/EditDate'

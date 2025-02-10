@@ -1,15 +1,15 @@
 'use client';
 import Resume from "@/lib/jsonResume";
 import { DEFAULT_RESUME } from "@/lib/resumeUtils";
-import { ChangeEventHandler, Dispatch } from "react";
+import { ChangeEventHandler } from "react";
 import toast from "react-hot-toast";
 
 type LoadResumeProps = {
     setResume: (newResume: Resume) => void,
 }
 
-function verifyResume(resumeContents: string): Resume{
-    try{
+function verifyResume(resumeContents: string): Resume {
+    try {
         const resume = JSON.parse(resumeContents);
         return {
             basics: resume.basics || {
@@ -32,8 +32,8 @@ function verifyResume(resumeContents: string): Resume{
     }
 }
 
-export default function LoadResume(props: LoadResumeProps){
-    const {setResume} = props;
+export default function LoadResume(props: LoadResumeProps) {
+    const { setResume } = props;
 
     const showErrorMsg = () => {
         toast('Invalid Resume File.')
@@ -42,20 +42,20 @@ export default function LoadResume(props: LoadResumeProps){
     const loadFile: ChangeEventHandler<HTMLInputElement> = async (e) => {
         const files = e.target.files;
         const file = files?.length ? files[0] : undefined;
-        if(!file){
+        if (!file) {
             showErrorMsg();
             return;
         }
         const contents = await file.text();
-        try{
+        try {
             const resume = verifyResume(contents);
-            if(!resume){
+            if (!resume) {
                 showErrorMsg();
-                return;                
+                return;
             }
             setResume(resume);
             window.location.reload();
-        } catch(e){
+        } catch (e) {
             console.error(e);
             showErrorMsg();
             return;
@@ -65,14 +65,14 @@ export default function LoadResume(props: LoadResumeProps){
 
     return <>
         <label htmlFor="load-resume"
-               className="btn btn-main btn-success ml-4"
+            className="btn btn-main btn-success ml-4"
         >Load Resume</label>
         <input type="file"
-               className="hidden"
-               accept=".json"
-               name="import-resume"
-               id="load-resume"
-               onChange={loadFile}
+            className="hidden"
+            accept=".json"
+            name="import-resume"
+            id="load-resume"
+            onChange={loadFile}
         />
     </>
 }

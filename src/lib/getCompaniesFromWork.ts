@@ -1,5 +1,5 @@
 import CompanyExperience from "./companyExperience";
-import { Skill, Work } from "./jsonResume";
+import { Work } from "./jsonResume";
 
 export default function getCompaniesFromWork(work: Work[] | undefined): CompanyExperience[] {
   const companyNames: Record<string, Work[]> = {};

@@ -1,9 +1,8 @@
-import Resume, { Profile, ResumeBasics } from "@/lib/jsonResume"
+import Resume, { Profile } from "@/lib/jsonResume"
 import { useState } from "react";
 import { Location } from "@/lib/jsonResume";
 import EditList, { ListItem, ListItemProps } from "@/components/EditList";
 import EditableText from "@/components/EditableText";
-import { stringAt } from "pdfkit/js/data";
 
 type ResumeSetter = (resume: Resume) => void
 

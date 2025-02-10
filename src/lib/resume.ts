@@ -8,10 +8,11 @@ import type { TogglableList } from '@/lib/togglable';
 import { togglable } from './togglable';
 import CompanyExperience from './companyExperience';
 import getCompaniesFromWork from './getCompaniesFromWork';
+import { DEFAULT_RESUME } from './resumeUtils';
 
-type TogglableRole = Togglable<Work, string>
-type TogglableCompany = Togglable<CompanyExperience, TogglableRole>
-type TogglableWork = Togglable<undefined, TogglableCompany>
+export type TogglableRole = Togglable<Work, string>
+export type TogglableCompany = Togglable<CompanyExperience, TogglableRole>
+export type TogglableWork = Togglable<undefined, TogglableCompany>
 
 type TogglableProject = Togglable<Project, string>;
 
@@ -34,7 +35,8 @@ export default interface Resume {
     personalProjects: TogglableList<TogglableProject>
 }
 
-export function resumeFromJSONResume(jsonResume: JSONResume): Resume {
+export function resumeFromJSONResume(jsonResume: JSONResume | undefined): Resume {
+    jsonResume = jsonResume || DEFAULT_RESUME;
     const name: string = jsonResume.basics?.name || 'Name';
     const profiles: TogglableList<Profile> = togglable(undefined, 'Profiles', (jsonResume.basics?.profiles || []).map((profile) => {
         return togglable(profile, profile.network);

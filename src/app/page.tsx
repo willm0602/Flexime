@@ -1,37 +1,28 @@
 'use client'
 
-import { useState } from 'react'
-import JSONResume from '@/lib/jsonResume'
-import Resume, { resumeFromJSONResume } from '@/lib/resume'
-import { DEFAULT_RESUME } from '@/lib/resumeUtils'
-import HomePageHeader from '@/components/pageSpecific/home/Header';
+import { useState } from 'react';
+import Resume from '@/lib/resume';
+import { DEFAULT_RESUME } from '@/lib/resumeUtils';
 import ResumeConfig from '@/components/ResumeConfig';
+import useLocalStorage from '@/lib/useLocalStorage';
 
 const LOCAL_STORAGE_KEY = 'saved-resume';
 
-function loadInitResume(): JSONResume {
-    const resumeDataFromLS = window.localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (resumeDataFromLS) {
-        return JSON.parse(resumeDataFromLS) as JSONResume;
-    }
-    console.log('Using default resume')
-    return DEFAULT_RESUME;
-}
-
 export default function Home() {
-    const initResume = loadInitResume();
-    const [resume, $setResume] = useState<JSONResume>(initResume);
-    const setResume = (resume: JSONResume) => {
-        window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(resume));
-        $setResume(resume);
-    }
-    const initConfiguredResume = resumeFromJSONResume(initResume);
-    const [configuredResume, setConfiguredResume] = useState<Resume>(initConfiguredResume);
+    const [configuredResume, setConfiguredResume] = useState<Resume | null>(null);
+    const [initResume] = useLocalStorage(LOCAL_STORAGE_KEY, DEFAULT_RESUME);
+
+    if (!(initResume && configuredResume))
+        return '...loading';
 
     return (
         <div className="font-[family-name:var(--font-geist-sans)] w-full md:w-4/5 mx-auto px-12 py-12">
-            <HomePageHeader setResume={setResume} setConfiguredResume={setConfiguredResume} />
-            <ResumeConfig resume={configuredResume} baseResume={resume} setResume={setConfiguredResume} />
+            <h1>Flexime</h1>
+            <ResumeConfig
+                resume={configuredResume}
+                baseResume={initResume}
+                setResume={setConfiguredResume}
+            />
         </div>
-    )
+    );
 }

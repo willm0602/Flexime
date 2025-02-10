@@ -3,7 +3,6 @@ import type JSONResume from '@/lib/jsonResume';
 import Templates from '@/lib/templates';
 import ToggleField from "./ToggleField";
 import Togglable, { isTogglable } from "@/lib/togglable";
-import { useState } from "react";
 
 type ResumeConfigProps = {
   resume: Resume,
@@ -16,17 +15,9 @@ export default function ResumeConfig(
   props: ResumeConfigProps
 ) {
   const { resume, setResume } = props;
-  const templateName = props.template || 'DEFAULT'
-  const Template = Templates[templateName];
 
   function getResumePDFLink() {
     return `/api/pdf/`
-  }
-
-  const [currURL, setCurrURL] = useState<string>(getResumePDFLink());
-
-  const updateCurrUrl = () => {
-    setCurrURL(getResumePDFLink());
   }
 
   const openInNewTab = () => {
@@ -74,7 +65,7 @@ export default function ResumeConfig(
       </ul>
     </div>
     <div className='flex-1'>
-      <button className='btn btn-primary ml-12 mb-4' onClick={updateCurrUrl}>Update</button>
+      <button className='btn btn-primary ml-12 mb-4'>Update</button>
       <div className='ml-12 min-h-full'>
         <iframe width={'100%'} height={'100%'} className='min-h-[72em]' name="resume-preview" id='resume-preview'/>
       </div>

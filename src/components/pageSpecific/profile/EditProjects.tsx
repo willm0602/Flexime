@@ -1,4 +1,4 @@
-import EditList, { ListItem, ListItemProps } from "@/components/EditList";
+import EditList, { ListItem } from "@/components/EditList";
 import EditProfileProps from "./EditProfileProps";
 import { Project } from "@/lib/jsonResume";
 import TitleWithRemove from "./TitleWithRemove";
@@ -67,7 +67,7 @@ const RenderProject: ListItem<Project> = (props) => {
 
 export default function EditProjects(props: EditProfileProps){
     const {resume, dispatchResume} = props;
-    const [projects, dispatchProjects] = useState<Project[]>(resume.projects || []);
+    const projects = resume.projects || [];
 
     const setProjects = (newProjects: Project[]) => {
         dispatchResume({

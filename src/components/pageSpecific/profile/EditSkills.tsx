@@ -1,14 +1,7 @@
 import { useState } from "react";
 import EditProfileProps from "./EditProfileProps";
-import EditList, { ListItem, ListItemProps } from "@/components/EditList";
 import { Skill } from "@/lib/jsonResume";
-import EditableText from "@/components/EditableText";
 import {XCircleIcon} from '@heroicons/react/24/solid'
-import e from "express";
-
-const DefaultSkill: Skill = {
-    name: "Untitled Skill"
-}
 
 export default function EditSkills(props: EditProfileProps){
     const {resume, dispatchResume} = props;
