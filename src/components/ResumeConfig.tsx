@@ -53,7 +53,7 @@ export default function ResumeConfig(
         <button className='btn btn-accent no-underline mr-4'
                 role='button'
                 onClick={() => {openInNewTab()}}>View Resume</button>
-        <a className='btn btn-secondary no-underline' href="/profile">Modify Profile Here</a>
+        <a className='btn btn-secondary text-black no-underline' href="/profile">Modify Profile Here</a>
       </div>
       <ul className='pl-0'>
         {Object.entries(resume).map(([key, val]) => {
