@@ -1,4 +1,6 @@
-function resumeHasValidBasics(resume: any) {
+import Resume from './jsonResume';
+
+function resumeHasValidBasics(resume: Resume) {
     // all resumes need to have some of the basics fields filled out
     if (!resume.basics) {
         return false
@@ -18,7 +20,7 @@ function resumeHasValidBasics(resume: any) {
     return true
 }
 
-export default function resumeIsValid(resume: any) {
+export default function resumeIsValid(resume: Resume) {
     if (!resumeHasValidBasics(resume)) return false
     return true
 }

@@ -87,14 +87,8 @@ function ToggleChildField<C>(props: ToggleChildFieldProps<C>) {
   const { indent, togglable, setTogglable, index, fieldName } = props;
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
 
-  const toggleIsCollapsed = () => {
+  function toggleIsCollapsed(){
     setIsCollapsed(!isCollapsed);
-    if(!togglable.children){
-      setTogglable({
-        ...togglable,
-        isOn: !togglable.isOn
-      });
-    }
   }
 
   const toggleField = () => {
@@ -135,7 +129,7 @@ function ToggleChildField<C>(props: ToggleChildFieldProps<C>) {
         <label className="font-bold ml-2 capitalize flex flex-1 cursor-pointer"
                htmlFor={`toggle-field-${fieldName}-${index}`}
         >{togglable.children?.[index]?.title}</label>
-        <button>{(subchildren.length > 0) && (isCollapsed ? <ChevronDownIcon width={24} height={24}/> : <ChevronUpIcon width={24} height={24}/>)}</button>
+        <button type="button" onClick={toggleIsCollapsed}>{(subchildren.length > 0) && (isCollapsed ? <ChevronDownIcon width={24} height={24}/> : <ChevronUpIcon width={24} height={24}/>)}</button>
       </div>
       <div className={isCollapsed ? 'hidden' : ''}>
         {subchildren.map((subchild, subindex) => {

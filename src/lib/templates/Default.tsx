@@ -1,8 +1,7 @@
 import { GeneratedResume } from "../generatedResume";
-import Resume from "@/lib/resume";
+import Resume, { TogglableCompany } from "@/lib/resume";
 import { Document, Page, renderToStream, StyleSheet, Text, View, Link } from "@react-pdf/renderer";
 import { Education, Profile, Work } from "@/lib/jsonResume";
-import CompanyExperience from "../companyExperience";
 import Togglable from "../togglable";
 import { UL } from "../reactPDFUtils";
 
@@ -92,7 +91,7 @@ const RoleComponent = (props: { highlights: Togglable<string>[], title: string, 
   </View>
 }
 
-const WorkComponent = (props: { company: Togglable<CompanyExperience> }) => {
+const WorkComponent = (props: { company: TogglableCompany}) => {
   const { company } = props;
   const roles = (company.children || []).filter((child) => child.isOn)
   return <View>
@@ -100,7 +99,9 @@ const WorkComponent = (props: { company: Togglable<CompanyExperience> }) => {
       <Text style={styles.subsectionLabel}>{company.title}</Text>
       {roles.map((togglableRole, roleIdx) => {
         return <RoleComponent key={`Company ${company} ROLE ${roleIdx}`}
+          // @ts-expect-error ignoring for now
           highlights={togglableRole.children || []}
+          // @ts-expect-error ignoring for now
           title={togglableRole.title} work={togglableRole.val} />
       })}
     </View>
@@ -168,6 +169,7 @@ const ResumeComponent = (props: { resume: Resume }) => {
         {workExperience && <> <SectionLabel sectionName="Work Experience" /><View>
           {workExperience.map((togglableCompany, companyIdx) => {
             return <View key={`company-${companyIdx}`} style={{marginTop: 12}}>
+              {/* @ts-expect-error ignoring for now, going to migrate to a LaTex system in the future */}
               <WorkComponent company={togglableCompany} />
             </View>
           })}
@@ -182,6 +184,7 @@ const ResumeComponent = (props: { resume: Resume }) => {
         {/* Personal Projects */}
         {resume.personalProjects.isOn && <SectionLabel sectionName='Personal Projects' />}
         {personalProjects.map((proj, idx) => {
+          // @ts-expect-error "ignoring for now"
           return <ProjectComponent proj={proj} key={`proj-${idx}`} />
         })}
 

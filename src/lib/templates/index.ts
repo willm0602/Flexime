@@ -1,4 +1,4 @@
-import DefaultTemplate from './default';
+import DefaultTemplate from './Default';
 
 export {
   DefaultTemplate
