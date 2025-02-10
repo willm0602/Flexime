@@ -174,13 +174,13 @@ const ResumeComponent = (props: { resume: Resume }) => {
         </View></>}
 
         {/* Education */}
-        <SectionLabel sectionName='Education' />
+        {resume.education && <SectionLabel sectionName='Education' />}
         {education.map((school, idx) => {
           return <EducationComponent school={school} key={`school-${idx}`} />
         })}
 
         {/* Personal Projects */}
-        <SectionLabel sectionName='Personal Projects' />
+        {resume.personalProjects.isOn && <SectionLabel sectionName='Personal Projects' />}
         {personalProjects.map((proj, idx) => {
           return <ProjectComponent proj={proj} key={`proj-${idx}`} />
         })}

@@ -50,10 +50,11 @@ export default function ToggleField<P, F extends keyof P, C = unknown>(props: To
           checked={currTogglable.isOn}
           onChange={toggleField}
         />
-        <button className="font-bold ml-2 capitalize flex flex-1" role="button" type="button" onClick={toggleCollapsed}>
-          <span className="flex flex-1">{togglable.title}</span>
-          <span>{currTogglable.children && (isCollapsed ? <ChevronDownIcon width={24} height={24}/> : <ChevronUpIcon width={24} height={24}/>)}</span>
-        </button>
+        <label className="font-bold ml-2 capitalize flex flex-1 cursor-pointer" onClick={toggleField}>{togglable.title}</label>
+        <button
+          onClick={toggleCollapsed}
+          type="button"
+        >{currTogglable.children && (isCollapsed ? <ChevronDownIcon width={24} height={24}/> : <ChevronUpIcon width={24} height={24}/>)}</button>
       </div>
 
       {/* Render nested fields if currTogglable.val is a TogglableList */}
@@ -64,6 +65,7 @@ export default function ToggleField<P, F extends keyof P, C = unknown>(props: To
             index={idx}
             setTogglable={setCurrentTogglable}
             indent={indent + 1}
+            fieldName={fieldName}
             key={`togglable-${idx}`}
             />
           })}
@@ -77,15 +79,22 @@ type ToggleChildFieldProps<C> = {
   togglable: Togglable<unknown, C>,
   index: number,
   setTogglable: CallableFunction,
-  indent: number
+  indent: number,
+  fieldName: string,
 }
 
 function ToggleChildField<C>(props: ToggleChildFieldProps<C>) {
-  const { indent, togglable, setTogglable, index } = props;
+  const { indent, togglable, setTogglable, index, fieldName } = props;
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
 
   const toggleIsCollapsed = () => {
     setIsCollapsed(!isCollapsed);
+    if(!togglable.children){
+      setTogglable({
+        ...togglable,
+        isOn: !togglable.isOn
+      });
+    }
   }
 
   const toggleField = () => {
@@ -121,22 +130,21 @@ function ToggleChildField<C>(props: ToggleChildFieldProps<C>) {
           type="checkbox"
           checked={togglable.children?.[index]?.isOn || false}
           onChange={toggleField}
+          id={`toggle-field-${fieldName}-${index}`}
         />
-        <button className="font-bold ml-2 capitalize flex flex-1"
-                type="button"
-                onClick={toggleIsCollapsed}
-        >
-          <span className="flex-1 text-start">{togglable.children?.[index]?.title || "Unnamed"}</span>
-          <span>{(subchildren.length > 0) && (isCollapsed ? <ChevronDownIcon width={24} height={24}/> : <ChevronUpIcon width={24} height={24}/>)}</span>
-        </button>
+        <label className="font-bold ml-2 capitalize flex flex-1 cursor-pointer"
+               htmlFor={`toggle-field-${fieldName}-${index}`}
+        >{togglable.children?.[index]?.title}</label>
+        <button>{(subchildren.length > 0) && (isCollapsed ? <ChevronDownIcon width={24} height={24}/> : <ChevronUpIcon width={24} height={24}/>)}</button>
       </div>
       <div className={isCollapsed ? 'hidden' : ''}>
-        {subchildren.map((subchild, index) => {
-          return <ToggleChildField key={`togglable-${index}`}
+        {subchildren.map((subchild, subindex) => {
+          return <ToggleChildField key={`togglable-${subindex}`}
           togglable={child}
+          fieldName={`${fieldName}-${index}-${subindex}`}
           setTogglable={setChild}
             indent={indent + 1}
-            index={index}
+            index={subindex}
             />
           })}
       </div>

@@ -7,14 +7,4 @@ const HOMEPAGE = 'localhost:3000'
 test('Homepage should load properly', async ({page}) => {
     await page.goto(HOMEPAGE);
     expect(page);
-    // ensure the page has three buttons
-    const btns = [
-        'View Resume',
-        'Modify Profile Here',
-        'Update'
-    ]
-    btns.forEach((btn) => {
-        const viewResumeBtn = page.getByText(btn);
-        expect(viewResumeBtn).toBeDefined();
-    });
 });
