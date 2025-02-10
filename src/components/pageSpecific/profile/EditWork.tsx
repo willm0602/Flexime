@@ -3,6 +3,7 @@ import EditList, { ListItem, ListItemProps } from '@/components/EditList'
 import Resume, { Work } from '@/lib/jsonResume'
 import { useState } from 'react'
 import EditProfileProps from './EditProfileProps'
+import EditDate from '@/components/EditDate'
 
 const EditHighlight: ListItem<string> = (props) => {
     const { setItem, removeItem } = props
@@ -74,34 +75,28 @@ const EditPosition: ListItem<Work> = (props) => {
                     label="Role"
                 />
                 <div className="flex-col flex">
-                    <label>Start Date</label>
-                    <input
-                        className="input input-sm"
-                        type="date"
-                        defaultValue={parseDate(job.startDate)}
-						onChange={(e) => {
-							const newDate = e.target.value;
-							setItem({
-								...job,
-								startDate: newDate
-							});
-						}}
+                    <EditDate
+                        defaultDate={parseDate(job.startDate)}
+                        dispatch={(startDate) => {
+                            setItem({
+                                ...job,
+                                startDate
+                            })
+                        }}
+                        label='Start Date'
                     />
                 </div>
 
                 <div className="flex-col flex">
-                    <label>End Date</label>
-                    <input
-                        className="input input-sm"
-                        type="date"
-                        defaultValue={parseDate(job.endDate)}
-						onChange={(e) => {
-							const newDate = e.target.value;
-							setItem({
-								...job,
-								endDate: newDate
-							});
-						}}
+                    <EditDate
+                        defaultDate={parseDate(job.endDate)}
+                        dispatch={(endDate) => {
+                            setItem({
+                                ...job,
+                                endDate
+                            })
+                        }}
+                        label='End Date'
                     />
                 </div>
             </div>

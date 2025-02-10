@@ -1,3 +1,4 @@
+import { JSX } from "react";
 import { twMerge } from "tailwind-merge";
 
 const DEFAULT_ADD_BTN_TEXT = 'Add';
@@ -14,7 +15,7 @@ export type ListItemProps<T> = {
   removeItem: () => void
 }
 
-export type ListItem<T> = (props: ListItemProps<T>) => React.ReactNode
+export type ListItem<T> = (props: ListItemProps<T>) => JSX.Element;
 
 type EditListProps<T> = {
   vals?: T[]

@@ -4,8 +4,8 @@ import Templates from "@/lib/templates";
 
 export async function POST(req: NextRequest) {
   // Get resume data from the query string
-  const query = req.nextUrl.searchParams;
-  const resumeAsStr = query.get('resume');
+  const body = await req.formData();
+  const resumeAsStr = body.get('resume_data') as string;
 
   if (!resumeAsStr) {
     return NextResponse.json({ message: "No resume data provided" }, { status: 400 });
@@ -22,6 +22,9 @@ export async function POST(req: NextRequest) {
     resp.headers.set(
       'content-type', 'application/pdf',
     );
+    resp.headers.set(
+      'content-disposition', 'inline; filename="resume.pdf"'
+    )
     return resp;
   } catch (error) {
 

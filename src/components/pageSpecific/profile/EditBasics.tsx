@@ -2,6 +2,8 @@ import Resume, { Profile, ResumeBasics } from "@/lib/jsonResume"
 import { useState } from "react";
 import { Location } from "@/lib/jsonResume";
 import EditList, { ListItem, ListItemProps } from "@/components/EditList";
+import EditableText from "@/components/EditableText";
+import { stringAt } from "pdfkit/js/data";
 
 type ResumeSetter = (resume: Resume) => void
 
@@ -33,36 +35,6 @@ type EditBasicsProps = {
   resume: Resume,
   setResume: ResumeSetter
 };
-
-const EditSimpleBasicField = (props: EditBasicsProps & { fieldName: keyof Resume['basics'] & string, label?: string }) => {
-  const { resume, setResume, fieldName, label } = props;
-  const initVal = resume.basics[fieldName] as string;
-  const [currVal, setCurrVal] = useState(initVal);
-
-  const updateResume = () => {
-    setResume({
-      ...resume,
-      basics: {
-        ...resume.basics,
-        [fieldName]: currVal
-      }
-    })
-
-  }
-
-  return <label className='input input-bordered flex items-center gap-2 max-w-fit mr-4'>
-    <input type="text"
-      defaultValue={currVal}
-      placeholder={label || fieldName}
-      onChange={(e) => { setCurrVal(e.target.value) }}
-    />
-    <button className='btn btn-xs btn-primary'
-      onClick={updateResume}
-    >Save</button>
-
-  </label>
-
-}
 
 const EditProfile: ListItem<Profile> = (props: ListItemProps<Profile>) => {
   const { val, vals, idx, setList, confirmThenRemove } = props;
@@ -123,7 +95,7 @@ const EditProfile: ListItem<Profile> = (props: ListItemProps<Profile>) => {
 const EditLocation = (props: EditBasicsProps) => {
   const { resume, setResume } = props;
 
-  function updateLocation<T extends keyof Resume['basics']['location'], V extends Resume['basics']['location'][T]>(fieldName: T, newVal: V) {
+  function updateLocation(fieldName: keyof Location, newVal: string) {
     const updatedLocation: Location = {
       ...resume.basics.location
     };
@@ -145,32 +117,63 @@ const EditLocation = (props: EditBasicsProps) => {
   return <div>
     <h2>Location</h2>
 
-    <div className='flex flex-wrap'>
+    <div className='flex flex-wrap gap-y-4'>
       <EditField defaultValue={city || ''}
         placeholder='City'
         onChange={setCity}
-        onSave={() => { updateLocation('city', city) }}
+        onSave={() => { updateLocation('city', city || '') }}
       />
 
       <EditField defaultValue={region || ''}
         placeholder='Region / State'
         onChange={setRegion}
-        onSave={() => { updateLocation('region', region) }}
+        onSave={() => { updateLocation('region', region || '') }}
       />
 
       <EditField defaultValue={countryCode || ''}
         placeholder='Country Code'
         onChange={setCode}
-        onSave={() => { updateLocation('countryCode', countryCode) }}
+        onSave={() => { updateLocation('countryCode', countryCode || '') }}
       />
 
     </div>
   </div>
 }
 
+type EditSimpleFieldProps<F extends string & keyof Resume['basics']> = {
+	resume: Resume,
+	setResume: (resume: Resume) => void,
+	fieldName: F,
+	label: string
+}
+
+function EditSimpleBasicField<F extends string & keyof Resume['basics']>(
+	props: EditSimpleFieldProps<F>
+){
+	const {resume, setResume, fieldName, label} = props;
+  const initVal = resume['basics'][fieldName] || '';
+	if(typeof(initVal) != 'string'){
+		throw('Resume basic fields need to be strings');
+	}
+
+	const [currVal, dispatchVal] = useState<string>(initVal);
+	const setVal = (newVal: string) => {
+		dispatchVal(newVal);
+		setResume({
+			...resume,
+			[fieldName]: newVal
+		});
+	}
+	return <EditableText
+						defaultVal={currVal}
+						dispatch={setVal}
+						label={label}
+					/>
+}
+
 export default function EditBasics(props: EditBasicsProps) {
   const { resume, setResume } = props;
-  const [profiles, $setProfiles] = useState<Profile[]>(resume.basics.profiles);
+  const [profiles, $setProfiles] = useState<Profile[]>(resume.basics?.profiles || []);
   const setProfiles = (profiles: Profile[]) => {
     $setProfiles(profiles);
     setResume({
@@ -184,11 +187,12 @@ export default function EditBasics(props: EditBasicsProps) {
 
   return <div role="tabpanel" className='mt-4'>
     <h2>Edit Basics</h2>
-    <div className='flex flex-wrap gap-y-4'>
+    <div className='flex flex-wrap gap-y-4 gap-x-12'>
       <EditSimpleBasicField resume={resume}
         setResume={setResume}
         fieldName='name'
-        label='Full Name' />
+        label='Full Name'
+			/>
 
       <EditSimpleBasicField resume={resume}
         setResume={setResume}

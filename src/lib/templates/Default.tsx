@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   page: {
     flexDirection: 'column',
     fontFamily: 'Times-Roman',
-    padding: 24,
+    padding: 32,
     fontSize: 12
   },
   title: {
@@ -151,9 +151,9 @@ const ResumeComponent = (props: { resume: Resume }) => {
         {/* Basics */}
         <View style={styles.basics} >
           {/* Location */}
-          {resume.location && resume.location.isOn && <Text>
-            {resume.location.val?.city} {resume.location.val?.region}, {resume.location.val?.countryCode}
-          </Text>}
+          {(resume.location && resume.location.isOn) ? <Text>
+            {resume.location.val?.city} {resume.location.val?.region} {resume.location.val?.countryCode}
+          </Text> : undefined}
 
           {/* Contact info */}
           {resume.phone.isOn && resume.phone.val && <Text>{resume.phone.val}</Text>}
@@ -174,13 +174,13 @@ const ResumeComponent = (props: { resume: Resume }) => {
         </View></>}
 
         {/* Education */}
-        <SectionLabel sectionName='Education' />
+        {resume.education && <SectionLabel sectionName='Education' />}
         {education.map((school, idx) => {
           return <EducationComponent school={school} key={`school-${idx}`} />
         })}
 
         {/* Personal Projects */}
-        <SectionLabel sectionName='Personal Projects' />
+        {resume.personalProjects.isOn && <SectionLabel sectionName='Personal Projects' />}
         {personalProjects.map((proj, idx) => {
           return <ProjectComponent proj={proj} key={`proj-${idx}`} />
         })}

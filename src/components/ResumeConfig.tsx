@@ -20,7 +20,7 @@ export default function ResumeConfig(
   const Template = Templates[templateName];
 
   function getResumePDFLink() {
-    return `/api/pdf/?resume=${JSON.stringify(resume)}`
+    return `/api/pdf/`
   }
 
   const [currURL, setCurrURL] = useState<string>(getResumePDFLink());
@@ -30,10 +30,9 @@ export default function ResumeConfig(
   }
 
   const openInNewTab = () => {
-    const form = document.getElementById('resume-config-form');
+    const form = document.getElementById('resume-config-form') as HTMLFormElement;
     if(!form)
       return;
-    console.log('FORM IS', form);
     form.setAttribute('target', '_blank');
     form.submit();
     form.setAttribute('target', 'resume-preview');
@@ -45,12 +44,16 @@ export default function ResumeConfig(
                action={getResumePDFLink()}
                id="resume-config-form"
   >
+    <input type="hidden"
+           name="resume_data"
+           value={JSON.stringify(resume)}
+    />
     <div className='flex-4'>
       <div className='flex'>
         <button className='btn btn-accent no-underline mr-4'
                 role='button'
                 onClick={() => {openInNewTab()}}>View Resume</button>
-        <a className='btn btn-secondary no-underline' href="/profile">Modify Profile Here</a>
+        <a className='btn btn-secondary text-black no-underline' href="/profile">Modify Profile Here</a>
       </div>
       <ul className='pl-0'>
         {Object.entries(resume).map(([key, val]) => {
