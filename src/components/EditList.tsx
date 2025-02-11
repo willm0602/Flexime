@@ -38,13 +38,15 @@ export default function EditList<T>(props: EditListProps<T>) {
     ]);
   }
 
-  const confirmThenRemoveAtIdx = (idxToRemove: number) => () => {
-    const confirmPrompt = 'This will permanently remove this item from the resume, please confirm if you would like to remove this.'
-    const shouldUpdate = window.confirm(confirmPrompt);
-    if (!shouldUpdate)
-      return false;
-    const updatedChildren = vals.filter((_, idx) => idx != idxToRemove);
-    setList(updatedChildren);
+  const confirmThenRemoveAtIdx = (idx: number) => () => {
+    console.log(idx);
+    // TODO: Add in confirm modal before removing values
+    // const confirmPrompt = 'This will permanently remove this item from the resume, please confirm if you would like to remove this.'
+    // const shouldUpdate = window.confirm(confirmPrompt);
+    // if (!shouldUpdate)
+    //   return false;
+    // const updatedChildren = vals.filter((_, idx) => idx != idxToRemove);
+    // setList(updatedChildren);
     return true;
   }
   return <div className={twMerge(containerClassName, DEFAULT_WRAPPER_CLASS)}>
