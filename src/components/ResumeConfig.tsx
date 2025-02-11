@@ -4,7 +4,6 @@ import Templates from '@/lib/templates';
 import ToggleField from "./ToggleField";
 import Togglable, { isTogglable } from "@/lib/togglable";
 import { MouseEventHandler, useState } from "react";
-import { json } from "stream/consumers";
 
 type ResumeConfigProps = {
   resume: Resume,
