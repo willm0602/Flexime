@@ -11,11 +11,20 @@ import EditWork from "@/components/pageSpecific/profile/EditWork";
 import EditEducation from "@/components/pageSpecific/profile/EditEducation";
 import EditProjects from "@/components/pageSpecific/profile/EditProjects";
 import EditSkills from "@/components/pageSpecific/profile/EditSkills";
+import { useEffect, useState } from "react";
 
 const RESUME_KEY = 'saved-resume';
 
 export default function ConfigureProfile() {
   const [resume, setResume] = useLocalStorage<Resume>(RESUME_KEY, DEFAULT_RESUME);
+  const [exportURL, setExportURL] = useState<string>('');
+
+  useEffect(() => {
+    if (resume) {
+      const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(resume))}`;
+      setExportURL(dataStr);
+    }
+  }, [resume])
 
   if (!resume)
     return 'loading...'
@@ -25,7 +34,10 @@ export default function ConfigureProfile() {
     <div className="flex">
       <Link href="/" className='btn no-underline'>Return Home</Link>
       <LoadResume setResume={setResume} />
-      <a href={'/api/pdf'} className="btn no-underline btn-secondary text-black ml-4" download="resume.json">Export Profile</a>
+      <a href={exportURL}
+        className="btn no-underline btn-secondary text-black ml-4"
+        download="resume.json"
+      >Export Profile</a>
     </div>
 
     <Tabs.Root defaultValue="basics" className="mt-12">
