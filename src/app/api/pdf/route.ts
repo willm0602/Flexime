@@ -1,8 +1,19 @@
+/**
+ * API Route to generate the PDFs
+ *
+ * Available by making a POST request to /api/pdf. The body needs to consist of
+ *  - resume_data: Stringified version of a configured resume (see /lib/resume
+ *  for the schema
+*/
+
 import { NextRequest, NextResponse } from "next/server";
 import type Resume from "@/lib/resume";
 import Templates from "@/lib/templates";
 
-async function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buffer>{
+/**
+  * Converts a NodeJS readable stream to a Buffer to be returned to the user
+*/
+async function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buffer> {
   return new Promise((res, rej) => {
     const chunks: Buffer[] = [];
     stream.on('data', (chunk) => chunks.push(chunk));
@@ -25,9 +36,14 @@ export async function POST(req: NextRequest) {
 
   // Generate the PDF from the DefaultTemplate
   try {
+    // TODO: implement template system to allow for different resume templates
     const template = Templates.DEFAULT;
+
+    // generate the resume and convert it to a buffer
     const generatedResumeStream = await template(resume);
     const generatedResume = await streamToBuffer(generatedResumeStream);
+
+    // generate the response
     const resp = new NextResponse(generatedResume);
     resp.headers.set(
       'content-type', 'application/pdf',
@@ -37,7 +53,6 @@ export async function POST(req: NextRequest) {
     )
     return resp;
   } catch (error) {
-
     console.error(error);
     return NextResponse.json({ message: "Failed to generate PDF", error: error }, { status: 500 });
   }

@@ -1,5 +1,10 @@
 'use client';
 
+/**
+ * Page to modify the resume profiles
+ * page available at /profile
+*/
+
 import { DEFAULT_RESUME } from "@/lib/resumeUtils";
 import Link from "next/link";
 import LoadResume from "@/components/LoadResume";
@@ -26,6 +31,7 @@ export default function ConfigureProfile() {
     }
   }, [resume])
 
+  // TODO: replace w/ a spinner
   if (!resume)
     return 'loading...'
 
@@ -68,8 +74,6 @@ export default function ConfigureProfile() {
         <EditSkills resume={resume}
           dispatchResume={setResume} />
       </Tabs.Content>
-
     </Tabs.Root>
-
   </div>
 }

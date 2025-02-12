@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { Toaster } from 'react-hot-toast'
 
+// load fonts
 const geistSans = Geist({
     variable: '--font-geist-sans',
     subsets: ['latin'],
@@ -13,6 +14,7 @@ const geistMono = Geist_Mono({
     subsets: ['latin'],
 })
 
+// load metadata
 export const metadata: Metadata = {
     title: 'Flexime',
     description: 'A flexible resume generator designed to let users tailor resumes for certain positions'
