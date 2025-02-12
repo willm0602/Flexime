@@ -23,7 +23,7 @@ const EditField = (props: EditFieldProps) => {
       onChange={(e) => { onChange(e.target.value) }}
     />
     <button className='btn btn-xs btn-primary'
-      onClick={() => {onSave()}}
+      onClick={() => { onSave() }}
     >Save</button>
   </label>
 
@@ -140,34 +140,37 @@ const EditLocation = (props: EditBasicsProps) => {
 }
 
 type EditSimpleFieldProps<F extends string & keyof Resume['basics']> = {
-	resume: Resume,
-	setResume: (resume: Resume) => void,
-	fieldName: F,
-	label: string
+  resume: Resume,
+  setResume: (resume: Resume) => void,
+  fieldName: F,
+  label: string
 }
 
 function EditSimpleBasicField<F extends string & keyof Resume['basics']>(
-	props: EditSimpleFieldProps<F>
-){
-	const {resume, setResume, fieldName, label} = props;
+  props: EditSimpleFieldProps<F>
+) {
+  const { resume, setResume, fieldName, label } = props;
   const initVal = resume['basics'][fieldName] || '';
-	if(typeof(initVal) != 'string'){
-		throw('Resume basic fields need to be strings');
-	}
+  if (typeof (initVal) != 'string') {
+    throw ('Resume basic fields need to be strings');
+  }
 
-	const [currVal, dispatchVal] = useState<string>(initVal);
-	const setVal = (newVal: string) => {
-		dispatchVal(newVal);
-		setResume({
-			...resume,
-			[fieldName]: newVal
-		});
-	}
-	return <EditableText
-						defaultVal={currVal}
-						dispatch={setVal}
-						label={label}
-					/>
+  const [currVal, dispatchVal] = useState<string>(initVal);
+  const setVal = (newVal: string) => {
+    dispatchVal(newVal);
+    setResume({
+      ...resume,
+      basics: {
+        ...resume.basics,
+        [fieldName]: newVal
+      }
+    });
+  }
+  return <EditableText
+    defaultVal={currVal}
+    dispatch={setVal}
+    label={label}
+  />
 }
 
 export default function EditBasics(props: EditBasicsProps) {
@@ -191,7 +194,7 @@ export default function EditBasics(props: EditBasicsProps) {
         setResume={setResume}
         fieldName='name'
         label='Full Name'
-			/>
+      />
 
       <EditSimpleBasicField resume={resume}
         setResume={setResume}
