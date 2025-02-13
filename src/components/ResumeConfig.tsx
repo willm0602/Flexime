@@ -27,6 +27,7 @@ export default function ResumeConfig(
 
     const formData = new FormData();
     formData.append('resume_data', JSON.stringify(resume));
+    formData.append('download', 'true');
 
     const pdfData = await fetch('/api/pdf', {
       method: 'POST',

@@ -91,7 +91,7 @@ const RoleComponent = (props: { highlights: Togglable<string>[], title: string, 
   </View>
 }
 
-const WorkComponent = (props: { company: TogglableCompany}) => {
+const WorkComponent = (props: { company: TogglableCompany }) => {
   const { company } = props;
   const roles = (company.children || []).filter((child) => child.isOn)
   return <View>
@@ -134,9 +134,9 @@ const ResumeComponent = (props: { resume: Resume }) => {
   }).map((togglableProfile) => togglableProfile.val);
 
   const workExperience = (resume.workExperience.isOn) ? ((resume.workExperience.children || []).filter((company) => company.isOn)) : []
-  
+
   const education = (resume.education.isOn) ? (resume.education.children || []).filter((school) => school.isOn).map((togglableSchool) => togglableSchool.val) : []
-  
+
   const personalProjects = (resume.personalProjects.isOn) ? (resume.personalProjects.children || []).filter((proj) => proj.isOn) : [];
 
   const skills = ((resume.skills.isOn) ? resume.skills.children || [] : []).filter((skill) => {
@@ -168,7 +168,7 @@ const ResumeComponent = (props: { resume: Resume }) => {
         {/* Work */}
         {workExperience && <> <SectionLabel sectionName="Work Experience" /><View>
           {workExperience.map((togglableCompany, companyIdx) => {
-            return <View key={`company-${companyIdx}`} style={{marginTop: 12}}>
+            return <View key={`company-${companyIdx}`} style={{ marginTop: 12 }}>
               {/* @ts-expect-error ignoring for now, going to migrate to a LaTex system in the future */}
               <WorkComponent company={togglableCompany} />
             </View>
@@ -189,7 +189,7 @@ const ResumeComponent = (props: { resume: Resume }) => {
         })}
 
         {/* Skills */}
-        <SectionLabel sectionName="Skills"/>
+        <SectionLabel sectionName="Skills" />
         <View><Text>{skills.map((togglableSkill) => togglableSkill.val.name).join(', ')}</Text></View>
       </View>
     </Page>
