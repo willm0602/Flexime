@@ -17,7 +17,8 @@ const geistMono = Geist_Mono({
 // load metadata
 export const metadata: Metadata = {
     title: 'Flexime',
-    description: 'A flexible resume generator designed to let users tailor resumes for certain positions'
+    description:
+        'A flexible resume generator designed to let users tailor resumes for certain positions',
 }
 
 export default function RootLayout({

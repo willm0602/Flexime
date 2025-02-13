@@ -1,3 +1,7 @@
+/**
+ * Edit education section for a resume
+*/
+
 import EditList, { ListItem } from '@/components/EditList'
 import EditProfileProps from './EditProfileProps'
 import { useState } from 'react'
@@ -7,6 +11,8 @@ import TitleWithRemove from './TitleWithRemove'
 import EditableNumber from '@/components/EditableNumber'
 import EditDate from '@/components/EditDate'
 
+
+// default value for a new school
 const DEFAULT_EDUCATION: Education = {
     institution: 'Untitled School',
     area: 'Area',
@@ -19,12 +25,11 @@ const EditDegree: ListItem<Education> = (props) => {
 
     return (
         <>
-            <TitleWithRemove
-                title={val.institution}
-                remove={removeItem}
-            />
+            {/* Include the title with an option to remove the school */}
+            <TitleWithRemove title={val.institution} remove={removeItem} />
 
-            <div className='flex gap-x-24 flex-wrap gap-y-12'>
+            <div className="flex gap-x-24 flex-wrap gap-y-12">
+                {/* Edit the name of the institution */}
                 <EditableText
                     defaultVal={val.institution}
                     dispatch={(newInstitutionName) => {
@@ -63,25 +68,25 @@ const EditDegree: ListItem<Education> = (props) => {
                     dispatch={(newGPA) => {
                         setItem({
                             ...val,
-                            score: `${newGPA} / 4.0`
-                        });
+                            score: `${newGPA} / 4.0`,
+                        })
                     }}
-                    label='GPA'
+                    label="GPA"
                     step={0.1}
                     digits={2}
                     minVal={0}
-                    maxVal={5}              
+                    maxVal={5}
                 />
 
-                <div className='flex gap-x-8'>
+                <div className="flex gap-x-8">
                     <EditDate
                         dispatch={(startDate) => {
                             setItem({
                                 ...val,
-                                startDate
-                            });
+                                startDate,
+                            })
                         }}
-                        label='Start Date'
+                        label="Start Date"
                         defaultDate={val.startDate}
                     />
 
@@ -89,10 +94,10 @@ const EditDegree: ListItem<Education> = (props) => {
                         dispatch={(endDate) => {
                             setItem({
                                 ...val,
-                                endDate
-                            });
+                                endDate,
+                            })
                         }}
-                        label='End Date'
+                        label="End Date"
                         defaultDate={val.endDate}
                     />
                 </div>
@@ -120,7 +125,7 @@ export default function EditEducation(props: EditProfileProps) {
                 vals={degrees}
                 setList={setDegrees}
                 RenderItem={EditDegree}
-                addBtnText='Add Education'
+                addBtnText="Add Education"
                 defaultChild={DEFAULT_EDUCATION}
             />
         </div>

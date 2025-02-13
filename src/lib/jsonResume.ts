@@ -70,9 +70,10 @@ export interface Project {
     name: string
     startDate?: string // ISO-8601 Format
     endDate?: string // ISO-8601 Format
-    description: string
+    description?: string
     highlights: string[]
-    url: string[]
+    url?: string
+    sourceCode?: string // Not included in default JSON Resume format, but included here
 }
 
 export interface ResumeBasics {
