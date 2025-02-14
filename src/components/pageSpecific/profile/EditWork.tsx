@@ -8,7 +8,7 @@ import EditDate from '@/components/EditDate'
 const EditHighlight: ListItem<string> = (props) => {
     const { setItem, removeItem } = props
 
-    const highlight = props.val;
+    const highlight = props.val
 
     return (
         <>
@@ -16,7 +16,7 @@ const EditHighlight: ListItem<string> = (props) => {
                 defaultVal={highlight}
                 dispatch={setItem}
                 label="Highlight"
-				remove={removeItem}
+                remove={removeItem}
             />
         </>
     )
@@ -45,14 +45,16 @@ const EditPosition: ListItem<Work> = (props) => {
     return (
         <>
             <div className="flex mb-6">
-				<h2 className="mt-0">
-					{job.name} ({job.position})
-				</h2>
-				<button
-					className='btn btn-error ml-8'
-					onClick={()=>removeItem()}
-				>Delete</button>
-			</div>
+                <h2 className="mt-0">
+                    {job.name} ({job.position})
+                </h2>
+                <button
+                    className="btn btn-error ml-8"
+                    onClick={() => removeItem()}
+                >
+                    Delete
+                </button>
+            </div>
             <div className="flex gap-x-12">
                 <EditableText
                     defaultVal={job.name}
@@ -80,10 +82,10 @@ const EditPosition: ListItem<Work> = (props) => {
                         dispatch={(startDate) => {
                             setItem({
                                 ...job,
-                                startDate
+                                startDate,
                             })
                         }}
-                        label='Start Date'
+                        label="Start Date"
                     />
                 </div>
 
@@ -93,10 +95,10 @@ const EditPosition: ListItem<Work> = (props) => {
                         dispatch={(endDate) => {
                             setItem({
                                 ...job,
-                                endDate
+                                endDate,
                             })
                         }}
-                        label='End Date'
+                        label="End Date"
                     />
                 </div>
             </div>
@@ -105,7 +107,7 @@ const EditPosition: ListItem<Work> = (props) => {
                 vals={job.highlights}
                 setList={setHighlights}
                 RenderItem={EditHighlight}
-				itemWrapperClass='bg-base-300'
+                itemWrapperClass="bg-base-300"
                 defaultChild={''}
                 addBtnText="Add Highlight"
             />
@@ -113,7 +115,7 @@ const EditPosition: ListItem<Work> = (props) => {
     )
 }
 
-export {EditPosition};
+export { EditPosition }
 
 export default function EditWork(props: EditProfileProps) {
     const { resume, dispatchResume } = props
@@ -136,7 +138,7 @@ export default function EditWork(props: EditProfileProps) {
                 setList={setWork}
                 RenderItem={EditPosition}
                 addBtnText="Add Job"
-				itemWrapperClass='bg-base-200'
+                itemWrapperClass="bg-base-200"
                 defaultChild={{
                     name: 'Untitled Company',
                     position: resume.basics.label || 'Job',

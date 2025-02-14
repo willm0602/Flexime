@@ -1,4 +1,4 @@
-import JSONResume from '@/lib/jsonResume';
+import JSONResume from '@/lib/jsonResume'
 
 const DEFAULT_RESUME: JSONResume = {
     basics: {

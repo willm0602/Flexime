@@ -1,4 +1,4 @@
-import Resume from './jsonResume';
+import Resume from './jsonResume'
 
 function resumeHasValidBasics(resume: Resume) {
     // all resumes need to have some of the basics fields filled out

@@ -1,47 +1,52 @@
 {
     "basics": {
-      "name": "John Doe",
-      "label": "Junior Frontend Engineer",
-      "email": "johndoe@example.com",
-      "phone": "+1 234-567-8901",
-      "website": "https://johndoe.dev",
-      "summary": "Frontend developer passionate about creating accessible, user-friendly interfaces with React and Next.js.",
-      "location": {
-        "city": "San Francisco",
-        "region": "California",
-        "countryCode": "US"
-      }
+        "name": "John Doe",
+        "label": "Junior Frontend Engineer",
+        "email": "johndoe@example.com",
+        "phone": "+1 234-567-8901",
+        "website": "https://johndoe.dev",
+        "summary": "Frontend developer passionate about creating accessible, user-friendly interfaces with React and Next.js.",
+        "location": {
+            "city": "San Francisco",
+            "region": "California",
+            "countryCode": "US"
+        }
     },
     "work": [
-      {
-        "company": "Tech Startup Inc.",
-        "position": "Frontend Developer",
-        "startDate": "2022-06-01",
-        "endDate": "2024-01-01",
-        "summary": "Developed and maintained the company’s main product using React, TypeScript, and Next.js. Collaborated with designers and backend engineers to improve UX and performance."
-      }
+        {
+            "company": "Tech Startup Inc.",
+            "position": "Frontend Developer",
+            "startDate": "2022-06-01",
+            "endDate": "2024-01-01",
+            "summary": "Developed and maintained the company’s main product using React, TypeScript, and Next.js. Collaborated with designers and backend engineers to improve UX and performance."
+        }
     ],
     "education": [
-      {
-        "institution": "University of Example",
-        "area": "Computer Science",
-        "studyType": "Bachelor",
-        "startDate": "2018-09-01",
-        "endDate": "2022-06-01"
-      }
+        {
+            "institution": "University of Example",
+            "area": "Computer Science",
+            "studyType": "Bachelor",
+            "startDate": "2018-09-01",
+            "endDate": "2022-06-01"
+        }
     ],
     "skills": [
-      {
-        "name": "Frontend Development",
-        "keywords": ["React", "Next.js", "TypeScript", "CSS", "Accessibility"]
-      }
+        {
+            "name": "Frontend Development",
+            "keywords": [
+                "React",
+                "Next.js",
+                "TypeScript",
+                "CSS",
+                "Accessibility"
+            ]
+        }
     ],
     "projects": [
-      {
-        "name": "Portfolio Website",
-        "description": "Built a personal portfolio using Next.js and Tailwind CSS to showcase projects and blog posts.",
-        "url": "https://johndoe.dev"
-      }
+        {
+            "name": "Portfolio Website",
+            "description": "Built a personal portfolio using Next.js and Tailwind CSS to showcase projects and blog posts.",
+            "url": "https://johndoe.dev"
+        }
     ]
 }
-  
