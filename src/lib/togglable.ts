@@ -24,12 +24,12 @@ export function togglable<T, C>(
     }
 }
 
-export function getIncludedVals<T>(togglableList?: TogglableList<T>): T[] {
-    if (!togglableList) return []
+export function getIncludedVals<T, C>(togglable?: Togglable<T, C>): C[] {
+    if (!togglable) return []
 
-    if (!togglableList.isOn) return []
+    if (!togglable.isOn) return []
 
-    const togglables = togglableList.children || []
+    const togglables = togglable.children || []
     const vals = togglables
         .filter((val) => {
             return val.isOn

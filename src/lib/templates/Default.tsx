@@ -1,5 +1,5 @@
 import { GeneratedResume } from '../generatedResume'
-import Resume, { TogglableCompany } from '@/lib/resume'
+import Resume, { TogglableRole } from '@/lib/resume'
 import {
     Document,
     Page,
@@ -9,9 +9,10 @@ import {
     View,
     Link,
 } from '@react-pdf/renderer'
-import { Education, Profile, Work } from '@/lib/jsonResume'
-import Togglable from '../togglable'
+import { Education, Profile, Project, Work } from '@/lib/jsonResume'
+import Togglable, { getIncludedVals } from '../togglable'
 import { UL } from '../reactPDFUtils'
+import { TogglableProject } from '../resumeConfigTypes'
 
 const styles = StyleSheet.create({
     flex: {
@@ -65,6 +66,19 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginBottom: 4,
     },
+    boldItalics: {
+        fontWeight: 'heavy',
+        fontFamily: 'Times-Italic',
+    },
+    italics: {
+        fontFamily: 'Times-Italic',
+    },
+    bold: {
+        fontFamily: 'Times-Bold',
+    },
+    spacingTop: {
+        marginTop: 12,
+    },
 })
 
 const HR = () => {
@@ -87,48 +101,21 @@ const reformatDate = (datestr: string | undefined) => {
     return `${month}/${abbreviatedYear}`
 }
 
-const RoleComponent = (props: {
-    highlights: Togglable<string>[]
-    title: string
-    work: Work
-}) => {
-    const { highlights, title, work } = props
-    const { startDate, endDate } = work
-
-    const usedHighlights = highlights
-        .filter((hl) => hl.isOn)
-        .map((hl) => hl.val)
+const RoleComponent = (props: { role: Work; highlights: string[] }) => {
+    const { highlights, role } = props
 
     return (
-        <View>
-            <Text style={styles.subsubheader}>
-                {title} ({reformatDate(startDate)} - {reformatDate(endDate)})
-            </Text>
-            <UL items={usedHighlights} />
-        </View>
-    )
-}
-
-const WorkComponent = (props: { company: TogglableCompany }) => {
-    const { company } = props
-    const roles = (company.children || []).filter((child) => child.isOn)
-    return (
-        <View>
-            <View style={styles.spaceEvenly}>
-                <Text style={styles.subsectionLabel}>{company.title}</Text>
-                {roles.map((togglableRole, roleIdx) => {
-                    return (
-                        <RoleComponent
-                            key={`Company ${company} ROLE ${roleIdx}`}
-                            // @ts-expect-error ignoring for now
-                            highlights={togglableRole.children || []}
-                            // @ts-expect-error ignoring for now
-                            title={togglableRole.title}
-                            work={togglableRole.val}
-                        />
-                    )
-                })}
+        <View style={styles.spacingTop}>
+            <View>
+                <Text style={styles.bold}>{role.name}</Text>
             </View>
+            <View style={styles.flex}>
+                <Text style={styles.italics}>
+                    {role.position} ({reformatDate(role.startDate)} -{' '}
+                    {reformatDate(role.endDate)})
+                </Text>
+            </View>
+            <UL items={highlights} />
         </View>
     )
 }
@@ -148,15 +135,12 @@ const EducationComponent = (props: { school: Education }) => {
     )
 }
 
-const ProjectComponent = (props: { proj: Togglable<string[], string> }) => {
-    const { proj } = props
-    const highlights = (proj.children || [])
-        .filter((togglable) => togglable.isOn)
-        .map((togglable) => togglable.val)
+const ProjectComponent = (props: { proj: Project; highlights: string[] }) => {
+    const { proj, highlights } = props
 
     return (
         <View>
-            <Text style={styles.subsubheader}>{proj.title}</Text>
+            <Text style={styles.subsubheader}>{proj.name}</Text>
             <UL items={highlights} />
         </View>
     )
@@ -175,7 +159,7 @@ const ResumeComponent = (props: { resume: Resume }) => {
 
     const workExperience = resume.workExperience.isOn
         ? (resume.workExperience.children || []).filter(
-              (company) => company.isOn
+              (togglableRole) => togglableRole.isOn
           )
         : []
 
@@ -185,7 +169,8 @@ const ResumeComponent = (props: { resume: Resume }) => {
               .map((togglableSchool) => togglableSchool.val)
         : []
 
-    const personalProjects = resume.personalProjects.isOn
+    const personalProjects: Togglable<TogglableProject, string>[] = resume
+        .personalProjects.isOn
         ? (resume.personalProjects.children || []).filter((proj) => proj.isOn)
         : []
 
@@ -235,21 +220,19 @@ const ResumeComponent = (props: { resume: Resume }) => {
                     {/* Work */}
                     {workExperience && (
                         <>
-                            {' '}
                             <SectionLabel sectionName="Work Experience" />
                             <View>
                                 {workExperience.map(
-                                    (togglableCompany, companyIdx) => {
+                                    (togglableRole: TogglableRole, idx) => {
+                                        const role = togglableRole.val
+                                        const highlights =
+                                            getIncludedVals(togglableRole)
                                         return (
-                                            <View
-                                                key={`company-${companyIdx}`}
-                                                style={{ marginTop: 12 }}
-                                            >
-                                                {/* @ts-expect-error ignoring for now, going to migrate to a LaTex system in the future */}
-                                                <WorkComponent
-                                                    company={togglableCompany}
-                                                />
-                                            </View>
+                                            <RoleComponent
+                                                key={`idx-${idx}`}
+                                                role={role}
+                                                highlights={highlights}
+                                            />
                                         )
                                     }
                                 )}
@@ -274,10 +257,19 @@ const ResumeComponent = (props: { resume: Resume }) => {
                     {resume.personalProjects.isOn && (
                         <SectionLabel sectionName="Personal Projects" />
                     )}
-                    {personalProjects.map((proj, idx) => {
-                        // @ts-expect-error "ignoring for now"
+                    {personalProjects.map((togglableProj, idx) => {
+                        // @ts-expect-error: Should expect Project
+                        const proj: Project = togglableProj.val
+                        const highlights = (togglableProj.children || [])
+                            .filter((hl) => hl.isOn)
+                            .map((hl) => hl.val)
+                        console.log('PROJ HERE', proj, 'HL', highlights)
                         return (
-                            <ProjectComponent proj={proj} key={`proj-${idx}`} />
+                            <ProjectComponent
+                                proj={proj}
+                                highlights={highlights}
+                                key={`proj-${idx}`}
+                            />
                         )
                     })}
 

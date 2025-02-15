@@ -13,13 +13,10 @@ import JSONResume, {
 import Togglable from '@/lib/togglable'
 import type { TogglableList } from '@/lib/togglable'
 import { togglable } from './togglable'
-import CompanyExperience from './companyExperience'
-import getCompaniesFromWork from './getCompaniesFromWork'
 import { DEFAULT_RESUME } from './resumeUtils'
 
 export type TogglableRole = Togglable<Work, string>
-export type TogglableCompany = Togglable<CompanyExperience, TogglableRole>
-export type TogglableWork = Togglable<undefined, TogglableCompany>
+export type TogglableWork = TogglableList<Work>
 
 type TogglableProject = Togglable<Project, string>
 
@@ -87,22 +84,15 @@ export function resumeFromJSONResume(
             return togglable(skill, skill.name)
         })
     )
-    const companyExperience = getCompaniesFromWork(jsonResume.work)
     const workExperience: TogglableWork = togglable(
         undefined,
         'Work Experience',
-        companyExperience.map((company) => {
+        (jsonResume.work || []).map((position) => {
             return togglable(
-                company,
-                company.companyName,
-                company.positions.map((work) => {
-                    return togglable(
-                        work,
-                        work.position,
-                        work.highlights.map((highlight) => {
-                            return togglable(highlight, truncate(highlight, 20))
-                        })
-                    )
+                position,
+                `${position.name} (${position.position})`,
+                position.highlights.map((highlight) => {
+                    return togglable(highlight, truncate(highlight, 25))
                 })
             )
         })
@@ -112,7 +102,7 @@ export function resumeFromJSONResume(
         'Personal Projects',
         (jsonResume.projects || []).map((project) => {
             return togglable(
-                project.highlights,
+                project,
                 project.name,
                 project.highlights.map((highlight) => {
                     return togglable(highlight, truncate(highlight, 25))
