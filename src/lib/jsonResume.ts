@@ -73,7 +73,7 @@ export interface Project {
     description: string
     highlights: string[]
     url?: string
-    sourceCode?: string
+    repository?: string
 }
 
 export interface ResumeBasics {

@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
 
 const bulletChar = '•'
 
-export function UL(props: { items: string[] }) {
+export function UL(props: { items: React.ReactNode[] }) {
     const { items } = props
     return (
         <View style={styles.list}>

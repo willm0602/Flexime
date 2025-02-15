@@ -135,9 +135,20 @@ const EducationComponent = (props: { school: Education }) => {
     )
 }
 
-const ProjectComponent = (props: { proj: Project; highlights: string[] }) => {
+const ProjectComponent = (props: { proj: Project; highlights: React.ReactNode[] }) => {
     const { proj, highlights } = props
 
+    if (proj.repository) {
+        highlights.push(<View>
+            <Text>Source code available <Link href={proj.repository}>here</Link></Text>
+        </View>)
+    }
+
+    if (proj.url) {
+        highlights.push(<View>
+            <Text>Project available <Link herf={proj.url}>here</Link></Text>
+        </View>)
+    }
     return (
         <View>
             <Text style={styles.subsubheader}>{proj.name}</Text>
@@ -159,14 +170,14 @@ const ResumeComponent = (props: { resume: Resume }) => {
 
     const workExperience = resume.workExperience.isOn
         ? (resume.workExperience.children || []).filter(
-              (togglableRole) => togglableRole.isOn
-          )
+            (togglableRole) => togglableRole.isOn
+        )
         : []
 
     const education = resume.education.isOn
         ? (resume.education.children || [])
-              .filter((school) => school.isOn)
-              .map((togglableSchool) => togglableSchool.val)
+            .filter((school) => school.isOn)
+            .map((togglableSchool) => togglableSchool.val)
         : []
 
     const personalProjects: Togglable<TogglableProject, string>[] = resume
@@ -274,7 +285,7 @@ const ResumeComponent = (props: { resume: Resume }) => {
                     })}
 
                     {/* Skills */}
-                    <SectionLabel sectionName="Skills" />
+                    {resume.skills.isOn && <SectionLabel sectionName="Skills" />}
                     <View>
                         <Text>
                             {skills

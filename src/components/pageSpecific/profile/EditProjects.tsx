@@ -51,10 +51,10 @@ const RenderProject: ListItem<Project> = (props) => {
         })
     }
 
-    const setSourceCode = (sourceCode: string) => {
+    const setSourceCode = (repository: string) => {
         setItem({
             ...project,
-            sourceCode,
+            repository,
         })
     }
 
@@ -76,7 +76,7 @@ const RenderProject: ListItem<Project> = (props) => {
                 />
                 <EditableText
                     className="mr-12"
-                    defaultVal={project.sourceCode || ''}
+                    defaultVal={project.repository || ''}
                     dispatch={setSourceCode}
                     label="Source Code"
                 />
