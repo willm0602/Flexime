@@ -146,7 +146,7 @@ const ProjectComponent = (props: { proj: Project; highlights: React.ReactNode[] 
 
     if (proj.url) {
         highlights.push(<View>
-            <Text>Project available <Link herf={proj.url}>here</Link></Text>
+            <Text>Project available <Link href={proj.url}>here</Link></Text>
         </View>)
     }
     return (
