@@ -1,59 +1,65 @@
 {
     "basics": {
-      "name": "John Doe",
-      "label": "Software Engineer",
-      "email": "johndoe@example.com",
-      "phone": "+1 234-567-8901",
-      "website": "https://johndoe.dev",
-      "summary": "Experienced software engineer with a background in full-stack web development and cloud-based applications.",
-      "location": {
-        "city": "San Francisco",
-        "region": "California",
-        "countryCode": "US"
-      }
+        "name": "John Doe",
+        "label": "Software Engineer",
+        "email": "johndoe@example.com",
+        "phone": "+1 234-567-8901",
+        "website": "https://johndoe.dev",
+        "summary": "Experienced software engineer with a background in full-stack web development and cloud-based applications.",
+        "location": {
+            "city": "San Francisco",
+            "region": "California",
+            "countryCode": "US"
+        }
     },
     "work": [
-      {
-        "company": "Tech Startup Inc.",
-        "position": "Full-Stack Developer",
-        "startDate": "2021-06-01",
-        "endDate": "Present",
-        "summary": "Developed scalable web applications using Node.js, React, and AWS. Led backend optimizations and collaborated with frontend teams to enhance performance."
-      },
-      {
-        "company": "Cloud Solutions LLC",
-        "position": "Software Engineer",
-        "startDate": "2019-01-01",
-        "endDate": "2021-05-01",
-        "summary": "Worked on cloud-based solutions and microservices architecture using Python, Docker, and Kubernetes."
-      }
+        {
+            "company": "Tech Startup Inc.",
+            "position": "Full-Stack Developer",
+            "startDate": "2021-06-01",
+            "endDate": "Present",
+            "summary": "Developed scalable web applications using Node.js, React, and AWS. Led backend optimizations and collaborated with frontend teams to enhance performance."
+        },
+        {
+            "company": "Cloud Solutions LLC",
+            "position": "Software Engineer",
+            "startDate": "2019-01-01",
+            "endDate": "2021-05-01",
+            "summary": "Worked on cloud-based solutions and microservices architecture using Python, Docker, and Kubernetes."
+        }
     ],
     "education": [
-      {
-        "institution": "University of Example",
-        "area": "Computer Science",
-        "studyType": "Bachelor",
-        "startDate": "2015-09-01",
-        "endDate": "2019-06-01"
-      }
+        {
+            "institution": "University of Example",
+            "area": "Computer Science",
+            "studyType": "Bachelor",
+            "startDate": "2015-09-01",
+            "endDate": "2019-06-01"
+        }
     ],
     "skills": [
-      {
-        "name": "Full-Stack Development",
-        "keywords": ["React", "Node.js", "TypeScript", "AWS", "Docker", "Kubernetes"]
-      }
+        {
+            "name": "Full-Stack Development",
+            "keywords": [
+                "React",
+                "Node.js",
+                "TypeScript",
+                "AWS",
+                "Docker",
+                "Kubernetes"
+            ]
+        }
     ],
     "projects": [
-      {
-        "name": "E-Commerce Platform",
-        "description": "Developed a full-stack e-commerce platform using MERN stack, enabling seamless shopping experiences.",
-        "url": "https://johndoe.dev/projects/ecommerce"
-      },
-      {
-        "name": "Cloud Deployment Automation",
-        "description": "Created an automation tool for cloud infrastructure deployment using Terraform and AWS Lambda.",
-        "url": "https://johndoe.dev/projects/cloud-deployment"
-      }
+        {
+            "name": "E-Commerce Platform",
+            "description": "Developed a full-stack e-commerce platform using MERN stack, enabling seamless shopping experiences.",
+            "url": "https://johndoe.dev/projects/ecommerce"
+        },
+        {
+            "name": "Cloud Deployment Automation",
+            "description": "Created an automation tool for cloud infrastructure deployment using Terraform and AWS Lambda.",
+            "url": "https://johndoe.dev/projects/cloud-deployment"
+        }
     ]
-  }
-  
+}

@@ -72,7 +72,8 @@ export interface Project {
     endDate?: string // ISO-8601 Format
     description: string
     highlights: string[]
-    url: string[]
+    url?: string
+    repository?: string
 }
 
 export interface ResumeBasics {

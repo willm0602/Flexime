@@ -1,6 +1,6 @@
-import { Work } from "./jsonResume"
+import { Work } from './jsonResume'
 
 export default interface CompanyExperience {
-    companyName: string,
+    companyName: string
     positions: Work[]
 }
