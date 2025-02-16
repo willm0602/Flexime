@@ -135,19 +135,31 @@ const EducationComponent = (props: { school: Education }) => {
     )
 }
 
-const ProjectComponent = (props: { proj: Project; highlights: React.ReactNode[] }) => {
+const ProjectComponent = (props: {
+    proj: Project
+    highlights: React.ReactNode[]
+}) => {
     const { proj, highlights } = props
 
     if (proj.repository) {
-        highlights.push(<View>
-            <Text>Source code available <Link href={proj.repository}>here</Link></Text>
-        </View>)
+        highlights.push(
+            <View>
+                <Text>
+                    Source code available{' '}
+                    <Link href={proj.repository}>here</Link>
+                </Text>
+            </View>
+        )
     }
 
     if (proj.url) {
-        highlights.push(<View>
-            <Text>Project available <Link href={proj.url}>here</Link></Text>
-        </View>)
+        highlights.push(
+            <View>
+                <Text>
+                    Project available <Link href={proj.url}>here</Link>
+                </Text>
+            </View>
+        )
     }
     return (
         <View>
@@ -170,14 +182,14 @@ const ResumeComponent = (props: { resume: Resume }) => {
 
     const workExperience = resume.workExperience.isOn
         ? (resume.workExperience.children || []).filter(
-            (togglableRole) => togglableRole.isOn
-        )
+              (togglableRole) => togglableRole.isOn
+          )
         : []
 
     const education = resume.education.isOn
         ? (resume.education.children || [])
-            .filter((school) => school.isOn)
-            .map((togglableSchool) => togglableSchool.val)
+              .filter((school) => school.isOn)
+              .map((togglableSchool) => togglableSchool.val)
         : []
 
     const personalProjects: Togglable<TogglableProject, string>[] = resume
@@ -221,7 +233,7 @@ const ResumeComponent = (props: { resume: Resume }) => {
 
                         {profiles.map((profile, idx) => {
                             return (
-                                <Link key={`profile-${idx}`} src={profile.url}>
+                                <Link key={`profile-${idx}`} href={profile.url}>
                                     {profile.network}
                                 </Link>
                             )
@@ -236,15 +248,20 @@ const ResumeComponent = (props: { resume: Resume }) => {
                                 {workExperience.map(
                                     (togglableRole: TogglableRole, idx) => {
                                         const role = togglableRole.val
+                                        console.log('ROLE IS', role)
                                         const highlights =
                                             getIncludedVals(togglableRole)
-                                        return (
-                                            <RoleComponent
-                                                key={`idx-${idx}`}
-                                                role={role}
-                                                highlights={highlights}
-                                            />
-                                        )
+                                        try {
+                                            return (
+                                                <RoleComponent
+                                                    key={`idx-${idx}`}
+                                                    role={role}
+                                                    highlights={highlights}
+                                                />
+                                            )
+                                        } catch {
+                                            return <></>
+                                        }
                                     }
                                 )}
                             </View>
@@ -274,7 +291,6 @@ const ResumeComponent = (props: { resume: Resume }) => {
                         const highlights = (togglableProj.children || [])
                             .filter((hl) => hl.isOn)
                             .map((hl) => hl.val)
-                        console.log('PROJ HERE', proj, 'HL', highlights)
                         return (
                             <ProjectComponent
                                 proj={proj}
@@ -285,7 +301,9 @@ const ResumeComponent = (props: { resume: Resume }) => {
                     })}
 
                     {/* Skills */}
-                    {resume.skills.isOn && <SectionLabel sectionName="Skills" />}
+                    {resume.skills.isOn && (
+                        <SectionLabel sectionName="Skills" />
+                    )}
                     <View>
                         <Text>
                             {skills

@@ -66,8 +66,12 @@ test.describe('resumeFromJSONResume', () => {
 
         const resume = resumeFromJSONResume(jsonResume)
         expect(resume.workExperience.children).toHaveLength(1)
-        expect(resume.workExperience.children?.[0].title).toBe('Tech Corp (Software Engineer)')
+        expect(resume.workExperience.children?.[0].title).toBe(
+            'Tech Corp (Software Engineer)'
+        )
         expect(resume.workExperience.children?.[0].children).toHaveLength(2)
-        expect(typeof resume.workExperience.children?.[0].children?.[0].val).toBe('string')
+        expect(
+            typeof resume.workExperience.children?.[0].children?.[0].val
+        ).toBe('string')
     })
 })
