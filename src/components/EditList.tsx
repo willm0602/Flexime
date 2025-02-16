@@ -43,8 +43,7 @@ export default function EditList<T>(props: EditListProps<T>) {
         setList([...vals, defaultChild])
     }
 
-    const confirmThenRemoveAtIdx = (idx: number) => () => {
-        console.log(idx)
+    const confirmThenRemoveAtIdx = () => () => {
         // TODO: Add in confirm modal before removing values
         // const confirmPrompt = 'This will permanently remove this item from the resume, please confirm if you would like to remove this.'
         // const shouldUpdate = window.confirm(confirmPrompt);
@@ -74,7 +73,7 @@ export default function EditList<T>(props: EditListProps<T>) {
                                 setList(updatedList)
                             }}
                             setList={setList}
-                            confirmThenRemove={confirmThenRemoveAtIdx(idx)}
+                            confirmThenRemove={confirmThenRemoveAtIdx()}
                             removeItem={() => {
                                 const updatedVals = vals
                                 updatedVals.splice(idx, 1)

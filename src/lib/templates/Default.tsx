@@ -208,8 +208,6 @@ const ResumeComponent = (props: { resume: Resume }) => {
         return skill.isOn
     })
 
-    console.log('SUMMARY IS', resume.summary);
-
     return (
         <Document>
             <Page style={styles.page} size="A4">
@@ -257,7 +255,6 @@ const ResumeComponent = (props: { resume: Resume }) => {
                                 {workExperience.map(
                                     (togglableRole: TogglableRole, idx) => {
                                         const role = togglableRole.val
-                                        console.log('ROLE IS', role)
                                         const highlights =
                                             getIncludedVals(togglableRole)
                                         try {
