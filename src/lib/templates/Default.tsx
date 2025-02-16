@@ -66,6 +66,11 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginBottom: 4,
     },
+    smallLabel: {
+        fontSize: 10,
+        textAlign: 'center',
+        marginBottom: 4
+    },
     boldItalics: {
         fontWeight: 'heavy',
         fontFamily: 'Times-Italic',
@@ -129,7 +134,7 @@ const EducationComponent = (props: { school: Education }) => {
                 {reformatDate(school.endDate)})
             </Text>
             <Text>
-                {school.studyType} of {school.area}
+                {school.studyType} in {school.area}
             </Text>
         </View>
     )
@@ -182,14 +187,14 @@ const ResumeComponent = (props: { resume: Resume }) => {
 
     const workExperience = resume.workExperience.isOn
         ? (resume.workExperience.children || []).filter(
-              (togglableRole) => togglableRole.isOn
-          )
+            (togglableRole) => togglableRole.isOn
+        )
         : []
 
     const education = resume.education.isOn
         ? (resume.education.children || [])
-              .filter((school) => school.isOn)
-              .map((togglableSchool) => togglableSchool.val)
+            .filter((school) => school.isOn)
+            .map((togglableSchool) => togglableSchool.val)
         : []
 
     const personalProjects: Togglable<TogglableProject, string>[] = resume
@@ -208,18 +213,20 @@ const ResumeComponent = (props: { resume: Resume }) => {
             <Page style={styles.page} size="A4">
                 <View>
                     <Text style={styles.title}>{resume.name}</Text>
-                    {resume.title.isOn && (
+                    {(resume.title.isOn && resume.summary.val) ? (
                         <Text style={styles.label}>{resume.title.val}</Text>
-                    )}
+                    ) : resume.summary.isOn &&
+                    <Text style={styles.smallLabel}>{resume.summary.val}</Text>
+                    }
 
                     {/* Basics */}
                     <View style={styles.basics}>
                         {/* Location */}
                         {resume.location && resume.location.isOn ? (
                             <Text>
-                                {resume.location.val?.city}{' '}
+                                {resume.location.val?.city}{', '}
                                 {resume.location.val?.region}{' '}
-                                {resume.location.val?.countryCode}
+                                ({resume.location.val?.countryCode})
                             </Text>
                         ) : undefined}
 
@@ -248,7 +255,6 @@ const ResumeComponent = (props: { resume: Resume }) => {
                                 {workExperience.map(
                                     (togglableRole: TogglableRole, idx) => {
                                         const role = togglableRole.val
-                                        console.log('ROLE IS', role)
                                         const highlights =
                                             getIncludedVals(togglableRole)
                                         try {

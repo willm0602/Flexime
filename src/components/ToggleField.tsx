@@ -130,9 +130,11 @@ function ToggleChildField<C>(props: ToggleChildFieldProps<C>) {
     const child = (togglable.children || [])[index]
     const subchildren = child.children || []
 
+    const isString = (typeof child.val) == 'string';
+
     return (
         <div style={{ marginLeft: `${indent / 2}em` }}>
-            <div className="flex">
+            <div className={`flex ${isString ? 'tooltip tooltip-top' : ''}`} data-tip={child.val}>
                 <input
                     type="checkbox"
                     checked={togglable.children?.[index]?.isOn || false}
