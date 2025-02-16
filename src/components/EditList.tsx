@@ -85,7 +85,7 @@ export default function EditList<T>(props: EditListProps<T>) {
                     </div>
                 )
             })}
-            <button onClick={addNew} className="btn btn-primary">
+            <button onClick={addNew} className="btn btn-primary mt-8">
                 {addBtnText || DEFAULT_ADD_BTN_TEXT}
             </button>
         </div>
