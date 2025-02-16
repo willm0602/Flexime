@@ -45,9 +45,10 @@ export default function ToggleField<P, F extends keyof P, C = unknown>(
 
     return (
         <>
-            <div style={{ marginLeft: `${indent}em` }} className="flex">
+            <div style={{ marginLeft: `${indent}em` }} className="flex items-center">
                 <input
                     id={`toggle-field-${fieldName}`}
+                    className='checkbox checkbox-xs checkbox-primary'
                     type="checkbox"
                     checked={currTogglable.isOn}
                     onChange={toggleField}
@@ -134,9 +135,10 @@ function ToggleChildField<C>(props: ToggleChildFieldProps<C>) {
 
     return (
         <div style={{ marginLeft: `${indent / 2}em` }}>
-            <div className={`flex ${isString ? 'tooltip tooltip-top' : ''}`} data-tip={child.val}>
+            <div className={`flex items-center ${isString ? 'tooltip tooltip-top' : ''}`} data-tip={child.val}>
                 <input
                     type="checkbox"
+                    className="checkbox checkbox-xs checkbox-primary"
                     checked={togglable.children?.[index]?.isOn || false}
                     onChange={toggleField}
                     id={`toggle-field-${fieldName}-${index}`}
