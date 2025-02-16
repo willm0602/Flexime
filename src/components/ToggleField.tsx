@@ -60,7 +60,7 @@ export default function ToggleField<P, F extends keyof P, C = unknown>(
                     {togglable.title}
                 </label>
                 <button onClick={toggleCollapsed} type="button">
-                    {currTogglable.children &&
+                    {(currTogglable.isOn && currTogglable.children) &&
                         (isCollapsed ? (
                             <ChevronDownIcon width={24} height={24} />
                         ) : (
@@ -71,7 +71,7 @@ export default function ToggleField<P, F extends keyof P, C = unknown>(
 
             {/* Render nested fields if currTogglable.val is a TogglableList */}
             <div className={isCollapsed ? 'hidden' : ''}>
-                {currTogglable.children &&
+                {(currTogglable.isOn && currTogglable.children) &&
                     currTogglable.children.map((togglable, idx) => {
                         return (
                             <ToggleChildField
@@ -150,7 +150,7 @@ function ToggleChildField<C>(props: ToggleChildFieldProps<C>) {
                     {togglable.children?.[index]?.title}
                 </label>
                 <button type="button" onClick={toggleIsCollapsed}>
-                    {subchildren.length > 0 &&
+                    {(subchildren.length > 0 && togglable.children?.[index]?.isOn) &&
                         (isCollapsed ? (
                             <ChevronDownIcon width={24} height={24} />
                         ) : (
@@ -159,7 +159,7 @@ function ToggleChildField<C>(props: ToggleChildFieldProps<C>) {
                 </button>
             </div>
             <div className={isCollapsed ? 'hidden' : ''}>
-                {subchildren.map((subchild, subindex) => {
+                {child.isOn && subchildren.map((subchild, subindex) => {
                     return (
                         <ToggleChildField
                             key={`togglable-${subindex}`}

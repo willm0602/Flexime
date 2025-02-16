@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-const MIN_QUERY_LEN = 5
+const MIN_QUERY_LEN = 3
 const MAX_SHOWN_ENTRIES = 10
 
 interface TypeaheadProps<T> {
@@ -33,12 +33,13 @@ export default function Typeahead<T>({
         label: string
     }
 
-    const annotatedVals = vals.map((val: T) => {
-        return {
+    const annotatedVals = useMemo(() =>
+        vals.map((val: T) => ({
             ...val,
             label: getDisplay(val),
-        }
-    })
+        })),
+        [vals, getDisplay]
+    );
 
     const [searchQuery, setSearchQuery] = useState(
         selectedVal ? getDisplay(selectedVal) : ''
