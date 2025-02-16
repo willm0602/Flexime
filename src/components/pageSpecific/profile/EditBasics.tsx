@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Location } from '@/lib/jsonResume'
 import EditList, { ListItem, ListItemProps } from '@/components/EditList'
 import EditableText from '@/components/EditableText'
+import EditLocation from '@/components/EditLocation'
 
 type ResumeSetter = (resume: Resume) => void
 
@@ -103,64 +104,6 @@ const EditProfile: ListItem<Profile> = (props: ListItemProps<Profile>) => {
     )
 }
 
-const EditLocation = (props: EditBasicsProps) => {
-    const { resume, setResume } = props
-
-    function updateLocation(fieldName: keyof Location, newVal: string) {
-        const updatedLocation: Location = {
-            ...resume.basics.location,
-        }
-        updatedLocation[fieldName] = newVal
-        const updatedResume: Resume = {
-            ...resume,
-            basics: {
-                ...resume.basics,
-                location: updatedLocation,
-            },
-        }
-        setResume(updatedResume)
-    }
-
-    const [city, setCity] = useState(resume.basics.location?.city)
-    const [region, setRegion] = useState(resume.basics.location?.region)
-    const [countryCode, setCode] = useState(resume.basics.location?.countryCode)
-
-    return (
-        <div>
-            <h2>Location</h2>
-
-            <div className="flex flex-wrap gap-y-4">
-                <EditField
-                    defaultValue={city || ''}
-                    placeholder="City"
-                    onChange={setCity}
-                    onSave={() => {
-                        updateLocation('city', city || '')
-                    }}
-                />
-
-                <EditField
-                    defaultValue={region || ''}
-                    placeholder="Region / State"
-                    onChange={setRegion}
-                    onSave={() => {
-                        updateLocation('region', region || '')
-                    }}
-                />
-
-                <EditField
-                    defaultValue={countryCode || ''}
-                    placeholder="Country Code"
-                    onChange={setCode}
-                    onSave={() => {
-                        updateLocation('countryCode', countryCode || '')
-                    }}
-                />
-            </div>
-        </div>
-    )
-}
-
 type EditSimpleFieldProps<F extends string & keyof Resume['basics']> = {
     resume: Resume
     setResume: (resume: Resume) => void
@@ -247,7 +190,20 @@ export default function EditBasics(props: EditBasicsProps) {
                 />
             </div>
 
-            <EditLocation resume={resume} setResume={setResume} />
+            <h2 className="mb-0">Edit Location</h2>
+            <EditLocation
+                onLocationSet={(newLocation: Location) => {
+                    setResume({
+                        ...resume,
+                        basics: {
+                            ...resume.basics,
+                            location: newLocation,
+                        },
+                    })
+                }}
+                placeholder="Edit Location"
+                val={resume.basics.location}
+            />
 
             <h2>Profiles</h2>
             <EditList<Profile>
