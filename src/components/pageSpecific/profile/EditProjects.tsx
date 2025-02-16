@@ -4,6 +4,7 @@ import { Project } from '@/lib/jsonResume'
 import TitleWithRemove from './TitleWithRemove'
 import { useState } from 'react'
 import EditableText from '@/components/EditableText'
+import EditableTextArea from '@/components/EditableTextArea'
 
 const DefaultProject: Project = {
     name: 'Untitled Project',
@@ -15,11 +16,13 @@ const EditHighlight: ListItem<string> = (props) => {
     const { removeItem, setItem, val } = props
 
     return (
-        <EditableText
+        <EditableTextArea
             defaultVal={val}
             dispatch={setItem}
             label="Highlight"
             remove={removeItem}
+            width={50}
+            height={5}
         />
     )
 }
@@ -88,6 +91,7 @@ const RenderProject: ListItem<Project> = (props) => {
                 defaultChild="Untitled Highlight"
                 addBtnText="Add Highlight"
                 containerClassName="mb-4"
+                itemWrapperClass="mb-0 mt-2"
             />
         </>
     )

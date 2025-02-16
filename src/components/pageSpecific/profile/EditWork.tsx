@@ -4,6 +4,7 @@ import { Work } from '@/lib/jsonResume'
 import { useState } from 'react'
 import EditProfileProps from './EditProfileProps'
 import EditDate from '@/components/EditDate'
+import EditableTextArea from '@/components/EditableTextArea'
 
 const EditHighlight: ListItem<string> = (props) => {
     const { setItem, removeItem } = props
@@ -12,11 +13,13 @@ const EditHighlight: ListItem<string> = (props) => {
 
     return (
         <>
-            <EditableText
+            <EditableTextArea
                 defaultVal={highlight}
                 dispatch={setItem}
                 label="Highlight"
                 remove={removeItem}
+                width={100}
+                height={4}
             />
         </>
     )
@@ -107,7 +110,7 @@ const EditPosition: ListItem<Work> = (props) => {
                 vals={job.highlights}
                 setList={setHighlights}
                 RenderItem={EditHighlight}
-                itemWrapperClass="bg-base-300"
+                itemWrapperClass="bg-base-300 mb-0 mt-2"
                 defaultChild={''}
                 addBtnText="Add Highlight"
             />
