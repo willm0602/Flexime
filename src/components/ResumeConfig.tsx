@@ -70,7 +70,7 @@ export default function ResumeConfig(props: ResumeConfigProps) {
             <div className="flex-4">
                 <div className="flex">
                     <button
-                        className="btn btn-accent no-underline mr-4"
+                        className="btn btn-accent no-underline mr-5"
                         role="button"
                         onClick={() => {
                             openInNewTab()
@@ -85,7 +85,7 @@ export default function ResumeConfig(props: ResumeConfigProps) {
                         Modify Profile Here
                     </a>
                 </div>
-                <ul className="pl-0">
+                <ul className="pl-0 overflow-scroll" style={{ maxHeight: '90vh' }}>
                     {Object.entries(resume).map(([key, val]) => {
                         if (!isTogglable(val)) {
                             return
@@ -101,7 +101,7 @@ export default function ResumeConfig(props: ResumeConfigProps) {
                                     // @ts-expect-error type needs to be generic
                                     togglable={
                                         val as Resume[keyof Resume] &
-                                            Togglable<unknown>
+                                        Togglable<unknown>
                                     }
                                     parent={resume}
                                     setParent={setResume}
@@ -131,11 +131,11 @@ export default function ResumeConfig(props: ResumeConfigProps) {
                         }}
                     />
                 </div>
-                <div className="ml-12 min-h-full">
+                <div className="ml-12 ">
                     <iframe
                         width={'100%'}
-                        height={'100%'}
-                        className="min-h-[72em]"
+                        height={'80%'}
+                        className="min-h-[50em]"
                         name="resume-preview"
                         id="resume-preview"
                     />
