@@ -56,7 +56,7 @@ export default function ResumeConfig(props: ResumeConfigProps) {
 
     return (
         <form
-            className="w-full flex"
+            className="w-full flex flex-col lg:flex-row"
             method="POST"
             target="resume-preview"
             action={getResumePDFLink()}
