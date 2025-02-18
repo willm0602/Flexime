@@ -47,7 +47,7 @@ const EditPosition: ListItem<Work> = (props) => {
 
     return (
         <>
-            <div className="flex mb-6">
+            <div className="flex mb-6 max-w-full flex-wrap">
                 <h2 className="mt-0">
                     {job.name} ({job.position})
                 </h2>
@@ -58,7 +58,7 @@ const EditPosition: ListItem<Work> = (props) => {
                     Delete
                 </button>
             </div>
-            <div className="flex gap-x-12">
+            <div className="flex gap-x-12 max-w-full flex-wrap">
                 <EditableText
                     defaultVal={job.name}
                     dispatch={(newName) => {
@@ -110,7 +110,7 @@ const EditPosition: ListItem<Work> = (props) => {
                 vals={job.highlights}
                 setList={setHighlights}
                 RenderItem={EditHighlight}
-                itemWrapperClass="bg-base-300 mb-0 mt-2"
+                itemWrapperClass="bg-base-300 mb-0 mt-3"
                 defaultChild={''}
                 addBtnText="Add Highlight"
             />

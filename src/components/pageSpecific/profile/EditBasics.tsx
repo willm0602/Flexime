@@ -86,7 +86,7 @@ const EditProfile: ListItem<Profile> = (props: ListItemProps<Profile>) => {
                     Remove
                 </button>
             </h3>
-            <div className="flex">
+            <div className="flex max-w-full flex-wrap gap-y-4">
                 <EditField
                     defaultValue={network}
                     placeholder="Network / Site Name"

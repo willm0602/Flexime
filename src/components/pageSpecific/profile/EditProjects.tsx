@@ -64,7 +64,7 @@ const RenderProject: ListItem<Project> = (props) => {
     return (
         <>
             <TitleWithRemove title={name} remove={removeItem} />
-            <div className="flex">
+            <div className="flex max-w-full flex-wrap">
                 <EditableText
                     className="mr-12"
                     defaultVal={name}

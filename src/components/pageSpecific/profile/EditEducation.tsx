@@ -70,7 +70,7 @@ const EditDegree: ListItem<Education> = (props) => {
                     maxVal={5}
                 />
 
-                <div className="flex gap-x-8">
+                <div className="flex flex-wrap max-w-full gap-x-8">
                     <EditDate
                         dispatch={(startDate) => {
                             setItem({
