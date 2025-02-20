@@ -14,6 +14,7 @@ export type ListItemProps<T> = {
     idx: number
     confirmThenRemove: () => boolean
     removeItem: () => void
+    swapWith: (swapWith: number) => unknown
 }
 
 export type ListItem<T> = (props: ListItemProps<T>) => JSX.Element
@@ -78,6 +79,12 @@ export default function EditList<T>(props: EditListProps<T>) {
                                 const updatedVals = vals
                                 updatedVals.splice(idx, 1)
                                 setList(updatedVals)
+                            }}
+                            swapWith={(toIdx: number) => {
+                                const updatedVals = [...vals];
+                                updatedVals[idx] = vals[toIdx];
+                                updatedVals[toIdx] = vals[idx];
+                                setList(updatedVals);
                             }}
                             idx={idx}
                         />

@@ -5,9 +5,10 @@ import { useState } from 'react'
 import EditProfileProps from './EditProfileProps'
 import EditDate from '@/components/EditDate'
 import EditableTextArea from '@/components/EditableTextArea'
+import MoveInListButtons from '@/components/MoveInListButtons'
 
 const EditHighlight: ListItem<string> = (props) => {
-    const { setItem, removeItem } = props
+    const { setItem, removeItem, swapWith, idx, vals } = props
 
     const highlight = props.val
 
@@ -21,6 +22,10 @@ const EditHighlight: ListItem<string> = (props) => {
                 width={100}
                 height={4}
             />
+            <div>
+                <MoveInListButtons idx={idx}
+                    swapWith={swapWith} listSize={vals.length} fieldName={`Highlight ${highlight}`} />
+            </div>
         </>
     )
 }
@@ -36,7 +41,7 @@ function parseDate(date: string | undefined): string {
 
 const EditPosition: ListItem<Work> = (props) => {
     const job = props.val
-    const { setItem, removeItem } = props
+    const { setItem, removeItem, idx, swapWith, vals } = props
 
     const setHighlights = (newHighlights: string[]) => {
         setItem({
@@ -47,7 +52,7 @@ const EditPosition: ListItem<Work> = (props) => {
 
     return (
         <>
-            <div className="flex mb-6 max-w-full flex-wrap">
+            <div className="flex max-w-full flex-wrap">
                 <h2 className="mt-0">
                     {job.name} ({job.position})
                 </h2>
@@ -57,6 +62,9 @@ const EditPosition: ListItem<Work> = (props) => {
                 >
                     Delete
                 </button>
+            </div>
+            <div className='flex mb-4'>
+                <MoveInListButtons idx={idx} swapWith={swapWith} listSize={vals.length} fieldName={`${job.position} at ${job.name}`} />
             </div>
             <div className="flex gap-x-12 max-w-full flex-wrap">
                 <EditableText

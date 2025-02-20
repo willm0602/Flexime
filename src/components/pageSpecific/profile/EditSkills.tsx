@@ -2,6 +2,7 @@ import { useState } from 'react'
 import EditProfileProps from './EditProfileProps'
 import { Skill } from '@/lib/jsonResume'
 import { XCircleIcon } from '@heroicons/react/24/solid'
+import MoveInListButtons from '@/components/MoveInListButtons'
 
 export default function EditSkills(props: EditProfileProps) {
     const { resume, dispatchResume } = props
@@ -68,6 +69,22 @@ export default function EditSkills(props: EditProfileProps) {
                     Add
                 </button>
             </div>
+            <ul className='list-none'>
+                {skills.map((skill, idx) => {
+                    return <li key={`edit-skill-${skill.name}`}>{skill.name} <MoveInListButtons
+                        idx={idx}
+                        swapWith={(swapTo) => {
+                            const updatedSkills = [...skills];
+                            updatedSkills[idx] = skills[swapTo];
+                            updatedSkills[swapTo] = skills[idx];
+                            setSkills(updatedSkills);
+                        }}
+                        listSize={skills.length}
+                        fieldName={skill.name}
+                    /></li>
+                })}
+            </ul>
+
         </>
     )
 }
