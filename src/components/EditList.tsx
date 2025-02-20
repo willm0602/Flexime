@@ -62,7 +62,7 @@ export default function EditList<T>(props: EditListProps<T>) {
                             DEFAULT_ITEM_CLASS,
                             itemWrapperClass
                         )}
-                        key={`edit-list-${idx}`}
+                        key={`edit-list-${idx}-${JSON.stringify(val)}`}
                     >
                         <RenderItem
                             val={val}
