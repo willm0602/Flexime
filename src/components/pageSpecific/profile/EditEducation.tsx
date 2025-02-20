@@ -6,6 +6,7 @@ import EditableText from '@/components/EditableText'
 import TitleWithRemove from './TitleWithRemove'
 import EditableNumber from '@/components/EditableNumber'
 import EditDate from '@/components/EditDate'
+import MoveInListButtons from '@/components/MoveInListButtons'
 
 const DEFAULT_EDUCATION: Education = {
     institution: 'Untitled School',
@@ -15,11 +16,15 @@ const DEFAULT_EDUCATION: Education = {
 }
 
 const EditDegree: ListItem<Education> = (props) => {
-    const { val, setItem, removeItem } = props
+    const { val, setItem, removeItem, idx, swapWith, vals } = props
 
     return (
         <>
             <TitleWithRemove title={val.institution} remove={removeItem} />
+
+            <div>
+                <MoveInListButtons idx={idx} swapWith={swapWith} listSize={vals.length} fieldName={`${val.studyType} of ${val.area} at ${val.institution}`} />
+            </div>
 
             <div className="flex gap-x-24 flex-wrap gap-y-12">
                 <EditableText

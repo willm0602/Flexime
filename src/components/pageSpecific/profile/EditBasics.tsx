@@ -4,6 +4,10 @@ import { Location } from '@/lib/jsonResume'
 import EditList, { ListItem, ListItemProps } from '@/components/EditList'
 import EditableText from '@/components/EditableText'
 import EditLocation from '@/components/EditLocation'
+import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/24/solid'
+import MoveUpButton from '@/components/MoveUpButton'
+import MoveDownButton from '@/components/MoveDownButton'
+import MoveInListButtons from '@/components/MoveInListButtons'
 
 type ResumeSetter = (resume: Resume) => void
 
@@ -45,7 +49,7 @@ type EditBasicsProps = {
 }
 
 const EditProfile: ListItem<Profile> = (props: ListItemProps<Profile>) => {
-    const { val, vals, idx, setList, confirmThenRemove } = props
+    const { val, vals, idx, setList, removeItem, swapWith } = props
 
     const [profile, setCurrProfile] = useState<Profile>(val)
     const [network, $setNetwork] = useState<string>(profile.network)
@@ -78,13 +82,15 @@ const EditProfile: ListItem<Profile> = (props: ListItemProps<Profile>) => {
             <h3 className="mt-0">
                 {val.network}{' '}
                 <button
-                    className="btn btn-xs btn-error"
+                    className="btn btn-xs btn-error mr-2"
                     onClick={() => {
-                        confirmThenRemove()
+                        removeItem()
                     }}
                 >
                     Remove
                 </button>
+                <MoveInListButtons idx={idx} swapWith={swapWith} listSize={vals.length} fieldName={val.network}
+                />
             </h3>
             <div className="flex max-w-full flex-wrap gap-y-4">
                 <EditField
