@@ -1,7 +1,7 @@
 import { ArrowUpIcon } from "@heroicons/react/24/solid";
 
 interface MoveUpButtonSwapProps {
-  swapWith: (idx: number) => any
+  swapWith: (idx: number) => unknown
   idx: number
   title: string
 }

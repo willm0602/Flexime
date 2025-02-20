@@ -5,8 +5,6 @@ import { useState } from 'react'
 import EditProfileProps from './EditProfileProps'
 import EditDate from '@/components/EditDate'
 import EditableTextArea from '@/components/EditableTextArea'
-import MoveUpButton from '@/components/MoveUpButton'
-import MoveDownButton from '@/components/MoveDownButton'
 import MoveInListButtons from '@/components/MoveInListButtons'
 
 const EditHighlight: ListItem<string> = (props) => {

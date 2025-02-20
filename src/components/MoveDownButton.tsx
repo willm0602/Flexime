@@ -2,7 +2,7 @@ import { ArrowDownIcon } from "@heroicons/react/24/solid";
 import { twMerge } from "tailwind-merge";
 
 interface MoveDownButtonSwapProps {
-  swapWith: (idx: number) => any
+  swapWith: (idx: number) => unknown
   idx: number
   listSize: number
   title: string

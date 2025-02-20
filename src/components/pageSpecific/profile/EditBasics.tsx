@@ -4,9 +4,6 @@ import { Location } from '@/lib/jsonResume'
 import EditList, { ListItem, ListItemProps } from '@/components/EditList'
 import EditableText from '@/components/EditableText'
 import EditLocation from '@/components/EditLocation'
-import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/24/solid'
-import MoveUpButton from '@/components/MoveUpButton'
-import MoveDownButton from '@/components/MoveDownButton'
 import MoveInListButtons from '@/components/MoveInListButtons'
 
 type ResumeSetter = (resume: Resume) => void
