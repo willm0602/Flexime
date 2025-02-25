@@ -2,6 +2,7 @@ import type Togglable from '@/lib/togglable'
 import { useState } from 'react'
 import { ChevronDownIcon } from '@heroicons/react/24/solid'
 import { ChevronUpIcon } from '@heroicons/react/24/solid'
+import { ReactSortable } from 'react-sortablejs'
 
 type ToggleFieldProps<P, F extends keyof P, C> = {
     parent: P
@@ -70,7 +71,17 @@ export default function ToggleField<P, F extends keyof P, C = unknown>(
             </div>
 
             {/* Render nested fields if currTogglable.val is a TogglableList */}
-            <div className={isCollapsed ? 'hidden' : ''}>
+            <ReactSortable className={isCollapsed ? 'hidden' : ''}
+                list={(currTogglable.children || []).map((child, idx) => {
+                    return { ...child, id: `togglable-${idx}` }
+                })}
+                setList={(newList) => {
+                    setCurrentTogglable({
+                        ...currTogglable,
+                        children: newList
+                    });
+                }}
+            >
                 {(currTogglable.isOn && currTogglable.children) &&
                     currTogglable.children.map((togglable, idx) => {
                         return (
@@ -84,7 +95,7 @@ export default function ToggleField<P, F extends keyof P, C = unknown>(
                             />
                         )
                     })}
-            </div>
+            </ReactSortable>
         </>
     )
 }
