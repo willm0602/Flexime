@@ -1,5 +1,6 @@
-import { JSX } from 'react'
+import { JSX, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
+import { ReactSortable } from 'react-sortablejs';
 
 const DEFAULT_ADD_BTN_TEXT = 'Add'
 const DEFAULT_WRAPPER_CLASS = 'w-full flex flex-col'
@@ -38,10 +39,29 @@ export default function EditList<T>(props: EditListProps<T>) {
         addBtnText,
         itemWrapperClass,
     } = props
+
     const vals = props.vals || []
 
     const addNew = () => {
         setList([...vals, defaultChild])
+    }
+
+    type AnnotatedItem = {
+        data: T,
+        id: string
+    }
+
+    const [annotatedItems, dispatchAnnotatedItems] = useState<AnnotatedItem[]>(vals.map((val, idx) => {
+        return {
+            data: val,
+            id: `edit-list-${idx}-${JSON.stringify(val)}`
+        }
+    }));
+
+    const setAnnotatedItems = (annotatedItems: AnnotatedItem[]) => {
+        dispatchAnnotatedItems(annotatedItems);
+        const newList: T[] = annotatedItems.map((annotated) => annotated.data);
+        setList(newList);
     }
 
     const confirmThenRemoveAtIdx = () => () => {
@@ -55,18 +75,21 @@ export default function EditList<T>(props: EditListProps<T>) {
         return true
     }
     return (
-        <div className={twMerge(containerClassName, DEFAULT_WRAPPER_CLASS)}>
-            {vals.map((val, idx) => {
+        <ReactSortable className={twMerge(containerClassName, DEFAULT_WRAPPER_CLASS)}
+            list={annotatedItems}
+            setList={setAnnotatedItems}
+        >
+            {annotatedItems.map((val, idx) => {
                 return (
                     <div
                         className={twMerge(
                             DEFAULT_ITEM_CLASS,
                             itemWrapperClass
                         )}
-                        key={`edit-list-${idx}-${JSON.stringify(val)}`}
+                        key={val.id}
                     >
                         <RenderItem
-                            val={val}
+                            val={val.data}
                             vals={vals}
                             setItem={(updatedVal: T) => {
                                 const updatedList = [...vals]
@@ -94,6 +117,6 @@ export default function EditList<T>(props: EditListProps<T>) {
             <button onClick={addNew} className="btn btn-primary mt-8">
                 {addBtnText || DEFAULT_ADD_BTN_TEXT}
             </button>
-        </div>
+        </ReactSortable>
     )
 }
