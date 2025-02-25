@@ -2,7 +2,7 @@ import { useState } from 'react'
 import EditProfileProps from './EditProfileProps'
 import { Skill } from '@/lib/jsonResume'
 import { XCircleIcon } from '@heroicons/react/24/solid'
-import MoveInListButtons from '@/components/MoveInListButtons'
+import { ReactSortable } from 'react-sortablejs'
 
 export default function EditSkills(props: EditProfileProps) {
     const { resume, dispatchResume } = props
@@ -26,10 +26,27 @@ export default function EditSkills(props: EditProfileProps) {
         setSkillToAdd('')
     }
 
+    type AnnotatedSkill = {
+        data: Skill,
+        id: string
+    };
+
+    const [annotatedSkills, dispatchAnnotatedSkills] = useState<AnnotatedSkill[]>(skills.map((skill, idx) => {
+        return {
+            data: skill,
+            id: `skill-${idx}`
+        }
+    }));
+
+    const setAnnotatedSkills = (newAnnotatedSkills: AnnotatedSkill[]) => {
+        dispatchAnnotatedSkills(newAnnotatedSkills);
+        setSkills((newAnnotatedSkills.map((annotated) => annotated.data)))
+    }
+
     return (
         <>
             <h2>Edit Skills</h2>
-            <div className="flex flex-wrap mb-8 gap-y-4">
+            <ReactSortable className="flex flex-wrap mb-8 gap-y-4" list={annotatedSkills} setList={setAnnotatedSkills}>
                 {skills.map((skill, idx) => {
                     return (
                         <div
@@ -49,7 +66,7 @@ export default function EditSkills(props: EditProfileProps) {
                         </div>
                     )
                 })}
-            </div>
+            </ReactSortable>
             <div className="input input-bordered w-40 px-0 flex">
                 <input
                     type="text"
@@ -69,21 +86,6 @@ export default function EditSkills(props: EditProfileProps) {
                     Add
                 </button>
             </div>
-            <ul className='list-none'>
-                {skills.map((skill, idx) => {
-                    return <li key={`edit-skill-${skill.name}`}>{skill.name} <MoveInListButtons
-                        idx={idx}
-                        swapWith={(swapTo) => {
-                            const updatedSkills = [...skills];
-                            updatedSkills[idx] = skills[swapTo];
-                            updatedSkills[swapTo] = skills[idx];
-                            setSkills(updatedSkills);
-                        }}
-                        listSize={skills.length}
-                        fieldName={skill.name}
-                    /></li>
-                })}
-            </ul>
 
         </>
     )

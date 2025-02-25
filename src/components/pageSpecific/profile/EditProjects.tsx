@@ -5,7 +5,6 @@ import TitleWithRemove from './TitleWithRemove'
 import { useState } from 'react'
 import EditableText from '@/components/EditableText'
 import EditableTextArea from '@/components/EditableTextArea'
-import MoveInListButtons from '@/components/MoveInListButtons'
 
 const DefaultProject: Project = {
     name: 'Untitled Project',
@@ -14,18 +13,10 @@ const DefaultProject: Project = {
 }
 
 const EditHighlight: ListItem<string> = (props) => {
-    const { removeItem, setItem, val, idx, swapWith, vals } = props
+    const { removeItem, setItem, val } = props
 
     return (
         <>
-            <div>
-                <MoveInListButtons
-                    idx={idx}
-                    swapWith={swapWith}
-                    listSize={vals.length}
-                    fieldName={`Highlight ${val}`}
-                />
-            </div>
             <EditableTextArea
                 defaultVal={val}
                 dispatch={setItem}
@@ -39,7 +30,7 @@ const EditHighlight: ListItem<string> = (props) => {
 }
 
 const EditProject: ListItem<Project> = (props) => {
-    const { removeItem, setItem, vals, idx, swapWith } = props
+    const { removeItem, setItem } = props
     const project = props.val
     const [name, dispatchName] = useState<string>(project.name)
 
@@ -75,14 +66,6 @@ const EditProject: ListItem<Project> = (props) => {
     return (
         <>
             <TitleWithRemove title={name} remove={removeItem} />
-            <div>
-                <MoveInListButtons
-                    idx={idx}
-                    swapWith={swapWith}
-                    listSize={vals.length}
-                    fieldName={project.name}
-                />
-            </div>
             <div className="flex max-w-full flex-wrap">
                 <EditableText
                     className="mr-12"
