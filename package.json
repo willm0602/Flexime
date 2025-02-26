@@ -3,13 +3,14 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "dev": "next dev --turbopack",
+        "dev": "npm run supabase & next dev --turbopack",
         "build": "next build",
         "start": "next start",
         "lint": "next lint --fix",
         "format": "npx prettier -w .",
         "test": "next build && npx playwright test",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "supabase": "npx supabase start"
     },
     "dependencies": {
         "@emotion/react": "^11.14.0",
@@ -20,6 +21,9 @@
         "@radix-ui/react-tabs": "^1.1.3",
         "@react-pdf/renderer": "^4.1.6",
         "@reduxjs/toolkit": "^2.5.0",
+        "@supabase/auth-helpers-nextjs": "^0.10.0",
+        "@supabase/ssr": "^0.5.2",
+        "@supabase/supabase-js": "^2.49.1",
         "@types/express": "^5.0.0",
         "@types/react-pdf": "^6.2.0",
         "cally": "^0.7.2",
@@ -43,6 +47,7 @@
         "react-sortablejs": "^6.1.4",
         "redux": "^5.0.1",
         "sortablejs": "^1.15.6",
+        "supabase-cli": "^0.0.21",
         "tailwind-merge": "^2.6.0",
         "tailwindcss-animate": "^1.0.7",
         "zod": "^3.24.1"
@@ -64,6 +69,7 @@
         "lint-staged": "^15.4.3",
         "postcss": "^8",
         "prettier": "^3.4.2",
+        "supabase": "^2.15.8",
         "tailwindcss": "^3.4.1",
         "typescript": "^5.7.3"
     },
