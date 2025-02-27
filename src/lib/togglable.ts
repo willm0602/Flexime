@@ -48,3 +48,9 @@ export function isTogglable(value: unknown): value is Togglable<unknown> {
         'isOn' in (value || {})
     )
 }
+
+export function getUsedVal<V, C>(togglable: Togglable<V, C>): V | undefined {
+    if (!togglable.isOn)
+        return undefined;
+    return togglable.val;
+}

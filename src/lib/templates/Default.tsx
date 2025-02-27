@@ -1,5 +1,5 @@
 import { GeneratedResume } from '../generatedResume'
-import Resume, { TogglableRole } from '@/lib/resume'
+import Resume from '@/lib/jsonResume'
 import {
     Document,
     Page,
@@ -10,9 +10,7 @@ import {
     Link,
 } from '@react-pdf/renderer'
 import { Education, Profile, Project, Work } from '@/lib/jsonResume'
-import Togglable, { getIncludedVals } from '../togglable'
 import { UL } from '../reactPDFUtils'
-import { TogglableProject } from '../resumeConfigTypes'
 
 const styles = StyleSheet.create({
     flex: {
@@ -177,66 +175,38 @@ const ProjectComponent = (props: {
 const ResumeComponent = (props: { resume: Resume }) => {
     const { resume } = props
 
-    const profiles: Profile[] = (
-        resume.profiles.isOn ? resume.profiles.children || [] : []
-    )
-        .filter((togglableProfile) => {
-            return togglableProfile.isOn
-        })
-        .map((togglableProfile) => togglableProfile.val)
+    const profiles: Profile[] = resume.basics.profiles
 
-    const workExperience = resume.workExperience.isOn
-        ? (resume.workExperience.children || []).filter(
-            (togglableRole) => togglableRole.isOn
-        )
-        : []
+    const workExperience = resume.work || []
 
-    const education = resume.education.isOn
-        ? (resume.education.children || [])
-            .filter((school) => school.isOn)
-            .map((togglableSchool) => togglableSchool.val)
-        : []
-
-    const personalProjects: Togglable<TogglableProject, string>[] = resume
-        .personalProjects.isOn
-        ? (resume.personalProjects.children || []).filter((proj) => proj.isOn)
-        : []
-
-    const skills = (
-        resume.skills.isOn ? resume.skills.children || [] : []
-    ).filter((skill) => {
-        return skill.isOn
-    })
+    const education = resume.education || []
 
     return (
         <Document>
             <Page style={styles.page} size="A4">
                 <View>
-                    <Text style={styles.title}>{resume.name}</Text>
-                    {(resume.title.isOn && resume.summary.val) ? (
-                        <Text style={styles.label}>{resume.title.val}</Text>
-                    ) : resume.summary.isOn &&
-                    <Text style={styles.smallLabel}>{resume.summary.val}</Text>
-                    }
+                    <Text style={styles.title}>{resume.basics.name}</Text>
+                    <Text style={styles.smallLabel}>{resume.basics.summary}</Text>
+                    <Text style={styles.smallLabel}>{resume.basics.label}</Text>
 
                     {/* Basics */}
                     <View style={styles.basics}>
                         {/* Location */}
-                        {resume.location && resume.location.isOn ? (
+                        {resume.basics.location && (
                             <Text>
-                                {resume.location.val?.city}{', '}
-                                {resume.location.val?.region}{' '}
-                                ({resume.location.val?.countryCode})
+                                {resume.basics.location.city}{', '}
+                                {resume.basics.location.region}{' '}
+                                ({resume.basics.location.countryCode})
                             </Text>
-                        ) : undefined}
+                        )}
 
                         {/* Contact info */}
-                        {resume.phone.isOn && resume.phone.val && (
-                            <Text>{resume.phone.val}</Text>
-                        )}
-                        {resume.email.isOn && resume.email.val && (
-                            <Text>{resume.email.val}</Text>
-                        )}
+                        {resume.basics.phone &&
+                            <Text>{resume.basics.phone}</Text>
+                        }
+                        {resume.basics.email &&
+                            <Text>{resume.basics.email}</Text>
+                        }
 
                         {profiles.map((profile, idx) => {
                             return (
@@ -248,21 +218,18 @@ const ResumeComponent = (props: { resume: Resume }) => {
                     </View>
 
                     {/* Work */}
-                    {workExperience && (
+                    {workExperience.length && (
                         <>
                             <SectionLabel sectionName="Work Experience" />
                             <View>
                                 {workExperience.map(
-                                    (togglableRole: TogglableRole, idx) => {
-                                        const role = togglableRole.val
-                                        const highlights =
-                                            getIncludedVals(togglableRole)
+                                    (role: Work, idx) => {
                                         try {
                                             return (
                                                 <RoleComponent
                                                     key={`idx-${idx}`}
                                                     role={role}
-                                                    highlights={highlights}
+                                                    highlights={role.highlights}
                                                 />
                                             )
                                         } catch {
@@ -275,7 +242,7 @@ const ResumeComponent = (props: { resume: Resume }) => {
                     )}
 
                     {/* Education */}
-                    {education.length && (
+                    {resume.education?.length && (
                         <SectionLabel sectionName="Education" />
                     )}
                     {education.map((school, idx) => {
@@ -288,33 +255,28 @@ const ResumeComponent = (props: { resume: Resume }) => {
                     })}
 
                     {/* Personal Projects */}
-                    {resume.personalProjects.isOn && (
+                    {resume.projects?.length && (
                         <SectionLabel sectionName="Personal Projects" />
                     )}
-                    {personalProjects.map((togglableProj, idx) => {
-                        // @ts-expect-error: Should expect Project
-                        const proj: Project = togglableProj.val
-                        const highlights = (togglableProj.children || [])
-                            .filter((hl) => hl.isOn)
-                            .map((hl) => hl.val)
+                    {(resume.projects || []).map((proj, idx) => {
                         return (
                             <ProjectComponent
                                 proj={proj}
-                                highlights={highlights}
+                                highlights={proj.highlights}
                                 key={`proj-${idx}`}
                             />
                         )
                     })}
 
                     {/* Skills */}
-                    {resume.skills.isOn && (
+                    {resume.skills?.length && (
                         <SectionLabel sectionName="Skills" />
                     )}
                     <View>
                         <Text>
-                            {skills
+                            {resume.skills && resume.skills
                                 .map(
-                                    (togglableSkill) => togglableSkill.val.name
+                                    (togglableSkill) => togglableSkill.name
                                 )
                                 .join(', ')}
                         </Text>

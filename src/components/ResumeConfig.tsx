@@ -4,6 +4,7 @@ import Templates from '@/lib/templates'
 import ToggleField from './ToggleField'
 import Togglable, { isTogglable } from '@/lib/togglable'
 import { MouseEventHandler, useState } from 'react'
+import { jsonResumeFromResume } from '@/lib/resume'
 
 type ResumeConfigProps = {
     resume: Resume
@@ -65,7 +66,7 @@ export default function ResumeConfig(props: ResumeConfigProps) {
             <input
                 type="hidden"
                 name="resume_data"
-                value={JSON.stringify(resume)}
+                value={JSON.stringify(jsonResumeFromResume(resume))}
             />
             <div className="flex-4">
                 <div className="flex">
