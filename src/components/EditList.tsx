@@ -32,7 +32,6 @@ type EditListProps<T> = {
 
 export default function EditList<T>(props: EditListProps<T>) {
     const {
-        setList,
         RenderItem,
         containerClassName,
         defaultChild,
@@ -40,12 +39,9 @@ export default function EditList<T>(props: EditListProps<T>) {
         itemWrapperClass,
     } = props
 
+    let dispatchList = props.setList;
+
     const vals = props.vals || []
-
-    const addNew = () => {
-        setList([...vals, defaultChild])
-    }
-
     type AnnotatedItem = {
         data: T,
         id: string
@@ -57,6 +53,20 @@ export default function EditList<T>(props: EditListProps<T>) {
             id: `edit-list-${idx}-${JSON.stringify(val)}`
         }
     }));
+
+    const setList = (newItems: T[]) => {
+        dispatchList(newItems);
+        dispatchAnnotatedItems(newItems.map((val, idx) => {
+            return {
+                data: val,
+                id: `edit-list-${idx}-${JSON.stringify(val)}`
+            }
+        }))
+    }
+
+    const addNew = () => {
+        setList([...vals, { ...defaultChild }])
+    }
 
     const setAnnotatedItems = (annotatedItems: AnnotatedItem[]) => {
         dispatchAnnotatedItems(annotatedItems);
