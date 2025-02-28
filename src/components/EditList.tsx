@@ -39,7 +39,7 @@ export default function EditList<T>(props: EditListProps<T>) {
         itemWrapperClass,
     } = props
 
-    let dispatchList = props.setList;
+    const dispatchList = props.setList;
 
     const vals = props.vals || []
     type AnnotatedItem = {
