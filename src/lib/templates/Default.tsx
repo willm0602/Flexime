@@ -275,7 +275,7 @@ const ResumeComponent = (props: { resume: Resume }) => {
                     )}
 
                     {/* Education */}
-                    {resume.education && (
+                    {education.length && (
                         <SectionLabel sectionName="Education" />
                     )}
                     {education.map((school, idx) => {
