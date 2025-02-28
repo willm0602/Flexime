@@ -79,17 +79,17 @@ export default function EditList<T>(props: EditListProps<T>) {
             list={annotatedItems}
             setList={setAnnotatedItems}
         >
-            {annotatedItems.map((val, idx) => {
+            {vals.map((val, idx) => {
                 return (
                     <div
                         className={twMerge(
                             DEFAULT_ITEM_CLASS,
                             itemWrapperClass
                         )}
-                        key={val.id}
+                        key={`edit-list-${idx}-${JSON.stringify(val)}`}
                     >
                         <RenderItem
-                            val={val.data}
+                            val={val}
                             vals={vals}
                             setItem={(updatedVal: T) => {
                                 const updatedList = [...vals]
