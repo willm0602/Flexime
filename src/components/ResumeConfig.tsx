@@ -25,7 +25,7 @@ export default function ResumeConfig(props: ResumeConfigProps) {
         e.preventDefault()
 
         const formData = new FormData()
-        formData.append('resume_data', JSON.stringify(resume))
+        formData.append('resume_data', JSON.stringify(jsonResumeFromResume(resume)))
         formData.append('download', 'true')
 
         const pdfData = await fetch('/api/pdf', {
@@ -147,6 +147,15 @@ export default function ResumeConfig(props: ResumeConfigProps) {
                             setResumeName(newResumeName)
                         }}
                     />
+                    <select
+                        className='select select-bordered ml-8'
+                        name='template'
+                        id='resume-template'
+                    >
+                        {Object.keys(Templates).map((templateName, idx) => {
+                            return <option key={`template-${idx}-${templateName}`}>{templateName}</option>
+                        })}
+                    </select>
                 </div>
                 <div className="ml-12 ">
                     <iframe

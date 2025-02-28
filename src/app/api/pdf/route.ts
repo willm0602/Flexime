@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import type Resume from '@/lib/resume'
+import type Resume from '@/lib/jsonResume'
 import Templates from '@/lib/templates'
 
 async function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buffer> {
@@ -16,6 +16,8 @@ export async function POST(req: NextRequest) {
 
     const resumeAsStr = body.get('resume_data') as string
     const shouldDownload = body.get('download') == 'true'
+    type TemplateOption = keyof typeof Templates;
+    const templateName = (body.get('template') || 'DEFAULT') as TemplateOption;
 
     if (!resumeAsStr) {
         return NextResponse.json(
@@ -26,7 +28,7 @@ export async function POST(req: NextRequest) {
 
     try {
         const resume = JSON.parse(resumeAsStr) as Resume
-        const template = Templates.DEFAULT
+        const template = Templates[templateName]
         const generatedResumeStream = await template(resume)
         const generatedResume = await streamToBuffer(generatedResumeStream)
 

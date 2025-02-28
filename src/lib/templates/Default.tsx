@@ -173,7 +173,7 @@ const ProjectComponent = (props: {
 }
 
 const ResumeComponent = (props: { resume: Resume }) => {
-    const { resume } = props
+    const { resume } = props;
 
     const profiles: Profile[] = resume.basics.profiles
 
