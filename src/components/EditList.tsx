@@ -1,4 +1,4 @@
-import { JSX, useState } from 'react'
+import { JSX, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { ReactSortable } from 'react-sortablejs';
 
@@ -15,7 +15,6 @@ export type ListItemProps<T> = {
     idx: number
     confirmThenRemove: () => boolean
     removeItem: () => void
-    swapWith: (swapWith: number) => unknown
 }
 
 export type ListItem<T> = (props: ListItemProps<T>) => JSX.Element
@@ -42,24 +41,32 @@ export default function EditList<T>(props: EditListProps<T>) {
 
     const vals = props.vals || []
 
-    const addNew = () => {
-        setList([...vals, defaultChild])
-    }
-
     type AnnotatedItem = {
         data: T,
         id: string
     }
 
-    const [annotatedItems, dispatchAnnotatedItems] = useState<AnnotatedItem[]>(vals.map((val, idx) => {
-        return {
-            data: val,
-            id: `edit-list-${idx}-${JSON.stringify(val)}`
-        }
-    }));
+    const getAnnotatedItems = () => {
+        const annotatedItems: AnnotatedItem[] = vals.map((val, idx) => {
+            return {
+                data: val,
+                id: `edit-list-${idx}-${JSON.stringify(val)}`
+            }
+        });
+        return annotatedItems;
+    }
+
+    const [annotatedItems, dispatchAnnotatedItems] = useState<AnnotatedItem[]>(getAnnotatedItems());
+
+    useEffect(() => {
+        dispatchAnnotatedItems(getAnnotatedItems());
+    }, [vals, dispatchAnnotatedItems])
+
+    const addNew = () => {
+        setList([...vals, defaultChild])
+    }
 
     const setAnnotatedItems = (annotatedItems: AnnotatedItem[]) => {
-        dispatchAnnotatedItems(annotatedItems);
         const newList: T[] = annotatedItems.map((annotated) => annotated.data);
         setList(newList);
     }
@@ -102,12 +109,6 @@ export default function EditList<T>(props: EditListProps<T>) {
                                 const updatedVals = vals
                                 updatedVals.splice(idx, 1)
                                 setList(updatedVals)
-                            }}
-                            swapWith={(toIdx: number) => {
-                                const updatedVals = [...vals];
-                                updatedVals[idx] = vals[toIdx];
-                                updatedVals[toIdx] = vals[idx];
-                                setList(updatedVals);
                             }}
                             idx={idx}
                         />
