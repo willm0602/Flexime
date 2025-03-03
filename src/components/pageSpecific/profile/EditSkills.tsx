@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import EditProfileProps from './EditProfileProps'
 import { Skill } from '@/lib/jsonResume'
 import { XCircleIcon } from '@heroicons/react/24/solid'
@@ -17,6 +17,25 @@ export default function EditSkills(props: EditProfileProps) {
         })
     }
 
+    type AnnotatedSkill = {
+        data: Skill,
+        id: string
+    };
+
+    const getAnnotatedSkills = () => {
+        return skills.map((skill, idx) => {
+            return {
+                data: skill,
+                id: `edit-skill-${idx}`
+            }
+        })
+    }
+
+    const [annotatedSkills, dispatchAnnotatedSkills] = useState<AnnotatedSkill[]>(getAnnotatedSkills());
+    useEffect(() => {
+        dispatchAnnotatedSkills(getAnnotatedSkills())
+    }, [skills])
+
     const addSkill = () => {
         const skill: Skill = {
             name: skillToAdd,
@@ -26,20 +45,7 @@ export default function EditSkills(props: EditProfileProps) {
         setSkillToAdd('')
     }
 
-    type AnnotatedSkill = {
-        data: Skill,
-        id: string
-    };
-
-    const [annotatedSkills, dispatchAnnotatedSkills] = useState<AnnotatedSkill[]>(skills.map((skill, idx) => {
-        return {
-            data: skill,
-            id: `skill-${idx}`
-        }
-    }));
-
     const setAnnotatedSkills = (newAnnotatedSkills: AnnotatedSkill[]) => {
-        dispatchAnnotatedSkills(newAnnotatedSkills);
         setSkills((newAnnotatedSkills.map((annotated) => annotated.data)))
     }
 
@@ -58,6 +64,12 @@ export default function EditSkills(props: EditProfileProps) {
                                     const updatedSkills = skills
                                     updatedSkills.splice(idx, 1)
                                     setSkills(updatedSkills)
+                                    setAnnotatedSkills(updatedSkills.map((skill, idx) => {
+                                        return {
+                                            data: skill,
+                                            id: `skill-${idx}`
+                                        }
+                                    }))
                                 }}
                             >
                                 <XCircleIcon className="w-4 h-4 mr-2" />
