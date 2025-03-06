@@ -85,7 +85,23 @@ export default function ResumeConfig(props: ResumeConfigProps) {
                         Modify Profile Here
                     </a>
                 </div>
-                <ul className="pl-0 overflow-scroll" style={{ maxHeight: '90vh' }}>
+                <div className='prose mt-4'>
+                    <input className='input input-bordered'
+                        placeholder='Job Title'
+                        value={resume.title.val}
+                        onChange={(e) => {
+                            const val = e.target.value;
+                            setResume({
+                                ...resume,
+                                title: {
+                                    ...resume.title,
+                                    val
+                                }
+                            })
+                        }}
+                    />
+                </div>
+                <ul className="pl-0 overflow-scroll max-h-[70vh]">
                     {Object.entries(resume).map(([key, val]) => {
                         if (!isTogglable(val)) {
                             return
@@ -134,8 +150,7 @@ export default function ResumeConfig(props: ResumeConfigProps) {
                 <div className="ml-12 ">
                     <iframe
                         width={'100%'}
-                        height={'80%'}
-                        className="min-h-[50em]"
+                        className="min-h-[78vh]"
                         name="resume-preview"
                         id="resume-preview"
                     />
