@@ -113,9 +113,9 @@ function ContactInfo(props: ResumeComponentProps) {
 
   return <View style={styles.links}>
     {links.map((link, idx) => {
-      return <>{link.href ? <Link href={link.href} style={styles.link}>{link.text}</Link> : <Text>{link.text}</Text>}
+      return <span key={`link-${idx}-${link.href}`}>{link.href ? <Link href={link.href} style={styles.link}>{link.text}</Link> : <Text>{link.text}</Text>}
         {idx < links.length - 1 && <Text style={styles.linkBarrier}>|</Text>}
-      </>
+      </span>
     })}
   </View>
 }
@@ -137,11 +137,11 @@ function AllWorkSection(props: ResumeComponentProps) {
   if (!resume.work)
     return;
   return <ResumeSection name='Work Experience'>
-    {resume.work.map((role) => {
-      return <View style={styles.role}>
+    {resume.work.map((role, idx) => {
+      return <View style={styles.role} key={`role-${idx}`}>
         <Text style={styles.position}>{role.name} ({role.position})</Text>
-        {role.highlights.map((hl) => {
-          return <Text style={styles.hl}>- {hl}</Text>
+        {role.highlights.map((hl, hlidx) => {
+          return <Text style={styles.hl} key={`role-${idx}-hl-${hlidx}`}>- {hl}</Text>
         })}
       </View>
     })}
@@ -153,8 +153,8 @@ function AllEducationSection(props: ResumeComponentProps) {
   if (!resume.education)
     return;
   return <ResumeSection name='Education'>
-    {resume.education.map((education) => {
-      return <View style={styles.role}>
+    {resume.education.map((education, idx) => {
+      return <View style={styles.role} key={`idx-${idx}`}>
         <Text style={styles.institution}>{education.institution}</Text>
         <Text style={styles.degree}>{education.studyType} in {education.area}</Text>
       </View>
@@ -167,15 +167,15 @@ function AllProjectsSection(props: ResumeComponentProps) {
   if (!resume.projects)
     return;
   return <ResumeSection name='Personal Projects'>
-    {resume.projects.map((proj) => {
-      return <View style={styles.role}>
+    {resume.projects.map((proj, idx) => {
+      return <View style={styles.role} key={`proj-${idx}`}>
         <Text style={styles.position}>{proj.name}</Text>
         <View style={styles.flex}>
           {proj.url && <Link href={proj.url} style={styles.projLink}>Project Available Here</Link>}
           {proj.repository && <Link href={proj.repository} style={styles.projLink}>Source Code Available Here</Link>}
         </View>
-        {proj.highlights.map((hl) => {
-          return <Text style={styles.hl}>- {hl}</Text>
+        {proj.highlights.map((hl, hlidx) => {
+          return <Text key={`hl-${hlidx}`} style={styles.hl}>- {hl}</Text>
         })}
       </View>
     })}
