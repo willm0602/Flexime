@@ -7,4 +7,12 @@ const Templates: Record<string, GeneratedResume> = {
     BOLD_CLASSIC: BoldClassic
 }
 
+type Template = keyof typeof Templates;
+
+const TemplateNames: Record<Template, string> = {
+    DEFAULT: 'Default',
+    BOLD_CLASSIC: 'Bold Clasic'
+}
+
 export default Templates
+export { TemplateNames }

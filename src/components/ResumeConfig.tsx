@@ -1,6 +1,6 @@
 import type Resume from '@/lib/resume'
 import type JSONResume from '@/lib/jsonResume'
-import Templates from '@/lib/templates'
+import Templates, { TemplateNames } from '@/lib/templates'
 import ToggleField from './ToggleField'
 import Togglable, { isTogglable } from '@/lib/togglable'
 import { MouseEventHandler, useState } from 'react'
@@ -152,8 +152,9 @@ export default function ResumeConfig(props: ResumeConfigProps) {
                         name='template'
                         id='resume-template'
                     >
-                        {Object.keys(Templates).map((templateName, idx) => {
-                            return <option key={`template-${idx}-${templateName}`}>{templateName}</option>
+                        {Object.keys(Templates).map((template, idx) => {
+                            const templateName = TemplateNames[template];
+                            return <option className='cursor-pointer' value={template} key={`template-${idx}-${template}`}>{templateName}</option>
                         })}
                     </select>
                 </div>
