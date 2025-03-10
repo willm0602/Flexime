@@ -4,6 +4,15 @@ import { Skill } from '@/lib/jsonResume'
 import { XCircleIcon } from '@heroicons/react/24/solid'
 import { ReactSortable } from 'react-sortablejs'
 
+function getAnnotatedSkills(skills: Skill[]) {
+    return skills.map((skill, idx) => {
+        return {
+            data: skill,
+            id: `edit-skill-${idx}`
+        }
+    })
+}
+
 export default function EditSkills(props: EditProfileProps) {
     const { resume, dispatchResume } = props
     const [skills, dispatchSkills] = useState(resume.skills || [])
@@ -22,18 +31,9 @@ export default function EditSkills(props: EditProfileProps) {
         id: string
     };
 
-    const getAnnotatedSkills = () => {
-        return skills.map((skill, idx) => {
-            return {
-                data: skill,
-                id: `edit-skill-${idx}`
-            }
-        })
-    }
-
-    const [annotatedSkills, dispatchAnnotatedSkills] = useState<AnnotatedSkill[]>(getAnnotatedSkills());
+    const [annotatedSkills, dispatchAnnotatedSkills] = useState<AnnotatedSkill[]>(getAnnotatedSkills(skills));
     useEffect(() => {
-        dispatchAnnotatedSkills(getAnnotatedSkills())
+        dispatchAnnotatedSkills(getAnnotatedSkills(skills))
     }, [skills])
 
     const addSkill = () => {
@@ -57,7 +57,7 @@ export default function EditSkills(props: EditProfileProps) {
                     return (
                         <div
                             key={`skill-${idx}`}
-                            className="badge badge-primary mr-2 rounded-lg"
+                            className="badge badge-primary mr-2 rounded-lg cursor-pointer"
                         >
                             <button
                                 onClick={() => {

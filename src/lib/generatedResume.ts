@@ -1,4 +1,4 @@
-import Resume from './resume'
+import Resume from './jsonResume'
 
 type GeneratedResume = (resume: Resume) => Promise<NodeJS.ReadableStream>
 

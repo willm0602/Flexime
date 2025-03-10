@@ -10,15 +10,14 @@ import JSONResume, {
     Work,
     Location,
 } from './jsonResume'
-import Togglable from '@/lib/togglable'
+import Togglable, { getUsedVal } from '@/lib/togglable'
 import type { TogglableList } from '@/lib/togglable'
 import { togglable } from './togglable'
 import { DEFAULT_RESUME } from './resumeUtils'
 
 export type TogglableRole = Togglable<Work, string>
 export type TogglableWork = TogglableList<Work>
-
-type TogglableProject = Togglable<Project, string>
+type TogglableProject = TogglableList<Project>
 
 function truncate(text: string, maxLen: number): string {
     if (text.length < maxLen) return text
@@ -36,7 +35,7 @@ export default interface Resume {
     education: TogglableList<Education>
     skills: TogglableList<Skill>
     workExperience: TogglableWork
-    personalProjects: TogglableList<TogglableProject>
+    personalProjects: TogglableProject
 }
 
 export function resumeFromJSONResume(
@@ -124,4 +123,58 @@ export function resumeFromJSONResume(
         workExperience,
         personalProjects,
     }
+}
+
+export function jsonResumeFromResume(resume: Resume): JSONResume {
+    const usedProfiles: Profile[] = resume.profiles.isOn ? (resume.profiles.children || []).filter((toggProf) => {
+        return toggProf.isOn
+    }).map((toggProf) => toggProf.val) : [];
+
+    const usedEducation: Education[] = resume.education.isOn ? (resume.education.children || []).filter((toggEd) => {
+        return toggEd.isOn
+    }).map((toggEd) => toggEd.val) : []
+
+    const usedWork: Work[] = resume.workExperience.isOn ? (resume.workExperience.children || []).filter((toggWork) => {
+        return toggWork.isOn
+    }).map((toggWork) => {
+        const work: Work = toggWork.val;
+        const toggHL = (toggWork.children || []) as Togglable<string>[];
+        const highlights: string[] = (toggHL || []).filter((toggHL) => toggHL.isOn).map((toggHL) => toggHL.val);
+        return {
+            ...work,
+            highlights
+        }
+    }) : []
+
+    const usedProjects: Project[] = resume.personalProjects.isOn ? (resume.personalProjects.children || []).filter((toggProj) => {
+        return toggProj.isOn
+    }).map((toggProj) => {
+        const proj = toggProj.val;
+        const toggHL = (toggProj.children || []) as Togglable<string>[];
+        const highlights: string[] = (toggHL || []).filter((toggHL) => toggHL.isOn).map((toggHL) => toggHL.val);
+        return {
+            ...proj,
+            highlights
+        }
+    }) : []
+
+    const usedSkills: Skill[] = resume.skills.isOn ? (resume.skills.children || []).map((toggSkill) => toggSkill.val) : []
+
+    const jsonResume: JSONResume = {
+        basics: {
+            name: resume.name,
+            profiles: usedProfiles,
+            label: getUsedVal(resume.title),
+            location: getUsedVal(resume.location),
+            email: getUsedVal(resume.email),
+            phone: getUsedVal(resume.phone),
+            summary: getUsedVal(resume.summary),
+        },
+        education: usedEducation,
+        work: usedWork,
+        projects: usedProjects,
+        skills: usedSkills
+    };
+
+    return jsonResume;
 }

@@ -1,11 +1,11 @@
-import { JSX, useEffect, useState } from 'react'
+import { JSX, useEffect, useMemo, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { ReactSortable } from 'react-sortablejs';
 
 const DEFAULT_ADD_BTN_TEXT = 'Add'
 const DEFAULT_WRAPPER_CLASS = 'w-full flex flex-col'
 const DEFAULT_ITEM_CLASS =
-    'flex flex-col border-solid border-slate-500 border-2 my-4 p-4'
+    'flex flex-col border-solid border-slate-500 border-2 my-4 p-4 cursor-pointer'
 
 export type ListItemProps<T> = {
     val: T
@@ -29,6 +29,16 @@ type EditListProps<T> = {
     itemWrapperClass?: string
 }
 
+function getAnnotatedItems<T>(vals: T[]) {
+    const annotatedItems = vals.map((val, idx) => {
+        return {
+            data: val,
+            id: `edit-list-${idx}-${JSON.stringify(val)}`
+        }
+    });
+    return annotatedItems;
+}
+
 export default function EditList<T>(props: EditListProps<T>) {
     const {
         setList,
@@ -39,27 +49,17 @@ export default function EditList<T>(props: EditListProps<T>) {
         itemWrapperClass,
     } = props
 
-    const vals = props.vals || []
+    const vals = useMemo(() => props.vals || [], [props.vals]);
 
     type AnnotatedItem = {
         data: T,
         id: string
     }
 
-    const getAnnotatedItems = () => {
-        const annotatedItems: AnnotatedItem[] = vals.map((val, idx) => {
-            return {
-                data: val,
-                id: `edit-list-${idx}-${JSON.stringify(val)}`
-            }
-        });
-        return annotatedItems;
-    }
-
-    const [annotatedItems, dispatchAnnotatedItems] = useState<AnnotatedItem[]>(getAnnotatedItems());
+    const [annotatedItems, dispatchAnnotatedItems] = useState<AnnotatedItem[]>(getAnnotatedItems(vals));
 
     useEffect(() => {
-        dispatchAnnotatedItems(getAnnotatedItems());
+        dispatchAnnotatedItems(getAnnotatedItems(vals));
     }, [vals, dispatchAnnotatedItems])
 
     const addNew = () => {
