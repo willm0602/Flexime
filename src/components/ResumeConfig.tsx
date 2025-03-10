@@ -5,6 +5,7 @@ import ToggleField from './ToggleField'
 import Togglable, { isTogglable } from '@/lib/togglable'
 import { MouseEventHandler, useState } from 'react'
 import { jsonResumeFromResume } from '@/lib/resume'
+import { ArrowDownTrayIcon, ArrowPathIcon, ArrowTopRightOnSquareIcon, PencilSquareIcon } from '@heroicons/react/24/solid'
 
 type ResumeConfigProps = {
     resume: Resume
@@ -77,13 +78,13 @@ export default function ResumeConfig(props: ResumeConfigProps) {
                             openInNewTab()
                         }}
                     >
-                        View Resume
+                        <ArrowTopRightOnSquareIcon width={24} height={24} title='Open resume in new tab' />
                     </button>
                     <a
                         className="btn btn-secondary text-black no-underline"
                         href="/profile"
                     >
-                        Modify Profile Here
+                        <PencilSquareIcon width={24} height={24} title='Edit Resume' />
                     </a>
                 </div>
                 <div className='prose mt-4'>
@@ -104,9 +105,11 @@ export default function ResumeConfig(props: ResumeConfigProps) {
                 </div>
                 <ul className="pl-0 overflow-scroll max-h-[70vh]">
                     {Object.entries(resume).map(([key, val]) => {
-                        if (!isTogglable(val)) {
+                        if (!isTogglable(val))
                             return
-                        }
+
+                        if (!(val.val || (val.children && val.children.length > 0)))
+                            return;
 
                         return (
                             <li
@@ -131,22 +134,28 @@ export default function ResumeConfig(props: ResumeConfigProps) {
             <div className="flex-1">
                 <div className="flex">
                     <button className="btn btn-primary ml-12 mb-4">
-                        Preview Resume
+                        <ArrowPathIcon width={24} height={24} title='Preview Resume' />
                     </button>
-                    <button
-                        className="btn btn-primary ml-4 mb-4"
-                        onClick={downloadResume}
+                    <label
+                        className='input input-bordered pr-0 ml-4'
                     >
-                        Download Resume
-                    </button>
-                    <input
-                        className="input input-bordered"
-                        placeholder="Save As"
-                        onChange={(e) => {
-                            const newResumeName = e.target.value
-                            setResumeName(newResumeName)
-                        }}
-                    />
+
+                        <input
+                            type="text"
+                            className='grow'
+                            placeholder="Save As"
+                            onChange={(e) => {
+                                const newResumeName = e.target.value
+                                setResumeName(newResumeName)
+                            }}
+                        />
+                        <button
+                            className="btn btn-primary"
+                            onClick={downloadResume}
+                        >
+                            <ArrowDownTrayIcon width={12} height={12} title='Download Resume' />
+                        </button>
+                    </label>
                     <select
                         className='select select-bordered ml-8'
                         name='template'

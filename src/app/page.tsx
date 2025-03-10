@@ -33,7 +33,9 @@ export default function Home() {
                 <p>...loading</p>
             ) : (
                 <>
-                    <h1>Flexime</h1>
+                    <div className='flex'>
+                        <h1>Flexime</h1>
+                    </div>
                     <ResumeConfig
                         resume={configuredResume}
                         baseResume={initResume}

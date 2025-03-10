@@ -70,6 +70,10 @@ const styles = StyleSheet.create({
   },
   skills: {
     fontSize: 10
+  },
+  spacingX: {
+    marginRight: 10,
+    marginLeft: 10
   }
 })
 
@@ -104,18 +108,23 @@ function ContactInfo(props: ResumeComponentProps) {
     })
   }
 
+  const LinkOrSpan = ({ link, idx }: { link: LinkData, idx: number }) => {
+    return <>
+      {link.href ? <Link href={link.href} style={styles.link}>{link.text}</Link> : <Text>{link.text}</Text>}
+      {idx < links.length - 1 ? <Text style={styles.spacingX}>|</Text> : <></>}
+    </>
+  }
+
   profiles.map((profile) => {
     links.push({
       text: profile.network,
       href: profile.url
     })
-  })
+  });
 
   return <View style={styles.links}>
     {links.map((link, idx) => {
-      return <span key={`link-${idx}-${link.href}`}>{link.href ? <Link href={link.href} style={styles.link}>{link.text}</Link> : <Text>{link.text}</Text>}
-        {idx < links.length - 1 && <Text style={styles.linkBarrier}>|</Text>}
-      </span>
+      return <LinkOrSpan link={link} idx={idx} key={`link-or-span-${idx}`} />
     })}
   </View>
 }
@@ -134,7 +143,7 @@ function SummarySection(props: ResumeComponentProps) {
 
 function AllWorkSection(props: ResumeComponentProps) {
   const { resume } = props;
-  if (!resume.work)
+  if (!resume.work || resume.work.length == 0)
     return;
   return <ResumeSection name='Work Experience'>
     {resume.work.map((role, idx) => {
@@ -150,7 +159,7 @@ function AllWorkSection(props: ResumeComponentProps) {
 
 function AllEducationSection(props: ResumeComponentProps) {
   const { resume } = props;
-  if (!resume.education)
+  if (!resume.education || resume.education.length == 0)
     return;
   return <ResumeSection name='Education'>
     {resume.education.map((education, idx) => {
@@ -164,7 +173,7 @@ function AllEducationSection(props: ResumeComponentProps) {
 
 function AllProjectsSection(props: ResumeComponentProps) {
   const { resume } = props;
-  if (!resume.projects)
+  if (!resume.projects || resume.projects.length == 0)
     return;
   return <ResumeSection name='Personal Projects'>
     {resume.projects.map((proj, idx) => {
@@ -185,7 +194,7 @@ function AllProjectsSection(props: ResumeComponentProps) {
 function SkillsSection(props: ResumeComponentProps) {
   const { resume } = props;
   const { skills } = resume;
-  if (!skills)
+  if (!skills || skills.length == 0)
     return;
   const skillNames = (skills.map((skill) => skill.name));
 
