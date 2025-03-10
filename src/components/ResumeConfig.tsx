@@ -137,7 +137,7 @@ export default function ResumeConfig(props: ResumeConfigProps) {
                         <ArrowPathIcon width={24} height={24} title='Preview Resume' />
                     </button>
                     <label
-                        className='input input-bordered pr-0 ml-4'
+                        className='input input-bordered pr-0 ml-4 flex'
                     >
 
                         <input
