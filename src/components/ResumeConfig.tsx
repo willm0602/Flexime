@@ -17,6 +17,7 @@ type ResumeConfigProps = {
 export default function ResumeConfig(props: ResumeConfigProps) {
     const { resume, setResume } = props
     const [resumeName, setResumeName] = useState<string>('')
+    const [template, setTemplate] = useState(Object.keys(Templates)[0]);
 
     function getResumePDFLink() {
         return `/api/pdf/`
@@ -28,6 +29,7 @@ export default function ResumeConfig(props: ResumeConfigProps) {
         const formData = new FormData()
         formData.append('resume_data', JSON.stringify(jsonResumeFromResume(resume)))
         formData.append('download', 'true')
+        formData.append('template', template)
 
         const pdfData = await fetch('/api/pdf', {
             method: 'POST',
@@ -160,6 +162,9 @@ export default function ResumeConfig(props: ResumeConfigProps) {
                         className='select select-bordered ml-8'
                         name='template'
                         id='resume-template'
+                        onChange={(e) => {
+                            setTemplate(e.target.value);
+                        }}
                     >
                         {Object.keys(Templates).map((template, idx) => {
                             const templateName = TemplateNames[template];
