@@ -61,7 +61,7 @@ export default function Typeahead<T>({
     }, [searchQuery, annotatedVals])
 
     return (
-        <div className={wrapperClassName}>
+        <div className={twMerge('relative', wrapperClassName)}>
             <input
                 onChange={(e) => {
                     setSearchQuery(e.target.value)
@@ -74,15 +74,15 @@ export default function Typeahead<T>({
                 className={twMerge('input input-bordered', inputClassName)}
             />
             {showOptions && (
-                <ul className={twMerge('list-none pl-0', listClassName)}>
+                <ul className={twMerge('list-none absolute bg-base-200 mt-0 pl-0', listClassName)}>
                     {shownVals.map((val, idx) => {
                         return (
                             <li
                                 key={`typeahead-item-${idx}`}
-                                className={listItemClassName}
+                                className={twMerge('focus-within:border-solid px-4 focus-within:border-2 focus-within:border-white', listItemClassName)}
                             >
                                 <button
-                                    className={buttonClassName}
+                                    className={twMerge('focus:outline-none', buttonClassName)}
                                     onClick={() => {
                                         onSelect(val)
                                         setSearchQuery(val.label)
