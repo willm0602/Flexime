@@ -1,20 +1,23 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react';
 
-export default function useQueryParam(key: string, defaultVal: string): [string, (newVal: string) => unknown] {
-    const queryParams = new URLSearchParams(window.location.search)
-    const queryParam = queryParams.get(key)
-    const initVal = queryParam || defaultVal
+export default function useQueryParam(key: string, defaultVal: string): [string, (newVal: string) => void] {
+  const [val, setVal] = useState<string>(defaultVal); // Start with default value
 
-    const [val, dispatch] = useState<string>(initVal)
-
-    function setVal(newVal: string) {
-        dispatch(newVal)
-        if(window && window.location){
-            const search = new URLSearchParams(window.location.search)
-            search.set(key, newVal)
-            window.location.search = search.toString()
-        }
+  // Hydrate from URL when on client
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const queryParam = queryParams.get(key);
+    if (queryParam) {
+      setVal(queryParam);
     }
+  }, [key]);
 
-    return [val, setVal]
+  function updateQueryParam(newVal: string) {
+    setVal(newVal);
+    const url = new URL(window.location.href);
+    url.searchParams.set(key, newVal);
+    window.history.replaceState({}, '', url.toString()); // Update URL without reload
+  }
+
+  return [val, updateQueryParam];
 }
