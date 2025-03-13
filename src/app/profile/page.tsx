@@ -12,6 +12,7 @@ import EditEducation from '@/components/pageSpecific/profile/EditEducation'
 import EditProjects from '@/components/pageSpecific/profile/EditProjects'
 import EditSkills from '@/components/pageSpecific/profile/EditSkills'
 import { useEffect, useState } from 'react'
+import useQueryParam from '@/lib/useQueryParam'
 
 const RESUME_KEY = 'saved-resume'
 
@@ -19,6 +20,7 @@ export default function ConfigureProfile() {
     const [isClient, setIsClient] = useState(false);
     const [resume, setResume] = useLocalStorage<Resume>(RESUME_KEY, DEFAULT_RESUME);
     const [exportURL, setExportURL] = useState<string>('');
+    const [activeTab, setActiveTab] = useQueryParam('tab', 'basics');
 
     useEffect(() => {
         setIsClient(true);
@@ -52,7 +54,7 @@ export default function ConfigureProfile() {
                         </a>
                     </div>
 
-                    <Tabs.Root defaultValue="basics" className="mt-12">
+                    <Tabs.Root defaultValue={activeTab} onValueChange={(e)=>{setActiveTab(e)}} className="mt-12">
                         <Tabs.List className="tabs-boxed">
                             <Tabs.Trigger value="basics" className="tab">
                                 Basics
