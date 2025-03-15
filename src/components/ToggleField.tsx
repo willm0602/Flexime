@@ -170,18 +170,23 @@ function ToggleChildField<C>(props: ToggleChildFieldProps<C>) {
                 </button>
             </div>
             <div className={isCollapsed ? 'hidden' : ''}>
-                {child.isOn && subchildren.map((subchild, subindex) => {
-                    return (
-                        <ToggleChildField
-                            key={`togglable-${subindex}`}
-                            togglable={child}
-                            fieldName={`${fieldName}-${index}-${subindex}`}
-                            setTogglable={setChild}
-                            indent={indent + 1}
-                            index={subindex}
-                        />
-                    )
-                })}
+                <ReactSortable
+                    list={subchildren.map((child, subidx) => {return {...child, id: `togglable-${subidx}`}})}
+                    setList={(children) => {setChild({...child, children})}}
+                >
+                    {child.isOn && subchildren.map((_, subindex) => {
+                        return (
+                            <ToggleChildField
+                                key={`togglable-${subindex}`}
+                                togglable={child}
+                                fieldName={`${fieldName}-${index}-${subindex}`}
+                                setTogglable={setChild}
+                                indent={indent + 1}
+                                index={subindex}
+                                />
+                            )
+                        })}
+                </ReactSortable>
             </div>
         </div>
     )
