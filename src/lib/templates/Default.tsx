@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     smallLabel: {
         fontSize: 10,
         textAlign: 'center',
-        marginBottom: 4
+        marginBottom: 4,
     },
     boldItalics: {
         fontWeight: 'heavy',
@@ -173,7 +173,7 @@ const ProjectComponent = (props: {
 }
 
 const ResumeComponent = (props: { resume: Resume }) => {
-    const { resume } = props;
+    const { resume } = props
 
     const profiles: Profile[] = resume.basics.profiles
 
@@ -186,7 +186,9 @@ const ResumeComponent = (props: { resume: Resume }) => {
             <Page style={styles.page} size="A4">
                 <View>
                     <Text style={styles.title}>{resume.basics.name}</Text>
-                    <Text style={styles.smallLabel}>{resume.basics.summary}</Text>
+                    <Text style={styles.smallLabel}>
+                        {resume.basics.summary}
+                    </Text>
                     <Text style={styles.smallLabel}>{resume.basics.label}</Text>
 
                     {/* Basics */}
@@ -194,19 +196,20 @@ const ResumeComponent = (props: { resume: Resume }) => {
                         {/* Location */}
                         {resume.basics.location && (
                             <Text>
-                                {resume.basics.location.city}{', '}
-                                {resume.basics.location.region}{' '}
-                                ({resume.basics.location.countryCode})
+                                {resume.basics.location.city}
+                                {', '}
+                                {resume.basics.location.region} (
+                                {resume.basics.location.countryCode})
                             </Text>
                         )}
 
                         {/* Contact info */}
-                        {resume.basics.phone &&
+                        {resume.basics.phone && (
                             <Text>{resume.basics.phone}</Text>
-                        }
-                        {resume.basics.email &&
+                        )}
+                        {resume.basics.email && (
                             <Text>{resume.basics.email}</Text>
-                        }
+                        )}
 
                         {profiles.map((profile, idx) => {
                             return (
@@ -222,21 +225,19 @@ const ResumeComponent = (props: { resume: Resume }) => {
                         <>
                             <SectionLabel sectionName="Work Experience" />
                             <View>
-                                {workExperience.map(
-                                    (role: Work, idx) => {
-                                        try {
-                                            return (
-                                                <RoleComponent
-                                                    key={`idx-${idx}`}
-                                                    role={role}
-                                                    highlights={role.highlights}
-                                                />
-                                            )
-                                        } catch {
-                                            return <></>
-                                        }
+                                {workExperience.map((role: Work, idx) => {
+                                    try {
+                                        return (
+                                            <RoleComponent
+                                                key={`idx-${idx}`}
+                                                role={role}
+                                                highlights={role.highlights}
+                                            />
+                                        )
+                                    } catch {
+                                        return <></>
                                     }
-                                )}
+                                })}
                             </View>
                         </>
                     )}
@@ -274,11 +275,12 @@ const ResumeComponent = (props: { resume: Resume }) => {
                     )}
                     <View>
                         <Text>
-                            {resume.skills && resume.skills
-                                .map(
-                                    (togglableSkill) => togglableSkill.name
-                                )
-                                .join(', ')}
+                            {resume.skills &&
+                                resume.skills
+                                    .map(
+                                        (togglableSkill) => togglableSkill.name
+                                    )
+                                    .join(', ')}
                         </Text>
                     </View>
                 </View>

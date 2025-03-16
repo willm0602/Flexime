@@ -9,20 +9,22 @@ import useLocalStorage from '@/lib/useLocalStorage'
 const LOCAL_STORAGE_KEY = 'saved-resume'
 
 export default function Home() {
-    const [isClient, setIsClient] = useState(false);
-    const [configuredResume, setConfiguredResume] = useState<Resume | null>(null);
-    const [initResume] = useLocalStorage(LOCAL_STORAGE_KEY, DEFAULT_RESUME);
+    const [isClient, setIsClient] = useState(false)
+    const [configuredResume, setConfiguredResume] = useState<Resume | null>(
+        null
+    )
+    const [initResume] = useLocalStorage(LOCAL_STORAGE_KEY, DEFAULT_RESUME)
 
     useEffect(() => {
-        setIsClient(true);
-    }, []);
+        setIsClient(true)
+    }, [])
 
     // Ensure configuredResume is set only on the client
     useEffect(() => {
         if (initResume) {
-            setConfiguredResume(resumeFromJSONResume(initResume));
+            setConfiguredResume(resumeFromJSONResume(initResume))
         }
-    }, [initResume]);
+    }, [initResume])
 
     return (
         <div
@@ -30,10 +32,12 @@ export default function Home() {
             suppressHydrationWarning
         >
             {!isClient || !initResume || !configuredResume ? (
-                <p>...loading</p>
+                <div className="flex">
+                    <span className="loading loading-spinner w-1/4 mx-auto" />
+                </div>
             ) : (
                 <>
-                    <div className='flex'>
+                    <div className="flex">
                         <h1>Flexime</h1>
                     </div>
                     <ResumeConfig
@@ -44,5 +48,5 @@ export default function Home() {
                 </>
             )}
         </div>
-    );
+    )
 }

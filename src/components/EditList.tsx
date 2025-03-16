@@ -1,6 +1,6 @@
 import { JSX, useEffect, useMemo, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { ReactSortable } from 'react-sortablejs';
+import { ReactSortable } from 'react-sortablejs'
 
 const DEFAULT_ADD_BTN_TEXT = 'Add'
 const DEFAULT_WRAPPER_CLASS = 'w-full flex flex-col'
@@ -33,10 +33,10 @@ function getAnnotatedItems<T>(vals: T[]) {
     const annotatedItems = vals.map((val, idx) => {
         return {
             data: val,
-            id: `edit-list-${idx}-${JSON.stringify(val)}`
+            id: `edit-list-${idx}-${JSON.stringify(val)}`,
         }
-    });
-    return annotatedItems;
+    })
+    return annotatedItems
 }
 
 export default function EditList<T>(props: EditListProps<T>) {
@@ -49,17 +49,19 @@ export default function EditList<T>(props: EditListProps<T>) {
         itemWrapperClass,
     } = props
 
-    const vals = useMemo(() => props.vals || [], [props.vals]);
+    const vals = useMemo(() => props.vals || [], [props.vals])
 
     type AnnotatedItem = {
-        data: T,
+        data: T
         id: string
     }
 
-    const [annotatedItems, dispatchAnnotatedItems] = useState<AnnotatedItem[]>(getAnnotatedItems(vals));
+    const [annotatedItems, dispatchAnnotatedItems] = useState<AnnotatedItem[]>(
+        getAnnotatedItems(vals)
+    )
 
     useEffect(() => {
-        dispatchAnnotatedItems(getAnnotatedItems(vals));
+        dispatchAnnotatedItems(getAnnotatedItems(vals))
     }, [vals, dispatchAnnotatedItems])
 
     const addNew = () => {
@@ -67,8 +69,8 @@ export default function EditList<T>(props: EditListProps<T>) {
     }
 
     const setAnnotatedItems = (annotatedItems: AnnotatedItem[]) => {
-        const newList: T[] = annotatedItems.map((annotated) => annotated.data);
-        setList(newList);
+        const newList: T[] = annotatedItems.map((annotated) => annotated.data)
+        setList(newList)
     }
 
     const confirmThenRemoveAtIdx = () => () => {
@@ -82,7 +84,8 @@ export default function EditList<T>(props: EditListProps<T>) {
         return true
     }
     return (
-        <ReactSortable className={twMerge(containerClassName, DEFAULT_WRAPPER_CLASS)}
+        <ReactSortable
+            className={twMerge(containerClassName, DEFAULT_WRAPPER_CLASS)}
             list={annotatedItems}
             setList={setAnnotatedItems}
         >

@@ -16,8 +16,8 @@ export async function POST(req: NextRequest) {
 
     const resumeAsStr = body.get('resume_data') as string
     const shouldDownload = body.get('download') == 'true'
-    type TemplateOption = keyof typeof Templates;
-    const templateName = (body.get('template') || 'DEFAULT') as TemplateOption;
+    type TemplateOption = keyof typeof Templates
+    const templateName = (body.get('template') || 'DEFAULT') as TemplateOption
 
     if (!resumeAsStr) {
         return NextResponse.json(

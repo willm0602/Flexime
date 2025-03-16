@@ -8,7 +8,7 @@ function getAnnotatedSkills(skills: Skill[]) {
     return skills.map((skill, idx) => {
         return {
             data: skill,
-            id: `edit-skill-${idx}`
+            id: `edit-skill-${idx}`,
         }
     })
 }
@@ -27,11 +27,13 @@ export default function EditSkills(props: EditProfileProps) {
     }
 
     type AnnotatedSkill = {
-        data: Skill,
+        data: Skill
         id: string
-    };
+    }
 
-    const [annotatedSkills, dispatchAnnotatedSkills] = useState<AnnotatedSkill[]>(getAnnotatedSkills(skills));
+    const [annotatedSkills, dispatchAnnotatedSkills] = useState<
+        AnnotatedSkill[]
+    >(getAnnotatedSkills(skills))
     useEffect(() => {
         dispatchAnnotatedSkills(getAnnotatedSkills(skills))
     }, [skills])
@@ -46,13 +48,17 @@ export default function EditSkills(props: EditProfileProps) {
     }
 
     const setAnnotatedSkills = (newAnnotatedSkills: AnnotatedSkill[]) => {
-        setSkills((newAnnotatedSkills.map((annotated) => annotated.data)))
+        setSkills(newAnnotatedSkills.map((annotated) => annotated.data))
     }
 
     return (
         <>
             <h2>Edit Skills</h2>
-            <ReactSortable className="flex flex-wrap mb-8 gap-y-4" list={annotatedSkills} setList={setAnnotatedSkills}>
+            <ReactSortable
+                className="flex flex-wrap mb-8 gap-y-4"
+                list={annotatedSkills}
+                setList={setAnnotatedSkills}
+            >
                 {skills.map((skill, idx) => {
                     return (
                         <div
@@ -64,12 +70,14 @@ export default function EditSkills(props: EditProfileProps) {
                                     const updatedSkills = skills
                                     updatedSkills.splice(idx, 1)
                                     setSkills(updatedSkills)
-                                    setAnnotatedSkills(updatedSkills.map((skill, idx) => {
-                                        return {
-                                            data: skill,
-                                            id: `skill-${idx}`
-                                        }
-                                    }))
+                                    setAnnotatedSkills(
+                                        updatedSkills.map((skill, idx) => {
+                                            return {
+                                                data: skill,
+                                                id: `skill-${idx}`,
+                                            }
+                                        })
+                                    )
                                 }}
                             >
                                 <XCircleIcon className="w-4 h-4 mr-2" />
@@ -98,7 +106,6 @@ export default function EditSkills(props: EditProfileProps) {
                     Add
                 </button>
             </div>
-
         </>
     )
 }

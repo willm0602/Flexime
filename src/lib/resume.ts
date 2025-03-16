@@ -126,39 +126,63 @@ export function resumeFromJSONResume(
 }
 
 export function jsonResumeFromResume(resume: Resume): JSONResume {
-    const usedProfiles: Profile[] = resume.profiles.isOn ? (resume.profiles.children || []).filter((toggProf) => {
-        return toggProf.isOn
-    }).map((toggProf) => toggProf.val) : [];
+    const usedProfiles: Profile[] = resume.profiles.isOn
+        ? (resume.profiles.children || [])
+              .filter((toggProf) => {
+                  return toggProf.isOn
+              })
+              .map((toggProf) => toggProf.val)
+        : []
 
-    const usedEducation: Education[] = resume.education.isOn ? (resume.education.children || []).filter((toggEd) => {
-        return toggEd.isOn
-    }).map((toggEd) => toggEd.val) : []
+    const usedEducation: Education[] = resume.education.isOn
+        ? (resume.education.children || [])
+              .filter((toggEd) => {
+                  return toggEd.isOn
+              })
+              .map((toggEd) => toggEd.val)
+        : []
 
-    const usedWork: Work[] = resume.workExperience.isOn ? (resume.workExperience.children || []).filter((toggWork) => {
-        return toggWork.isOn
-    }).map((toggWork) => {
-        const work: Work = toggWork.val;
-        const toggHL = (toggWork.children || []) as Togglable<string>[];
-        const highlights: string[] = (toggHL || []).filter((toggHL) => toggHL.isOn).map((toggHL) => toggHL.val);
-        return {
-            ...work,
-            highlights
-        }
-    }) : []
+    const usedWork: Work[] = resume.workExperience.isOn
+        ? (resume.workExperience.children || [])
+              .filter((toggWork) => {
+                  return toggWork.isOn
+              })
+              .map((toggWork) => {
+                  const work: Work = toggWork.val
+                  const toggHL = (toggWork.children ||
+                      []) as Togglable<string>[]
+                  const highlights: string[] = (toggHL || [])
+                      .filter((toggHL) => toggHL.isOn)
+                      .map((toggHL) => toggHL.val)
+                  return {
+                      ...work,
+                      highlights,
+                  }
+              })
+        : []
 
-    const usedProjects: Project[] = resume.personalProjects.isOn ? (resume.personalProjects.children || []).filter((toggProj) => {
-        return toggProj.isOn
-    }).map((toggProj) => {
-        const proj = toggProj.val;
-        const toggHL = (toggProj.children || []) as Togglable<string>[];
-        const highlights: string[] = (toggHL || []).filter((toggHL) => toggHL.isOn).map((toggHL) => toggHL.val);
-        return {
-            ...proj,
-            highlights
-        }
-    }) : []
+    const usedProjects: Project[] = resume.personalProjects.isOn
+        ? (resume.personalProjects.children || [])
+              .filter((toggProj) => {
+                  return toggProj.isOn
+              })
+              .map((toggProj) => {
+                  const proj = toggProj.val
+                  const toggHL = (toggProj.children ||
+                      []) as Togglable<string>[]
+                  const highlights: string[] = (toggHL || [])
+                      .filter((toggHL) => toggHL.isOn)
+                      .map((toggHL) => toggHL.val)
+                  return {
+                      ...proj,
+                      highlights,
+                  }
+              })
+        : []
 
-    const usedSkills: Skill[] = resume.skills.isOn ? (resume.skills.children || []).map((toggSkill) => toggSkill.val) : []
+    const usedSkills: Skill[] = resume.skills.isOn
+        ? (resume.skills.children || []).map((toggSkill) => toggSkill.val)
+        : []
 
     const jsonResume: JSONResume = {
         basics: {
@@ -173,8 +197,8 @@ export function jsonResumeFromResume(resume: Resume): JSONResume {
         education: usedEducation,
         work: usedWork,
         projects: usedProjects,
-        skills: usedSkills
-    };
+        skills: usedSkills,
+    }
 
-    return jsonResume;
+    return jsonResume
 }
