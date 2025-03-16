@@ -5,7 +5,12 @@ import ToggleField from './ToggleField'
 import Togglable, { isTogglable } from '@/lib/togglable'
 import { MouseEventHandler, useState } from 'react'
 import { jsonResumeFromResume } from '@/lib/resume'
-import { ArrowDownTrayIcon, ArrowPathIcon, ArrowTopRightOnSquareIcon, PencilSquareIcon } from '@heroicons/react/24/solid'
+import {
+    ArrowDownTrayIcon,
+    ArrowPathIcon,
+    ArrowTopRightOnSquareIcon,
+    PencilSquareIcon,
+} from '@heroicons/react/24/solid'
 
 type ResumeConfigProps = {
     resume: Resume
@@ -17,7 +22,7 @@ type ResumeConfigProps = {
 export default function ResumeConfig(props: ResumeConfigProps) {
     const { resume, setResume } = props
     const [resumeName, setResumeName] = useState<string>('')
-    const [template, setTemplate] = useState(Object.keys(Templates)[0]);
+    const [template, setTemplate] = useState(Object.keys(Templates)[0])
 
     function getResumePDFLink() {
         return `/api/pdf/`
@@ -27,7 +32,10 @@ export default function ResumeConfig(props: ResumeConfigProps) {
         e.preventDefault()
 
         const formData = new FormData()
-        formData.append('resume_data', JSON.stringify(jsonResumeFromResume(resume)))
+        formData.append(
+            'resume_data',
+            JSON.stringify(jsonResumeFromResume(resume))
+        )
         formData.append('download', 'true')
         formData.append('template', template)
 
@@ -80,38 +88,51 @@ export default function ResumeConfig(props: ResumeConfigProps) {
                             openInNewTab()
                         }}
                     >
-                        <ArrowTopRightOnSquareIcon width={24} height={24} title='Open resume in new tab' />
+                        <ArrowTopRightOnSquareIcon
+                            width={24}
+                            height={24}
+                            title="Open resume in new tab"
+                        />
                     </button>
                     <a
                         className="btn btn-secondary text-black no-underline"
                         href="/profile"
                     >
-                        <PencilSquareIcon width={24} height={24} title='Edit Resume' />
+                        <PencilSquareIcon
+                            width={24}
+                            height={24}
+                            title="Edit Resume"
+                        />
                     </a>
                 </div>
-                <div className='prose mt-4'>
-                    <input className='input input-bordered'
-                        placeholder='Job Title'
+                <div className="prose mt-4">
+                    <input
+                        className="input input-bordered"
+                        placeholder="Job Title"
                         value={resume.title.val}
                         onChange={(e) => {
-                            const val = e.target.value;
+                            const val = e.target.value
                             setResume({
                                 ...resume,
                                 title: {
                                     ...resume.title,
-                                    val
-                                }
+                                    val,
+                                },
                             })
                         }}
                     />
                 </div>
                 <ul className="pl-0 overflow-scroll max-h-[70vh]">
                     {Object.entries(resume).map(([key, val]) => {
-                        if (!isTogglable(val))
-                            return
+                        if (!isTogglable(val)) return
 
-                        if (!(val.val || (val.children && val.children.length > 0)))
-                            return;
+                        if (
+                            !(
+                                val.val ||
+                                (val.children && val.children.length > 0)
+                            )
+                        )
+                            return
 
                         return (
                             <li
@@ -123,7 +144,7 @@ export default function ResumeConfig(props: ResumeConfigProps) {
                                     // @ts-expect-error type needs to be generic
                                     togglable={
                                         val as Resume[keyof Resume] &
-                                        Togglable<unknown>
+                                            Togglable<unknown>
                                     }
                                     parent={resume}
                                     setParent={setResume}
@@ -136,15 +157,16 @@ export default function ResumeConfig(props: ResumeConfigProps) {
             <div className="flex-1">
                 <div className="flex">
                     <button className="btn btn-primary ml-12 mb-4">
-                        <ArrowPathIcon width={24} height={24} title='Preview Resume' />
+                        <ArrowPathIcon
+                            width={24}
+                            height={24}
+                            title="Preview Resume"
+                        />
                     </button>
-                    <label
-                        className='input input-bordered pr-0 ml-4 flex'
-                    >
-
+                    <label className="input input-bordered pr-0 ml-4 flex">
                         <input
                             type="text"
-                            className='grow'
+                            className="grow"
                             placeholder="Save As"
                             onChange={(e) => {
                                 const newResumeName = e.target.value
@@ -155,20 +177,32 @@ export default function ResumeConfig(props: ResumeConfigProps) {
                             className="btn btn-primary"
                             onClick={downloadResume}
                         >
-                            <ArrowDownTrayIcon width={12} height={12} title='Download Resume' />
+                            <ArrowDownTrayIcon
+                                width={12}
+                                height={12}
+                                title="Download Resume"
+                            />
                         </button>
                     </label>
                     <select
-                        className='select select-bordered ml-8'
-                        name='template'
-                        id='resume-template'
+                        className="select select-bordered ml-8"
+                        name="template"
+                        id="resume-template"
                         onChange={(e) => {
-                            setTemplate(e.target.value);
+                            setTemplate(e.target.value)
                         }}
                     >
                         {Object.keys(Templates).map((template, idx) => {
-                            const templateName = TemplateNames[template];
-                            return <option className='cursor-pointer' value={template} key={`template-${idx}-${template}`}>{templateName}</option>
+                            const templateName = TemplateNames[template]
+                            return (
+                                <option
+                                    className="cursor-pointer"
+                                    value={template}
+                                    key={`template-${idx}-${template}`}
+                                >
+                                    {templateName}
+                                </option>
+                            )
                         })}
                     </select>
                 </div>

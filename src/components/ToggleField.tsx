@@ -46,10 +46,13 @@ export default function ToggleField<P, F extends keyof P, C = unknown>(
 
     return (
         <>
-            <div style={{ marginLeft: `${indent}em` }} className="flex items-center">
+            <div
+                style={{ marginLeft: `${indent}em` }}
+                className="flex items-center"
+            >
                 <input
                     id={`toggle-field-${fieldName}`}
-                    className='checkbox checkbox-xs checkbox-primary'
+                    className="checkbox checkbox-xs checkbox-primary"
                     type="checkbox"
                     checked={currTogglable.isOn}
                     onChange={toggleField}
@@ -61,7 +64,8 @@ export default function ToggleField<P, F extends keyof P, C = unknown>(
                     {togglable.title}
                 </label>
                 <button onClick={toggleCollapsed} type="button">
-                    {(currTogglable.isOn && currTogglable.children) &&
+                    {currTogglable.isOn &&
+                        currTogglable.children &&
                         (isCollapsed ? (
                             <ChevronDownIcon width={24} height={24} />
                         ) : (
@@ -71,18 +75,20 @@ export default function ToggleField<P, F extends keyof P, C = unknown>(
             </div>
 
             {/* Render nested fields if currTogglable.val is a TogglableList */}
-            <ReactSortable className={isCollapsed ? 'hidden' : ''}
+            <ReactSortable
+                className={isCollapsed ? 'hidden' : ''}
                 list={(currTogglable.children || []).map((child, idx) => {
                     return { ...child, id: `togglable-${idx}` }
                 })}
                 setList={(newList) => {
                     setCurrentTogglable({
                         ...currTogglable,
-                        children: newList
-                    });
+                        children: newList,
+                    })
                 }}
             >
-                {(currTogglable.isOn && currTogglable.children) &&
+                {currTogglable.isOn &&
+                    currTogglable.children &&
                     currTogglable.children.map((togglable, idx) => {
                         return (
                             <ToggleChildField
@@ -142,11 +148,14 @@ function ToggleChildField<C>(props: ToggleChildFieldProps<C>) {
     const child = (togglable.children || [])[index]
     const subchildren = child.children || []
 
-    const isString = (typeof child.val) == 'string';
+    const isString = typeof child.val == 'string'
 
     return (
         <div style={{ marginLeft: `${indent / 2}em` }}>
-            <div className={`flex items-center ${isString ? 'tooltip tooltip-top' : ''}`} data-tip={child.val}>
+            <div
+                className={`flex items-center ${isString ? 'tooltip tooltip-top' : ''}`}
+                data-tip={child.val}
+            >
                 <input
                     type="checkbox"
                     className="checkbox checkbox-xs checkbox-primary"
@@ -161,7 +170,8 @@ function ToggleChildField<C>(props: ToggleChildFieldProps<C>) {
                     {togglable.children?.[index]?.title}
                 </label>
                 <button type="button" onClick={toggleIsCollapsed}>
-                    {(subchildren.length > 0 && togglable.children?.[index]?.isOn) &&
+                    {subchildren.length > 0 &&
+                        togglable.children?.[index]?.isOn &&
                         (isCollapsed ? (
                             <ChevronDownIcon width={24} height={24} />
                         ) : (
@@ -171,18 +181,23 @@ function ToggleChildField<C>(props: ToggleChildFieldProps<C>) {
             </div>
             <div className={isCollapsed ? 'hidden' : ''}>
                 <ReactSortable
-                    list={subchildren.map((child, subidx) => {return {...child, id: `togglable-${subidx}`}})}
-                    setList={(children) => {setChild({...child, children})}}
+                    list={subchildren.map((child, subidx) => {
+                        return { ...child, id: `togglable-${subidx}` }
+                    })}
+                    setList={(children) => {
+                        setChild({ ...child, children })
+                    }}
                 >
-                    {child.isOn && subchildren.map((_, subindex) => {
-                        return (
-                            <ToggleChildField
-                                key={`togglable-${subindex}`}
-                                togglable={child}
-                                fieldName={`${fieldName}-${index}-${subindex}`}
-                                setTogglable={setChild}
-                                indent={indent + 1}
-                                index={subindex}
+                    {child.isOn &&
+                        subchildren.map((_, subindex) => {
+                            return (
+                                <ToggleChildField
+                                    key={`togglable-${subindex}`}
+                                    togglable={child}
+                                    fieldName={`${fieldName}-${index}-${subindex}`}
+                                    setTogglable={setChild}
+                                    indent={indent + 1}
+                                    index={subindex}
                                 />
                             )
                         })}

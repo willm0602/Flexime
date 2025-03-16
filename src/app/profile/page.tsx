@@ -17,27 +17,30 @@ import useQueryParam from '@/lib/useQueryParam'
 const RESUME_KEY = 'saved-resume'
 
 export default function ConfigureProfile() {
-    const [isClient, setIsClient] = useState(false);
-    const [resume, setResume] = useLocalStorage<Resume>(RESUME_KEY, DEFAULT_RESUME);
-    const [exportURL, setExportURL] = useState<string>('');
-    const [activeTab, setActiveTab] = useQueryParam('tab', 'basics');
+    const [isClient, setIsClient] = useState(false)
+    const [resume, setResume] = useLocalStorage<Resume>(
+        RESUME_KEY,
+        DEFAULT_RESUME
+    )
+    const [exportURL, setExportURL] = useState<string>('')
+    const [activeTab, setActiveTab] = useQueryParam('tab', 'basics')
 
     useEffect(() => {
-        setIsClient(true);
-    }, []);
+        setIsClient(true)
+    }, [])
 
     useEffect(() => {
         if (resume) {
-            const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(resume))}`;
-            setExportURL(dataStr);
+            const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(resume))}`
+            setExportURL(dataStr)
         }
-    }, [resume]);
+    }, [resume])
 
     return (
         <div className="font-[family-name:var(--font-geist-sans)] w-full md:w-4/5 mx-auto px-12 py-12">
             {!isClient || !resume ? (
-                <div className='flex'>
-                    <span className='loading loading-spinner w-1/4 mx-auto'/>
+                <div className="flex">
+                    <span className="loading loading-spinner w-1/4 mx-auto" />
                 </div>
             ) : (
                 <>
@@ -56,7 +59,13 @@ export default function ConfigureProfile() {
                         </a>
                     </div>
 
-                    <Tabs.Root defaultValue={activeTab} onValueChange={(e)=>{setActiveTab(e)}} className="mt-12">
+                    <Tabs.Root
+                        defaultValue={activeTab}
+                        onValueChange={(e) => {
+                            setActiveTab(e)
+                        }}
+                        className="mt-12"
+                    >
                         <Tabs.List className="tabs-boxed">
                             <Tabs.Trigger value="basics" className="tab">
                                 Basics
@@ -78,20 +87,32 @@ export default function ConfigureProfile() {
                             <EditBasics resume={resume} setResume={setResume} />
                         </Tabs.Content>
                         <Tabs.Content value="work">
-                            <EditWork resume={resume} dispatchResume={setResume} />
+                            <EditWork
+                                resume={resume}
+                                dispatchResume={setResume}
+                            />
                         </Tabs.Content>
                         <Tabs.Content value="education">
-                            <EditEducation resume={resume} dispatchResume={setResume} />
+                            <EditEducation
+                                resume={resume}
+                                dispatchResume={setResume}
+                            />
                         </Tabs.Content>
                         <Tabs.Content value="projects">
-                            <EditProjects resume={resume} dispatchResume={setResume} />
+                            <EditProjects
+                                resume={resume}
+                                dispatchResume={setResume}
+                            />
                         </Tabs.Content>
                         <Tabs.Content value="skills">
-                            <EditSkills resume={resume} dispatchResume={setResume} />
+                            <EditSkills
+                                resume={resume}
+                                dispatchResume={setResume}
+                            />
                         </Tabs.Content>
                     </Tabs.Root>
                 </>
             )}
         </div>
-    );
+    )
 }

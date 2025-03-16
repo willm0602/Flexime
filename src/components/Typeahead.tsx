@@ -33,13 +33,14 @@ export default function Typeahead<T>({
         label: string
     }
 
-    const annotatedVals = useMemo(() =>
-        vals.map((val: T) => ({
-            ...val,
-            label: getDisplay(val),
-        })),
+    const annotatedVals = useMemo(
+        () =>
+            vals.map((val: T) => ({
+                ...val,
+                label: getDisplay(val),
+            })),
         [vals, getDisplay]
-    );
+    )
 
     const [searchQuery, setSearchQuery] = useState(
         selectedVal ? getDisplay(selectedVal) : ''
@@ -74,15 +75,26 @@ export default function Typeahead<T>({
                 className={twMerge('input input-bordered', inputClassName)}
             />
             {showOptions && (
-                <ul className={twMerge('list-none absolute bg-base-200 mt-0 pl-0', listClassName)}>
+                <ul
+                    className={twMerge(
+                        'list-none absolute bg-base-200 mt-0 pl-0',
+                        listClassName
+                    )}
+                >
                     {shownVals.map((val, idx) => {
                         return (
                             <li
                                 key={`typeahead-item-${idx}`}
-                                className={twMerge('focus-within:border-solid px-4 focus-within:border-2 focus-within:border-white', listItemClassName)}
+                                className={twMerge(
+                                    'focus-within:border-solid px-4 focus-within:border-2 focus-within:border-white',
+                                    listItemClassName
+                                )}
                             >
                                 <button
-                                    className={twMerge('focus:outline-none', buttonClassName)}
+                                    className={twMerge(
+                                        'focus:outline-none',
+                                        buttonClassName
+                                    )}
                                     onClick={() => {
                                         onSelect(val)
                                         setSearchQuery(val.label)
