@@ -30,7 +30,9 @@ export default function Home() {
             suppressHydrationWarning
         >
             {!isClient || !initResume || !configuredResume ? (
-                <p>...loading</p>
+                <div className='flex'>
+                    <span className='loading loading-spinner w-1/4 mx-auto'/>
+                </div>
             ) : (
                 <>
                     <div className='flex'>

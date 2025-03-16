@@ -36,7 +36,9 @@ export default function ConfigureProfile() {
     return (
         <div className="font-[family-name:var(--font-geist-sans)] w-full md:w-4/5 mx-auto px-12 py-12">
             {!isClient || !resume ? (
-                <p>Loading...</p>
+                <div className='flex'>
+                    <span className='loading loading-spinner w-1/4 mx-auto'/>
+                </div>
             ) : (
                 <>
                     <h1>Modify Profile</h1>
