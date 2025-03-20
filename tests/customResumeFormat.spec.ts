@@ -1,8 +1,9 @@
 // tests for the custom resume format to ensure that they work properly
 
-import { test, expect } from '@playwright/test'
-import JSONResume, { Project } from '@/lib/jsonResume'
-import { resumeFromJSONResume } from '@/lib/resume'
+import { test, expect } from '@playwright/test';
+import type JSONResume from '@/lib/jsonResume';
+import { Project } from '@/lib/jsonResume';
+import { resumeFromJSONResume } from '@/lib/resume';
 
 test.describe('resumeFromJSONResume', () => {
     test('should correctly convert JSONResume to Resume with default values', () => {
@@ -15,17 +16,17 @@ test.describe('resumeFromJSONResume', () => {
             skills: [],
             work: [],
             projects: [],
-        }
+        };
 
-        const resume = resumeFromJSONResume(jsonResume)
+        const resume = resumeFromJSONResume(jsonResume);
 
-        expect(resume.name).toBe('John Doe')
-        expect(resume.profiles.children).toHaveLength(0)
-        expect(resume.education.children).toHaveLength(0)
-        expect(resume.skills.children).toHaveLength(0)
-        expect(resume.workExperience.children).toHaveLength(0)
-        expect(resume.personalProjects.children).toHaveLength(0)
-    })
+        expect(resume.name).toBe('John Doe');
+        expect(resume.profiles.children).toHaveLength(0);
+        expect(resume.education.children).toHaveLength(0);
+        expect(resume.skills.children).toHaveLength(0);
+        expect(resume.workExperience.children).toHaveLength(0);
+        expect(resume.personalProjects.children).toHaveLength(0);
+    });
 
     test('should include personal site when url is present', () => {
         const jsonResume: JSONResume = {
@@ -38,15 +39,15 @@ test.describe('resumeFromJSONResume', () => {
             skills: [],
             work: [],
             projects: [],
-        }
+        };
 
-        const resume = resumeFromJSONResume(jsonResume)
+        const resume = resumeFromJSONResume(jsonResume);
         const personalSite = resume.profiles.children?.find(
-            (p) => p.title === 'Personal Site'
-        )
-        expect(personalSite).toBeDefined()
-        expect(personalSite?.val.url).toBe('https://johndoe.com')
-    })
+            (p) => p.title === 'Personal Site',
+        );
+        expect(personalSite).toBeDefined();
+        expect(personalSite?.val.url).toBe('https://johndoe.com');
+    });
 
     test('should properly convert work experience', () => {
         const jsonResume: JSONResume = {
@@ -62,16 +63,16 @@ test.describe('resumeFromJSONResume', () => {
                     ],
                 },
             ],
-        }
+        };
 
-        const resume = resumeFromJSONResume(jsonResume)
-        expect(resume.workExperience.children).toHaveLength(1)
+        const resume = resumeFromJSONResume(jsonResume);
+        expect(resume.workExperience.children).toHaveLength(1);
         expect(resume.workExperience.children?.[0].title).toBe(
-            'Tech Corp (Software Engineer)'
-        )
-        expect(resume.workExperience.children?.[0].children).toHaveLength(2)
+            'Tech Corp (Software Engineer)',
+        );
+        expect(resume.workExperience.children?.[0].children).toHaveLength(2);
         expect(
-            typeof resume.workExperience.children?.[0].children?.[0].val
-        ).toBe('string')
-    })
-})
+            typeof resume.workExperience.children?.[0].children?.[0].val,
+        ).toBe('string');
+    });
+});

@@ -1,4 +1,4 @@
-import JSONResume from '@/lib/jsonResume'
+import type JSONResume from '@/lib/jsonResume';
 
 const DEFAULT_RESUME: JSONResume = {
     basics: {
@@ -15,6 +15,6 @@ const DEFAULT_RESUME: JSONResume = {
     publications: [],
     skills: [],
     projects: [],
-}
+};
 
-export { DEFAULT_RESUME }
+export { DEFAULT_RESUME };

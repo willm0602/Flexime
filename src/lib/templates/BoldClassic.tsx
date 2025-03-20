@@ -6,12 +6,12 @@ import {
     Page,
     StyleSheet,
     Link,
-} from '@react-pdf/renderer'
-import { GeneratedResume } from '../generatedResume'
-import Resume from '../jsonResume'
+} from '@react-pdf/renderer';
+import type { GeneratedResume } from '../generatedResume';
+import type Resume from '../jsonResume';
 
 interface ResumeComponentProps {
-    resume: Resume
+    resume: Resume;
 }
 
 const styles = StyleSheet.create({
@@ -83,37 +83,37 @@ const styles = StyleSheet.create({
         marginRight: 10,
         marginLeft: 10,
     },
-})
+});
 
 function ContactInfo(props: ResumeComponentProps) {
-    const { resume } = props
-    const { basics } = resume
-    const { phone, email, location, profiles } = basics
+    const { resume } = props;
+    const { basics } = resume;
+    const { phone, email, location, profiles } = basics;
 
     type LinkData = {
-        text: string
-        href?: string
-    }
+        text: string;
+        href?: string;
+    };
 
-    const links: LinkData[] = []
+    const links: LinkData[] = [];
 
     if (phone) {
         links.push({
             text: phone,
-        })
+        });
     }
 
     if (email) {
         links.push({
             text: email,
             href: `mailto:${email}`,
-        })
+        });
     }
 
     if (location) {
         links.push({
             text: `${location.city}, ${location.region} (${location.countryCode})`,
-        })
+        });
     }
 
     const LinkOrSpan = ({ link, idx }: { link: LinkData; idx: number }) => {
@@ -132,15 +132,15 @@ function ContactInfo(props: ResumeComponentProps) {
                     <></>
                 )}
             </>
-        )
-    }
+        );
+    };
 
     profiles.map((profile) => {
         links.push({
             text: profile.network,
             href: profile.url,
-        })
-    })
+        });
+    });
 
     return (
         <View style={styles.links}>
@@ -151,31 +151,31 @@ function ContactInfo(props: ResumeComponentProps) {
                         idx={idx}
                         key={`link-or-span-${idx}`}
                     />
-                )
+                );
             })}
         </View>
-    )
+    );
 }
 
 function SummarySection(props: ResumeComponentProps) {
-    const { resume } = props
+    const { resume } = props;
 
     if (!resume.basics.summary) {
-        return
+        return;
     }
 
     return (
-        <ResumeSection name="Personal Summary">
+        <ResumeSection name='Personal Summary'>
             <Text style={styles.summary}>{resume.basics.summary}</Text>
         </ResumeSection>
-    )
+    );
 }
 
 function AllWorkSection(props: ResumeComponentProps) {
-    const { resume } = props
-    if (!resume.work || resume.work.length == 0) return
+    const { resume } = props;
+    if (!resume.work || resume.work.length == 0) return;
     return (
-        <ResumeSection name="Work Experience">
+        <ResumeSection name='Work Experience'>
             {resume.work.map((role, idx) => {
                 return (
                     <View style={styles.role} key={`role-${idx}`}>
@@ -190,20 +190,20 @@ function AllWorkSection(props: ResumeComponentProps) {
                                 >
                                     - {hl}
                                 </Text>
-                            )
+                            );
                         })}
                     </View>
-                )
+                );
             })}
         </ResumeSection>
-    )
+    );
 }
 
 function AllEducationSection(props: ResumeComponentProps) {
-    const { resume } = props
-    if (!resume.education || resume.education.length == 0) return
+    const { resume } = props;
+    if (!resume.education || resume.education.length == 0) return;
     return (
-        <ResumeSection name="Education">
+        <ResumeSection name='Education'>
             {resume.education.map((education, idx) => {
                 return (
                     <View style={styles.role} key={`idx-${idx}`}>
@@ -214,17 +214,17 @@ function AllEducationSection(props: ResumeComponentProps) {
                             {education.studyType} in {education.area}
                         </Text>
                     </View>
-                )
+                );
             })}
         </ResumeSection>
-    )
+    );
 }
 
 function AllProjectsSection(props: ResumeComponentProps) {
-    const { resume } = props
-    if (!resume.projects || resume.projects.length == 0) return
+    const { resume } = props;
+    if (!resume.projects || resume.projects.length == 0) return;
     return (
-        <ResumeSection name="Personal Projects">
+        <ResumeSection name='Personal Projects'>
             {resume.projects.map((proj, idx) => {
                 return (
                     <View style={styles.role} key={`proj-${idx}`}>
@@ -249,43 +249,43 @@ function AllProjectsSection(props: ResumeComponentProps) {
                                 <Text key={`hl-${hlidx}`} style={styles.hl}>
                                     - {hl}
                                 </Text>
-                            )
+                            );
                         })}
                     </View>
-                )
+                );
             })}
         </ResumeSection>
-    )
+    );
 }
 
 function SkillsSection(props: ResumeComponentProps) {
-    const { resume } = props
-    const { skills } = resume
-    if (!skills || skills.length == 0) return
-    const skillNames = skills.map((skill) => skill.name)
+    const { resume } = props;
+    const { skills } = resume;
+    if (!skills || skills.length == 0) return;
+    const skillNames = skills.map((skill) => skill.name);
 
     return (
-        <ResumeSection name="Skills">
+        <ResumeSection name='Skills'>
             <Text style={styles.skills}>{skillNames.join(', ')}</Text>
         </ResumeSection>
-    )
+    );
 }
 
 function ResumeSection(props: { name: string; children?: React.ReactNode }) {
-    const { name, children } = props
+    const { name, children } = props;
     return (
         <>
             <Text style={styles.header}>{name}</Text>
             {children}
         </>
-    )
+    );
 }
 
 function ResumeComponent(props: ResumeComponentProps) {
-    const { resume } = props
+    const { resume } = props;
     return (
         <Document>
-            <Page style={[styles.page]} size="A4">
+            <Page style={[styles.page]} size='A4'>
                 <Text style={[styles.bold, styles.name]}>
                     {resume.basics.name}
                 </Text>
@@ -298,11 +298,11 @@ function ResumeComponent(props: ResumeComponentProps) {
                 <SkillsSection resume={resume} />
             </Page>
         </Document>
-    )
+    );
 }
 
 const boldClassic: GeneratedResume = async (resume: Resume) => {
-    return await renderToStream(<ResumeComponent resume={resume} />)
-}
+    return await renderToStream(<ResumeComponent resume={resume} />);
+};
 
-export default boldClassic
+export default boldClassic;

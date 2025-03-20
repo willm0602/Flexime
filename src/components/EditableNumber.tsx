@@ -1,22 +1,22 @@
-import { Dispatch, useState } from 'react'
+import { type Dispatch, useState } from 'react';
 
 type EditableNumberProps = {
-    defaultVal: number
-    dispatch: Dispatch<number>
-    label: string
-    remove?: CallableFunction
-    minVal?: number
-    maxVal?: number
-    step?: number
-    digits?: number
-}
+    defaultVal: number;
+    dispatch: Dispatch<number>;
+    label: string;
+    remove?: CallableFunction;
+    minVal?: number;
+    maxVal?: number;
+    step?: number;
+    digits?: number;
+};
 
 export default function EditableNumber(props: EditableNumberProps) {
-    const { defaultVal, dispatch, label, remove, minVal, maxVal, step } = props
-    const digits = props.digits || 0
+    const { defaultVal, dispatch, label, remove, minVal, maxVal, step } = props;
+    const digits = props.digits || 0;
 
-    const [isInEditMode, dispatchEdit] = useState<boolean>(false)
-    const [currVal, setVal] = useState(defaultVal)
+    const [isInEditMode, dispatchEdit] = useState<boolean>(false);
+    const [currVal, setVal] = useState(defaultVal);
 
     return (
         <>
@@ -41,46 +41,47 @@ export default function EditableNumber(props: EditableNumberProps) {
                 />
             )}
         </>
-    )
+    );
 }
 
 type EditFieldProps = {
-    val: number
-    setVal: Dispatch<number>
-    dispatch: Dispatch<number>
-    dispatchEdit: Dispatch<boolean>
-    label: string
-    minVal?: number
-    maxVal?: number
-    step?: number
-}
+    val: number;
+    setVal: Dispatch<number>;
+    dispatch: Dispatch<number>;
+    dispatchEdit: Dispatch<boolean>;
+    label: string;
+    minVal?: number;
+    maxVal?: number;
+    step?: number;
+};
 
 function EditField(props: EditFieldProps) {
-    const { val, setVal, dispatch, dispatchEdit, label, minVal, maxVal } = props
+    const { val, setVal, dispatch, dispatchEdit, label, minVal, maxVal } =
+        props;
 
-    const step = props.step || 1
+    const step = props.step || 1;
 
-    const [currVal, setCurrVal] = useState(val)
+    const [currVal, setCurrVal] = useState(val);
     const saveField = () => {
-        setVal(currVal)
-        dispatch(currVal)
-        dispatchEdit(false)
-    }
+        setVal(currVal);
+        dispatch(currVal);
+        dispatchEdit(false);
+    };
 
     return (
-        <div className="min-w-fit">
+        <div className='min-w-fit'>
             <input
                 defaultValue={currVal}
-                className="input input-bordered input-sm max-w-24"
-                type="number"
+                className='input input-bordered input-sm max-w-24'
+                type='number'
                 step={step}
                 onChange={(e) => {
-                    const newVal = parseFloat(e.target.value)
+                    const newVal = Number.parseFloat(e.target.value);
                     if (
                         (minVal === undefined || newVal > minVal) &&
                         (maxVal === undefined || newVal < maxVal)
                     ) {
-                        setCurrVal(parseFloat(e.target.value))
+                        setCurrVal(Number.parseFloat(e.target.value));
                     }
                 }}
                 min={minVal}
@@ -88,43 +89,43 @@ function EditField(props: EditFieldProps) {
                 placeholder={label}
             />
             <button
-                className="btn btn-main btn-sm btn-secondary ml-4"
+                className='btn btn-main btn-sm btn-secondary ml-4'
                 onClick={saveField}
             >
                 Save
             </button>
             <button
-                className="btn btn-main btn-sm btn-warning ml-4"
+                className='btn btn-main btn-sm btn-warning ml-4'
                 onClick={() => {
-                    dispatchEdit(false)
+                    dispatchEdit(false);
                 }}
             >
                 Cancel
             </button>
         </div>
-    )
+    );
 }
 
 type EditFieldDisplayProps = {
-    val: number
-    dispatchEdit: Dispatch<boolean>
-    remove?: CallableFunction
-    digits: number
-    label: string
-}
+    val: number;
+    dispatchEdit: Dispatch<boolean>;
+    remove?: CallableFunction;
+    digits: number;
+    label: string;
+};
 
 function EditFieldDisplay(props: EditFieldDisplayProps) {
-    const { val, dispatchEdit, remove, digits, label } = props
+    const { val, dispatchEdit, remove, digits, label } = props;
     return (
         <div>
-            <label className="text-xs">{label}</label>
+            <label className='text-xs'>{label}</label>
             <br />
-            <label className="font-bold">{val.toPrecision(digits)}</label>
+            <label className='font-bold'>{val.toPrecision(digits)}</label>
             <br />
             <button
-                className="btn btn-info btn-xs"
+                className='btn btn-info btn-xs'
                 onClick={() => {
-                    dispatchEdit(true)
+                    dispatchEdit(true);
                 }}
             >
                 Edit
@@ -132,11 +133,11 @@ function EditFieldDisplay(props: EditFieldDisplayProps) {
             {remove && (
                 <button
                     onClick={() => remove()}
-                    className="btn btn-error btn-xs ml-4"
+                    className='btn btn-error btn-xs ml-4'
                 >
                     Remove
                 </button>
             )}
         </div>
-    )
+    );
 }

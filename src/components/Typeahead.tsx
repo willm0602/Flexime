@@ -1,20 +1,20 @@
-import { useEffect, useMemo, useState } from 'react'
-import { twMerge } from 'tailwind-merge'
+import { useEffect, useMemo, useState } from 'react';
+import { twMerge } from 'tailwind-merge';
 
-const MIN_QUERY_LEN = 3
-const MAX_SHOWN_ENTRIES = 10
+const MIN_QUERY_LEN = 3;
+const MAX_SHOWN_ENTRIES = 10;
 
 interface TypeaheadProps<T> {
-    vals: T[]
-    getDisplay: (val: T) => string
-    onSelect: (val: T) => undefined | unknown
-    selectedVal: T | undefined
-    wrapperClassName?: string
-    listItemClassName?: string
-    listClassName?: string
-    buttonClassName?: string
-    inputClassName?: string
-    placeholder?: string
+    vals: T[];
+    getDisplay: (val: T) => string;
+    onSelect: (val: T) => undefined | unknown;
+    selectedVal: T | undefined;
+    wrapperClassName?: string;
+    listItemClassName?: string;
+    listClassName?: string;
+    buttonClassName?: string;
+    inputClassName?: string;
+    placeholder?: string;
 }
 
 export default function Typeahead<T>({
@@ -30,8 +30,8 @@ export default function Typeahead<T>({
     placeholder,
 }: TypeaheadProps<T>) {
     type AnnotatedVal = T & {
-        label: string
-    }
+        label: string;
+    };
 
     const annotatedVals = useMemo(
         () =>
@@ -39,36 +39,36 @@ export default function Typeahead<T>({
                 ...val,
                 label: getDisplay(val),
             })),
-        [vals, getDisplay]
-    )
+        [vals, getDisplay],
+    );
 
     const [searchQuery, setSearchQuery] = useState(
-        selectedVal ? getDisplay(selectedVal) : ''
-    )
-    const [shownVals, setShownVals] = useState<AnnotatedVal[]>([])
-    const [showOptions, setShowOptions] = useState<boolean>(false)
+        selectedVal ? getDisplay(selectedVal) : '',
+    );
+    const [shownVals, setShownVals] = useState<AnnotatedVal[]>([]);
+    const [showOptions, setShowOptions] = useState<boolean>(false);
 
     useEffect(() => {
         if (!(searchQuery && searchQuery.length >= MIN_QUERY_LEN)) {
-            setShownVals([])
-            return
+            setShownVals([]);
+            return;
         }
         const shownVals = annotatedVals
             .filter((annotatedVal) => {
-                return annotatedVal.label.includes(searchQuery)
+                return annotatedVal.label.includes(searchQuery);
             })
-            .slice(0, MAX_SHOWN_ENTRIES)
-        setShownVals(shownVals)
-    }, [searchQuery, annotatedVals])
+            .slice(0, MAX_SHOWN_ENTRIES);
+        setShownVals(shownVals);
+    }, [searchQuery, annotatedVals]);
 
     return (
         <div className={twMerge('relative', wrapperClassName)}>
             <input
                 onChange={(e) => {
-                    setSearchQuery(e.target.value)
+                    setSearchQuery(e.target.value);
                 }}
                 onFocus={() => {
-                    setShowOptions(true)
+                    setShowOptions(true);
                 }}
                 value={searchQuery}
                 placeholder={placeholder}
@@ -78,7 +78,7 @@ export default function Typeahead<T>({
                 <ul
                     className={twMerge(
                         'list-none absolute bg-base-200 mt-0 pl-0',
-                        listClassName
+                        listClassName,
                     )}
                 >
                     {shownVals.map((val, idx) => {
@@ -87,27 +87,27 @@ export default function Typeahead<T>({
                                 key={`typeahead-item-${idx}`}
                                 className={twMerge(
                                     'focus-within:border-solid px-4 focus-within:border-2 focus-within:border-white',
-                                    listItemClassName
+                                    listItemClassName,
                                 )}
                             >
                                 <button
                                     className={twMerge(
                                         'focus:outline-none',
-                                        buttonClassName
+                                        buttonClassName,
                                     )}
                                     onClick={() => {
-                                        onSelect(val)
-                                        setSearchQuery(val.label)
-                                        setShowOptions(false)
+                                        onSelect(val);
+                                        setSearchQuery(val.label);
+                                        setShowOptions(false);
                                     }}
                                 >
                                     {val.label}
                                 </button>
                             </li>
-                        )
+                        );
                     })}
                 </ul>
             )}
         </div>
-    )
+    );
 }

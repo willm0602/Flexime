@@ -1,16 +1,16 @@
-'use client'
-import Resume from '@/lib/jsonResume'
-import { DEFAULT_RESUME } from '@/lib/resumeUtils'
-import { ChangeEventHandler } from 'react'
-import toast from 'react-hot-toast'
+'use client';
+import type Resume from '@/lib/jsonResume';
+import { DEFAULT_RESUME } from '@/lib/resumeUtils';
+import type { ChangeEventHandler } from 'react';
+import toast from 'react-hot-toast';
 
 type LoadResumeProps = {
-    setResume: (newResume: Resume) => void
-}
+    setResume: (newResume: Resume) => void;
+};
 
 function verifyResume(resumeContents: string): Resume {
     try {
-        const resume = JSON.parse(resumeContents)
+        const resume = JSON.parse(resumeContents);
         return {
             basics: resume.basics || {
                 name: 'Name',
@@ -26,58 +26,58 @@ function verifyResume(resumeContents: string): Resume {
             publications: resume.publications || [],
             skills: resume.skills || [],
             projects: resume.projects || [],
-        }
+        };
     } catch {
-        return DEFAULT_RESUME
+        return DEFAULT_RESUME;
     }
 }
 
 export default function LoadResume(props: LoadResumeProps) {
-    const { setResume } = props
+    const { setResume } = props;
 
     const showErrorMsg = () => {
-        toast('Invalid Resume File.')
-    }
+        toast('Invalid Resume File.');
+    };
 
     const loadFile: ChangeEventHandler<HTMLInputElement> = async (e) => {
-        const files = e.target.files
-        const file = files?.length ? files[0] : undefined
+        const files = e.target.files;
+        const file = files?.length ? files[0] : undefined;
         if (!file) {
-            showErrorMsg()
-            return
+            showErrorMsg();
+            return;
         }
-        const contents = await file.text()
+        const contents = await file.text();
         try {
-            const resume = verifyResume(contents)
+            const resume = verifyResume(contents);
             if (!resume) {
-                showErrorMsg()
-                return
+                showErrorMsg();
+                return;
             }
-            setResume(resume)
-            window.location.reload()
+            setResume(resume);
+            window.location.reload();
         } catch (e) {
-            console.error(e)
-            showErrorMsg()
-            return
+            console.error(e);
+            showErrorMsg();
+            return;
         }
-    }
+    };
 
     return (
         <>
             <label
-                htmlFor="load-resume"
-                className="btn btn-main btn-success ml-4"
+                htmlFor='load-resume'
+                className='btn btn-main btn-success ml-4'
             >
                 Load Resume
             </label>
             <input
-                type="file"
-                className="hidden"
-                accept=".json"
-                name="import-resume"
-                id="load-resume"
+                type='file'
+                className='hidden'
+                accept='.json'
+                name='import-resume'
+                id='load-resume'
                 onChange={loadFile}
             />
         </>
-    )
+    );
 }

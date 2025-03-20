@@ -1,26 +1,26 @@
-import Resume from './jsonResume'
+import type Resume from './jsonResume';
 
 function resumeHasValidBasics(resume: Resume) {
     // all resumes need to have some of the basics fields filled out
     if (!resume.basics) {
-        return false
+        return false;
     }
 
     if (!resume.basics.name) {
-        return false
+        return false;
     }
 
     if (!resume.basics.email) {
-        return false
+        return false;
     }
 
     if (!resume.basics.phone) {
-        return false
+        return false;
     }
-    return true
+    return true;
 }
 
 export default function resumeIsValid(resume: Resume) {
-    if (!resumeHasValidBasics(resume)) return false
-    return true
+    if (!resumeHasValidBasics(resume)) return false;
+    return true;
 }

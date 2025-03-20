@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text } from '@react-pdf/renderer'
+import { View, StyleSheet, Text } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
     list: {
@@ -11,12 +11,12 @@ const styles = StyleSheet.create({
     bullet: {
         paddingRight: 4,
     },
-})
+});
 
-const bulletChar = '•'
+const bulletChar = '•';
 
 export function UL(props: { items: React.ReactNode[] }) {
-    const { items } = props
+    const { items } = props;
     return (
         <View style={styles.list}>
             {items.map((item, idx) => {
@@ -25,8 +25,8 @@ export function UL(props: { items: React.ReactNode[] }) {
                         <Text style={styles.bullet}>{bulletChar}</Text>
                         <Text style={styles.listItemContent}>{item}</Text>
                     </View>
-                )
+                );
             })}
         </View>
-    )
+    );
 }

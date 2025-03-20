@@ -6,8 +6,8 @@
         "dev": "next dev --turbopack",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint --fix",
-        "format": "npx prettier -w .",
+        "lint": "git ls-files | xargs biome lint --write",
+        "format": "git ls-files | xargs biome format --write",
         "test": "next build && npx playwright test",
         "prepare": "husky install"
     },
@@ -48,6 +48,7 @@
         "zod": "^3.24.1"
     },
     "devDependencies": {
+        "@biomejs/biome": "^1.9.4",
         "@eslint/eslintrc": "^3",
         "@playwright/test": "^1.50.1",
         "@tailwindcss/typography": "^0.5.15",
@@ -68,6 +69,6 @@
         "typescript": "^5.7.3"
     },
     "lint-staged": {
-        "*.js": "eslint --cache --fix"
+        "*.js": "git ls-files | xargs biome lint"
     }
 }
