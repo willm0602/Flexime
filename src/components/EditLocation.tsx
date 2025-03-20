@@ -1,16 +1,16 @@
-import cities from '@/data/cities.json'
-import { Location } from '@/lib/jsonResume'
-import Typeahead from './Typeahead'
+import cities from '@/data/cities.json';
+import type { Location } from '@/lib/jsonResume';
+import Typeahead from './Typeahead';
 
 export default function EditLocation(props: {
-    onLocationSet: (location: Location) => unknown | undefined
-    val: Location | undefined
-    wrapperClassName?: string
-    listItemClassName?: string
-    listClassName?: string
-    inputClassName?: string
-    buttonClassName?: string
-    placeholder?: string
+    onLocationSet: (location: Location) => unknown | undefined;
+    val: Location | undefined;
+    wrapperClassName?: string;
+    listItemClassName?: string;
+    listClassName?: string;
+    inputClassName?: string;
+    buttonClassName?: string;
+    placeholder?: string;
 }) {
     const {
         onLocationSet,
@@ -21,13 +21,13 @@ export default function EditLocation(props: {
         inputClassName,
         buttonClassName,
         placeholder,
-    } = props
+    } = props;
 
     return (
         <Typeahead
             vals={cities as Location[]}
             getDisplay={(city: Location) => {
-                return `${city.city} ${city.region} (${city.countryCode})`
+                return `${city.city} ${city.region} (${city.countryCode})`;
             }}
             selectedVal={val}
             onSelect={onLocationSet}
@@ -38,5 +38,5 @@ export default function EditLocation(props: {
             buttonClassName={buttonClassName}
             placeholder={placeholder}
         />
-    )
+    );
 }

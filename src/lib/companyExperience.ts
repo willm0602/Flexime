@@ -1,6 +1,6 @@
-import { Work } from './jsonResume'
+import type { Work } from './jsonResume';
 
 export default interface CompanyExperience {
-    companyName: string
-    positions: Work[]
+    companyName: string;
+    positions: Work[];
 }

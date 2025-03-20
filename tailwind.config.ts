@@ -1,8 +1,8 @@
-import type { Config } from 'tailwindcss'
-import typography from '@tailwindcss/typography'
-import daisyui from 'daisyui'
+import type { Config } from 'tailwindcss';
+import typography from '@tailwindcss/typography';
+import daisyui from 'daisyui';
 
-console.log('TAILWIND LOADING')
+console.log('TAILWIND LOADING');
 
 export default {
     content: [
@@ -22,4 +22,4 @@ export default {
     daisyui: {
         themes: ['business'],
     },
-} satisfies Config
+} satisfies Config;

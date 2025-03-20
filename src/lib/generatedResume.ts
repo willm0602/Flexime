@@ -1,5 +1,5 @@
-import Resume from './jsonResume'
+import type Resume from './jsonResume';
 
-type GeneratedResume = (resume: Resume) => Promise<NodeJS.ReadableStream>
+type GeneratedResume = (resume: Resume) => Promise<NodeJS.ReadableStream>;
 
-export type { GeneratedResume }
+export type { GeneratedResume };

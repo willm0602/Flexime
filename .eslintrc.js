@@ -17,4 +17,4 @@ module.exports = {
         // Ensure Prettier is also applied and any Prettier issues are treated as ESLint errors
         'prettier/prettier': 'error',
     },
-}
+};

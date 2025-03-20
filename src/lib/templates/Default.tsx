@@ -1,5 +1,5 @@
-import { GeneratedResume } from '../generatedResume'
-import Resume from '@/lib/jsonResume'
+import type { GeneratedResume } from '../generatedResume';
+import type Resume from '@/lib/jsonResume';
 import {
     Document,
     Page,
@@ -8,9 +8,9 @@ import {
     Text,
     View,
     Link,
-} from '@react-pdf/renderer'
-import { Education, Profile, Project, Work } from '@/lib/jsonResume'
-import { UL } from '../reactPDFUtils'
+} from '@react-pdf/renderer';
+import type { Education, Profile, Project, Work } from '@/lib/jsonResume';
+import { UL } from '../reactPDFUtils';
 
 const styles = StyleSheet.create({
     flex: {
@@ -82,11 +82,11 @@ const styles = StyleSheet.create({
     spacingTop: {
         marginTop: 12,
     },
-})
+});
 
 const HR = () => {
-    return <View style={styles.divider}></View>
-}
+    return <View style={styles.divider}></View>;
+};
 
 const SectionLabel = (props: { sectionName: string }) => {
     return (
@@ -94,18 +94,18 @@ const SectionLabel = (props: { sectionName: string }) => {
             <HR />
             <Text style={styles.sectionLabel}>{props.sectionName}</Text>
         </>
-    )
-}
+    );
+};
 
 const reformatDate = (datestr: string | undefined) => {
-    if (!datestr) return ''
-    const [year, month] = datestr.split('-')
-    const abbreviatedYear = parseInt(year) % 100
-    return `${month}/${abbreviatedYear}`
-}
+    if (!datestr) return '';
+    const [year, month] = datestr.split('-');
+    const abbreviatedYear = Number.parseInt(year) % 100;
+    return `${month}/${abbreviatedYear}`;
+};
 
 const RoleComponent = (props: { role: Work; highlights: string[] }) => {
-    const { highlights, role } = props
+    const { highlights, role } = props;
 
     return (
         <View style={styles.spacingTop}>
@@ -120,11 +120,11 @@ const RoleComponent = (props: { role: Work; highlights: string[] }) => {
             </View>
             <UL items={highlights} />
         </View>
-    )
-}
+    );
+};
 
 const EducationComponent = (props: { school: Education }) => {
-    const { school } = props
+    const { school } = props;
     return (
         <View>
             <Text style={styles.subsubheader}>
@@ -135,14 +135,14 @@ const EducationComponent = (props: { school: Education }) => {
                 {school.studyType} in {school.area}
             </Text>
         </View>
-    )
-}
+    );
+};
 
 const ProjectComponent = (props: {
-    proj: Project
-    highlights: React.ReactNode[]
+    proj: Project;
+    highlights: React.ReactNode[];
 }) => {
-    const { proj, highlights } = props
+    const { proj, highlights } = props;
 
     if (proj.repository) {
         highlights.push(
@@ -151,8 +151,8 @@ const ProjectComponent = (props: {
                     Source code available{' '}
                     <Link href={proj.repository}>here</Link>
                 </Text>
-            </View>
-        )
+            </View>,
+        );
     }
 
     if (proj.url) {
@@ -161,29 +161,29 @@ const ProjectComponent = (props: {
                 <Text>
                     Project available <Link href={proj.url}>here</Link>
                 </Text>
-            </View>
-        )
+            </View>,
+        );
     }
     return (
         <View>
             <Text style={styles.subsubheader}>{proj.name}</Text>
             <UL items={highlights} />
         </View>
-    )
-}
+    );
+};
 
 const ResumeComponent = (props: { resume: Resume }) => {
-    const { resume } = props
+    const { resume } = props;
 
-    const profiles: Profile[] = resume.basics.profiles
+    const profiles: Profile[] = resume.basics.profiles;
 
-    const workExperience = resume.work || []
+    const workExperience = resume.work || [];
 
-    const education = resume.education || []
+    const education = resume.education || [];
 
     return (
         <Document>
-            <Page style={styles.page} size="A4">
+            <Page style={styles.page} size='A4'>
                 <View>
                     <Text style={styles.title}>{resume.basics.name}</Text>
                     <Text style={styles.smallLabel}>
@@ -216,14 +216,14 @@ const ResumeComponent = (props: { resume: Resume }) => {
                                 <Link key={`profile-${idx}`} href={profile.url}>
                                     {profile.network}
                                 </Link>
-                            )
+                            );
                         })}
                     </View>
 
                     {/* Work */}
                     {workExperience.length && (
                         <>
-                            <SectionLabel sectionName="Work Experience" />
+                            <SectionLabel sectionName='Work Experience' />
                             <View>
                                 {workExperience.map((role: Work, idx) => {
                                     try {
@@ -233,9 +233,9 @@ const ResumeComponent = (props: { resume: Resume }) => {
                                                 role={role}
                                                 highlights={role.highlights}
                                             />
-                                        )
+                                        );
                                     } catch {
-                                        return <></>
+                                        return <></>;
                                     }
                                 })}
                             </View>
@@ -244,7 +244,7 @@ const ResumeComponent = (props: { resume: Resume }) => {
 
                     {/* Education */}
                     {resume.education?.length && (
-                        <SectionLabel sectionName="Education" />
+                        <SectionLabel sectionName='Education' />
                     )}
                     {education.map((school, idx) => {
                         return (
@@ -252,12 +252,12 @@ const ResumeComponent = (props: { resume: Resume }) => {
                                 school={school}
                                 key={`school-${idx}`}
                             />
-                        )
+                        );
                     })}
 
                     {/* Personal Projects */}
                     {resume.projects?.length && (
-                        <SectionLabel sectionName="Personal Projects" />
+                        <SectionLabel sectionName='Personal Projects' />
                     )}
                     {(resume.projects || []).map((proj, idx) => {
                         return (
@@ -266,19 +266,19 @@ const ResumeComponent = (props: { resume: Resume }) => {
                                 highlights={proj.highlights}
                                 key={`proj-${idx}`}
                             />
-                        )
+                        );
                     })}
 
                     {/* Skills */}
                     {resume.skills?.length && (
-                        <SectionLabel sectionName="Skills" />
+                        <SectionLabel sectionName='Skills' />
                     )}
                     <View>
                         <Text>
                             {resume.skills &&
                                 resume.skills
                                     .map(
-                                        (togglableSkill) => togglableSkill.name
+                                        (togglableSkill) => togglableSkill.name,
                                     )
                                     .join(', ')}
                         </Text>
@@ -286,11 +286,11 @@ const ResumeComponent = (props: { resume: Resume }) => {
                 </View>
             </Page>
         </Document>
-    )
-}
+    );
+};
 
 const defaultTemplate: GeneratedResume = async (resume: Resume) => {
-    return await renderToStream(<ResumeComponent resume={resume} />)
-}
+    return await renderToStream(<ResumeComponent resume={resume} />);
+};
 
-export default defaultTemplate
+export default defaultTemplate;

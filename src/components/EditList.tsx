@@ -1,42 +1,42 @@
-import { JSX, useEffect, useMemo, useState } from 'react'
-import { twMerge } from 'tailwind-merge'
-import { ReactSortable } from 'react-sortablejs'
+import { type JSX, useEffect, useMemo, useState } from 'react';
+import { twMerge } from 'tailwind-merge';
+import { ReactSortable } from 'react-sortablejs';
 
-const DEFAULT_ADD_BTN_TEXT = 'Add'
-const DEFAULT_WRAPPER_CLASS = 'w-full flex flex-col'
+const DEFAULT_ADD_BTN_TEXT = 'Add';
+const DEFAULT_WRAPPER_CLASS = 'w-full flex flex-col';
 const DEFAULT_ITEM_CLASS =
-    'flex flex-col border-solid border-slate-500 border-2 my-4 p-4 cursor-pointer'
+    'flex flex-col border-solid border-slate-500 border-2 my-4 p-4 cursor-pointer';
 
 export type ListItemProps<T> = {
-    val: T
-    vals: T[]
-    setList: (newVals: T[]) => void
-    setItem: (newVal: T) => void
-    idx: number
-    confirmThenRemove: () => boolean
-    removeItem: () => void
-}
+    val: T;
+    vals: T[];
+    setList: (newVals: T[]) => void;
+    setItem: (newVal: T) => void;
+    idx: number;
+    confirmThenRemove: () => boolean;
+    removeItem: () => void;
+};
 
-export type ListItem<T> = (props: ListItemProps<T>) => JSX.Element
+export type ListItem<T> = (props: ListItemProps<T>) => JSX.Element;
 
 type EditListProps<T> = {
-    vals?: T[]
-    setList: (newList: T[]) => void
-    RenderItem: ListItem<T>
-    defaultChild: T
-    addBtnText?: string
-    containerClassName?: string
-    itemWrapperClass?: string
-}
+    vals?: T[];
+    setList: (newList: T[]) => void;
+    RenderItem: ListItem<T>;
+    defaultChild: T;
+    addBtnText?: string;
+    containerClassName?: string;
+    itemWrapperClass?: string;
+};
 
 function getAnnotatedItems<T>(vals: T[]) {
     const annotatedItems = vals.map((val, idx) => {
         return {
             data: val,
             id: `edit-list-${idx}-${JSON.stringify(val)}`,
-        }
-    })
-    return annotatedItems
+        };
+    });
+    return annotatedItems;
 }
 
 export default function EditList<T>(props: EditListProps<T>) {
@@ -47,31 +47,31 @@ export default function EditList<T>(props: EditListProps<T>) {
         defaultChild,
         addBtnText,
         itemWrapperClass,
-    } = props
+    } = props;
 
-    const vals = useMemo(() => props.vals || [], [props.vals])
+    const vals = useMemo(() => props.vals || [], [props.vals]);
 
     type AnnotatedItem = {
-        data: T
-        id: string
-    }
+        data: T;
+        id: string;
+    };
 
     const [annotatedItems, dispatchAnnotatedItems] = useState<AnnotatedItem[]>(
-        getAnnotatedItems(vals)
-    )
+        getAnnotatedItems(vals),
+    );
 
     useEffect(() => {
-        dispatchAnnotatedItems(getAnnotatedItems(vals))
-    }, [vals, dispatchAnnotatedItems])
+        dispatchAnnotatedItems(getAnnotatedItems(vals));
+    }, [vals, dispatchAnnotatedItems]);
 
     const addNew = () => {
-        setList([...vals, defaultChild])
-    }
+        setList([...vals, defaultChild]);
+    };
 
     const setAnnotatedItems = (annotatedItems: AnnotatedItem[]) => {
-        const newList: T[] = annotatedItems.map((annotated) => annotated.data)
-        setList(newList)
-    }
+        const newList: T[] = annotatedItems.map((annotated) => annotated.data);
+        setList(newList);
+    };
 
     const confirmThenRemoveAtIdx = () => () => {
         // TODO: Add in confirm modal before removing values
@@ -81,8 +81,8 @@ export default function EditList<T>(props: EditListProps<T>) {
         //   return false;
         // const updatedChildren = vals.filter((_, idx) => idx != idxToRemove);
         // setList(updatedChildren);
-        return true
-    }
+        return true;
+    };
     return (
         <ReactSortable
             className={twMerge(containerClassName, DEFAULT_WRAPPER_CLASS)}
@@ -94,7 +94,7 @@ export default function EditList<T>(props: EditListProps<T>) {
                     <div
                         className={twMerge(
                             DEFAULT_ITEM_CLASS,
-                            itemWrapperClass
+                            itemWrapperClass,
                         )}
                         key={`edit-list-${idx}-${JSON.stringify(val)}`}
                     >
@@ -102,25 +102,25 @@ export default function EditList<T>(props: EditListProps<T>) {
                             val={val}
                             vals={vals}
                             setItem={(updatedVal: T) => {
-                                const updatedList = [...vals]
-                                updatedList[idx] = updatedVal
-                                setList(updatedList)
+                                const updatedList = [...vals];
+                                updatedList[idx] = updatedVal;
+                                setList(updatedList);
                             }}
                             setList={setList}
                             confirmThenRemove={confirmThenRemoveAtIdx()}
                             removeItem={() => {
-                                const updatedVals = vals
-                                updatedVals.splice(idx, 1)
-                                setList(updatedVals)
+                                const updatedVals = vals;
+                                updatedVals.splice(idx, 1);
+                                setList(updatedVals);
                             }}
                             idx={idx}
                         />
                     </div>
-                )
+                );
             })}
-            <button onClick={addNew} className="btn btn-primary mt-8">
+            <button onClick={addNew} className='btn btn-primary mt-8'>
                 {addBtnText || DEFAULT_ADD_BTN_TEXT}
             </button>
         </ReactSortable>
-    )
+    );
 }
