@@ -1,16 +1,33 @@
-import type Middleware from "./handler";
+import Redis from 'ioredis';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
+import cache, { canConnectToCache } from '@/lib/cache';
+import getIP from './getIP';
 
-const RateLimitHandler: Middleware = (handler) => {
-    return (target: unknown)=> {
-        return async (...args: Parameters<typeof handler>) => {
-            // Implement rate limiting logic here
-            const isRateLimited = false; // Replace with actual rate-limiting logic
+export default async function rateLimitTest(
+    req: NextRequest,
+    key: string,
+    numOfOccurances: number,
+    time = 3600,
+): Promise<boolean>{
 
-            if (isRateLimited) {
-            throw new Error("Too many requests, please try again later.");
-            }
+    if(!canConnectToCache)
+        return true;
 
-            return handler(...args);
-        };
-    }
+    const ip = getIP(req);
+    if(!ip)
+        return false;
+
+    const redisKey = `${key}:${ip}`;
+    const occurancesUnparsed = await cache.get(redisKey) || '0';
+    const occurances = Number.parseInt(occurancesUnparsed) + 1;
+    const hasViolation = occurances >= numOfOccurances;
+    if (hasViolation) 
+        return false;
+    
+    await cache.set(redisKey, occurances);
+    if(occurances === 1)
+        await cache.expire(redisKey, time);
+
+    return true;
 }
