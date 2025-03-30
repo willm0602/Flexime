@@ -14,7 +14,7 @@ async function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buffer> {
 
 export async function POST(req: NextRequest) {
 
-    const rateLimitFine = await rateLimitTest(req, 'generate-pdf', 3, 10);
+    const rateLimitFine = await rateLimitTest(req, 'generate-pdf', 100, 10);
     if(!rateLimitFine){
         return NextResponse.json(
             { message: 'Rate limit exceeded' },
