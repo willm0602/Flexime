@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import type Resume from '@/lib/jsonResume';
 import Templates from '@/lib/templates';
+import rateLimitTest from '@/middleware/rateLimit';
 
 async function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buffer> {
     return new Promise((res, rej) => {
@@ -12,6 +13,15 @@ async function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buffer> {
 }
 
 export async function POST(req: NextRequest) {
+
+    const rateLimitFine = await rateLimitTest(req, 'generate-pdf', 3, 10);
+    if(!rateLimitFine){
+        return NextResponse.json(
+            { message: 'Rate limit exceeded' },
+            { status: 429 },
+        );
+    }
+
     const body = await req.formData();
 
     const resumeAsStr = body.get('resume_data') as string;
