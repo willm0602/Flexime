@@ -7,7 +7,7 @@
         "build": "next build",
         "start": "next start",
         "lint": "git ls-files | xargs biome lint --write",
-        "format": "git ls-files | xargs biome format --write",
+        "format": "git ls-files | xargs -n 1 -I {} sh -c 'biome format --write {} || true'",
         "test": "next build && npx playwright test",
         "prepare": "husky install"
     },

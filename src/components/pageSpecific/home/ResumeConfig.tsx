@@ -24,9 +24,7 @@ import ConfigureJobTitle from './ConfigureJobTitle';
 
 export default function ResumeConfig() {
     const [isClient, setIsClient] = useState(false);
-    const [resume, setResume] = useState<Resume | null>(
-        null,
-    );
+    const [resume, setResume] = useState<Resume | null>(null);
     const [initResume] = useLocalStorage('saved-resume', DEFAULT_RESUME);
 
     useEffect(() => {
@@ -40,26 +38,26 @@ export default function ResumeConfig() {
         }
     }, [initResume]);
 
-    if(!resume || !isClient){
-        return <span className='loading loading-spinner w-1/4 mx-auto' />
+    if (!resume || !isClient) {
+        return <span className='loading loading-spinner w-1/4 mx-auto' />;
     }
 
     return (
-        <ResumeContext.Provider value={{resume, setResume}}>
-            <form 
+        <ResumeContext.Provider value={{ resume, setResume }}>
+            <form
                 className='w-full flex flex-col lg:flex-row'
                 method='POST'
                 target='resume-preview'
                 action={'/api/pdf'}
                 id='resume-config-form'
             >
-                <ResumeHiddenInput/>
+                <ResumeHiddenInput />
                 <div className='flex-4'>
                     <div className='flex'>
-                        <OpenResumeNewTab/>
+                        <OpenResumeNewTab />
                         <EditResumeLink />
                     </div>
-                    <ConfigureJobTitle/>
+                    <ConfigureJobTitle />
                     <ul className='pl-0 overflow-scroll max-h-[70vh]'>
                         {Object.entries(resume).map(([key, val]) => {
                             if (!isTogglable(val)) return;
@@ -94,7 +92,10 @@ export default function ResumeConfig() {
                 </div>
                 <div className='flex-1'>
                     <div className='flex'>
-                        <button className='btn btn-primary ml-12 mb-4' type="submit">
+                        <button
+                            className='btn btn-primary ml-12 mb-4'
+                            type='submit'
+                        >
                             <ArrowPathIcon
                                 width={24}
                                 height={24}
@@ -102,9 +103,9 @@ export default function ResumeConfig() {
                             />
                         </button>
 
-                        <DownloadResume/>
+                        <DownloadResume />
                     </div>
-                    <ResumePreview/>
+                    <ResumePreview />
                 </div>
             </form>
         </ResumeContext.Provider>

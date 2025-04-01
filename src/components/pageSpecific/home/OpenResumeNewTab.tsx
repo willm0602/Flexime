@@ -1,4 +1,4 @@
-import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid';
 
 export default function OpenResumeNewTab() {
     const openInNewTab = () => {
@@ -11,17 +11,19 @@ export default function OpenResumeNewTab() {
         form.setAttribute('target', 'resume-preview');
     };
 
-    return <button
-        type='button'
-        className='btn btn-accent no-underline mr-5'
-        onClick={() => {
-            openInNewTab();
-        }}
-    >
-        <ArrowTopRightOnSquareIcon
-            width={24}
-            height={24}
-            title='Open resume in new tab'
-        />
-    </button>
+    return (
+        <button
+            type='button'
+            className='btn btn-accent no-underline mr-5'
+            onClick={() => {
+                openInNewTab();
+            }}
+        >
+            <ArrowTopRightOnSquareIcon
+                width={24}
+                height={24}
+                title='Open resume in new tab'
+            />
+        </button>
+    );
 }
