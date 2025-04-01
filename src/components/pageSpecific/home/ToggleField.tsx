@@ -148,7 +148,7 @@ function ToggleChildField<C>(props: ToggleChildFieldProps<C>) {
     const child = (togglable.children || [])[index];
     const subchildren = child.children || [];
 
-    const isString = typeof child.val == 'string';
+    const isString = typeof child.val === 'string';
 
     return (
         <div style={{ marginLeft: `${indent / 2}em` }}>
