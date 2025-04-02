@@ -1,17 +1,9 @@
 'use client';
 
 import type Resume from '@/lib/resume';
-import Templates, { TemplateNames } from '@/lib/templates';
-import ToggleField from './ToggleField';
-import type Togglable from '@/lib/togglable';
-import { isTogglable } from '@/lib/togglable';
-import { type MouseEventHandler, useEffect, useState } from 'react';
-import { jsonResumeFromResume, resumeFromJSONResume } from '@/lib/resume';
-import {
-    ArrowDownTrayIcon,
-    ArrowPathIcon,
-    PencilSquareIcon,
-} from '@heroicons/react/24/solid';
+import { useEffect, useState } from 'react';
+import { resumeFromJSONResume } from '@/lib/resume';
+import { ArrowPathIcon } from '@heroicons/react/24/solid';
 import useLocalStorage from '@/lib/useLocalStorage';
 import { DEFAULT_RESUME } from '@/lib/resumeUtils';
 import OpenResumeNewTab from './OpenResumeNewTab';
@@ -21,6 +13,7 @@ import EditResumeLink from './EditResumeLink';
 import DownloadResume from './DownloadResume';
 import ResumePreview from './ResumePreview';
 import ConfigureJobTitle from './ConfigureJobTitle';
+import ToggleList from './ToggleList';
 
 export default function ResumeConfig() {
     const [isClient, setIsClient] = useState(false);
@@ -58,37 +51,7 @@ export default function ResumeConfig() {
                         <EditResumeLink />
                     </div>
                     <ConfigureJobTitle />
-                    <ul className='pl-0 overflow-scroll max-h-[70vh]'>
-                        {Object.entries(resume).map(([key, val]) => {
-                            if (!isTogglable(val)) return;
-
-                            if (
-                                !(
-                                    val.val ||
-                                    (val.children && val.children.length > 0)
-                                )
-                            )
-                                return;
-
-                            return (
-                                <li
-                                    key={`toggle-field-${key}`}
-                                    className='list-none'
-                                >
-                                    <ToggleField
-                                        fieldName={key as keyof Resume}
-                                        // @ts-expect-error type needs to be generic
-                                        togglable={
-                                            val as Resume[keyof Resume] &
-                                                Togglable<unknown>
-                                        }
-                                        parent={resume}
-                                        setParent={setResume}
-                                    />
-                                </li>
-                            );
-                        })}
-                    </ul>
+                    <ToggleList />
                 </div>
                 <div className='flex-1'>
                     <div className='flex'>
