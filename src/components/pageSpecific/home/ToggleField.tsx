@@ -1,9 +1,8 @@
 import type Togglable from '@/lib/togglable';
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
 import { useState } from 'react';
-import { ChevronDownIcon } from '@heroicons/react/24/solid';
-import { ChevronUpIcon } from '@heroicons/react/24/solid';
-import { ReactSortable } from 'react-sortablejs';
 
+import { ReactSortable } from 'react-sortablejs';
 type ToggleFieldProps<P, F extends keyof P, C> = {
     parent: P;
     fieldName: F & string;
@@ -58,8 +57,10 @@ export default function ToggleField<P, F extends keyof P, C = unknown>(
                     onChange={toggleField}
                 />
                 <label
+                    htmlFor={`toggle-field-${fieldName}`}
                     className='font-bold ml-2 capitalize flex flex-1 cursor-pointer'
                     onClick={toggleField}
+                    onKeyDown={toggleField}
                 >
                     {togglable.title}
                 </label>
@@ -89,7 +90,7 @@ export default function ToggleField<P, F extends keyof P, C = unknown>(
             >
                 {currTogglable.isOn &&
                     currTogglable.children &&
-                    currTogglable.children.map((togglable, idx) => {
+                    currTogglable.children.map((child, idx) => {
                         return (
                             <ToggleChildField
                                 togglable={currTogglable}
@@ -97,7 +98,7 @@ export default function ToggleField<P, F extends keyof P, C = unknown>(
                                 setTogglable={setCurrentTogglable}
                                 indent={indent + 1}
                                 fieldName={fieldName}
-                                key={`togglable-${idx}`}
+                                key={`togglable-${JSON.stringify(child.title)}-${child.isOn}`}
                             />
                         );
                     })}
@@ -189,10 +190,10 @@ function ToggleChildField<C>(props: ToggleChildFieldProps<C>) {
                     }}
                 >
                     {child.isOn &&
-                        subchildren.map((_, subindex) => {
+                        subchildren.map((subchild, subindex) => {
                             return (
                                 <ToggleChildField
-                                    key={`togglable-${subindex}`}
+                                    key={`togglable-${JSON.stringify(subchild.title)}-${subchild.isOn}`}
                                     togglable={child}
                                     fieldName={`${fieldName}-${index}-${subindex}`}
                                     setTogglable={setChild}

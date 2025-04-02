@@ -1,17 +1,9 @@
 'use client';
 
 import type Resume from '@/lib/resume';
-import Templates, { TemplateNames } from '@/lib/templates';
-import ToggleField from './ToggleField';
-import type Togglable from '@/lib/togglable';
-import { isTogglable } from '@/lib/togglable';
-import { type MouseEventHandler, useEffect, useState } from 'react';
-import { jsonResumeFromResume, resumeFromJSONResume } from '@/lib/resume';
-import {
-    ArrowDownTrayIcon,
-    ArrowPathIcon,
-    PencilSquareIcon,
-} from '@heroicons/react/24/solid';
+import { useEffect, useState } from 'react';
+import { resumeFromJSONResume } from '@/lib/resume';
+import { ArrowPathIcon } from '@heroicons/react/24/solid';
 import useLocalStorage from '@/lib/useLocalStorage';
 import { DEFAULT_RESUME } from '@/lib/resumeUtils';
 import OpenResumeNewTab from './OpenResumeNewTab';
