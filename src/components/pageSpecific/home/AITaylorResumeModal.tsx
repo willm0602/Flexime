@@ -31,7 +31,6 @@ export default function AITaylorResume() {
                         const status = response.status;
                         if (status === 200) {
                             response.json().then((data) => {
-                                console.log(data);
                                 setResume(data);
                                 const modal = document.getElementById('tailor-with-ai-modal') as HTMLDialogElement;
                                 modal.close();

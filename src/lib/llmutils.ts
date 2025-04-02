@@ -62,7 +62,6 @@ export async function tailorResumeToJobDescription(
     
     if (candidates.length > 0) {
         const parts = candidates[0].content.parts;
-        console.log('PARTS ARE', parts);
         const resumeText = parts.map((part) => part.text || '').join('');
 
         try {
