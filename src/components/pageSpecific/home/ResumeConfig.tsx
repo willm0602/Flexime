@@ -14,6 +14,8 @@ import DownloadResume from './DownloadResume';
 import ResumePreview from './ResumePreview';
 import ConfigureJobTitle from './ConfigureJobTitle';
 import ToggleList from './ToggleList';
+import AITaylorTrigger from './AITaylorTrigger';
+import AITaylorResumeModal from './AITaylorResumeModal';
 
 export default function ResumeConfig() {
     const [isClient, setIsClient] = useState(false);
@@ -37,6 +39,7 @@ export default function ResumeConfig() {
 
     return (
         <ResumeContext.Provider value={{ resume, setResume }}>
+            <AITaylorResumeModal />
             <form
                 className='w-full flex flex-col lg:flex-row'
                 method='POST'
@@ -49,6 +52,7 @@ export default function ResumeConfig() {
                     <div className='flex'>
                         <OpenResumeNewTab />
                         <EditResumeLink />
+                        <AITaylorTrigger/>
                     </div>
                     <ConfigureJobTitle />
                     <ToggleList />

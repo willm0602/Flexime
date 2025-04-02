@@ -1,11 +1,10 @@
 import type Resume from "@/lib/resume";
+import { useContext } from "react";
+import ResumeContext from "./ResumeContext";
 
-interface AITaylorResumeModalProps {
-    resume: Resume,
-    setResume: (resume: Resume) => void;
-};
+export default function AITaylorResume() {
+    const { resume, setResume } = useContext(ResumeContext);
 
-export default function AITaylorResume({ resume, setResume }: AITaylorResumeModalProps) {
     return <dialog id="tailor-with-ai-modal" className="modal">
         <div className="modal-box">
             <form method="dialog">
@@ -32,6 +31,7 @@ export default function AITaylorResume({ resume, setResume }: AITaylorResumeModa
                         const status = response.status;
                         if (status === 200) {
                             response.json().then((data) => {
+                                console.log(data);
                                 setResume(data);
                                 const modal = document.getElementById('tailor-with-ai-modal') as HTMLDialogElement;
                                 modal.close();
