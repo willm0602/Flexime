@@ -7,6 +7,7 @@ import { isTogglable } from '@/lib/togglable';
 
 export default function ToggleList() {
     const { resume, setResume } = useContext(ResumeContext);
+    console.log('RESUME IS', resume);
 
     return (
         <ul className='pl-0 overflow-scroll max-h-[70vh]'>

@@ -1,6 +1,6 @@
 import type Togglable from '@/lib/togglable';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ReactSortable } from 'react-sortablejs';
 type ToggleFieldProps<P, F extends keyof P, C> = {
@@ -15,12 +15,11 @@ export default function ToggleField<P, F extends keyof P, C = unknown>(
     props: ToggleFieldProps<P, F, C>,
 ) {
     const { parent, togglable, fieldName, setParent, indent = 0 } = props;
-    const [currTogglable, $setCurrentTogglable] =
+    const [currTogglable, dispatchCurrTogglable] =
         useState<Togglable<P[F], C>>(togglable);
     const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
-
     const setCurrentTogglable = (updatedTogglable: Togglable<P[F]>) => {
-        $setCurrentTogglable(updatedTogglable);
+        dispatchCurrTogglable(updatedTogglable);
 
         const updatedParent = {
             ...parent,
@@ -42,6 +41,11 @@ export default function ToggleField<P, F extends keyof P, C = unknown>(
     const toggleCollapsed = () => {
         setIsCollapsed(!isCollapsed);
     };
+
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    useEffect(() => {
+        setCurrentTogglable(togglable); 
+    }, [togglable]);
 
     return (
         <>
