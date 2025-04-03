@@ -14,7 +14,7 @@ export default function SignupPage(){
     <div className="card-body">
       <form>
         <h2 className="card-title mt-1">Signup</h2>
-        {error && <div className="alert alert-error shadow-lg mb-8">
+        {error && <div role='alert' className="alert alert-error shadow-lg mb-8">
           <div>
             <span>{error}</span>
           </div>
@@ -27,7 +27,10 @@ export default function SignupPage(){
         </div>
       </form>
       <div className="divider">OR</div>
-
+      <div className='alert alert-info'>
+          <span>Third-party auth coming soon</span>
+      </div>
+      
     </div>
   </div>
   </div>

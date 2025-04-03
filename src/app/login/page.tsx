@@ -7,7 +7,6 @@ export default function SignupPage(){
 
   const searchParams = useSearchParams();
   const error = searchParams.get('error');
-  console.log(error);
 
   return <div className="min-h-screen min-w-full flex items-center justify-center">
     <div className="card card-border bg-base-300 w-96">
@@ -26,7 +25,9 @@ export default function SignupPage(){
         </div>
       </form>
       <div className="divider">OR</div>
-
+      <div className='alert alert-info'>
+          <span>Third-party auth coming soon</span>
+      </div>
     </div>
   </div>
   </div>
