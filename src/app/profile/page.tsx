@@ -4,7 +4,7 @@ import { DEFAULT_RESUME } from '@/lib/resumeUtils';
 import Link from 'next/link';
 import LoadResume from '@/components/LoadResume';
 import type Resume from '@/lib/jsonResume';
-import useLocalStorage from '@/lib/useLocalStorage';
+import useLocalStorage from '@/lib/hooks/useLocalStorage';
 import * as Tabs from '@radix-ui/react-tabs';
 import EditBasics from '@/components/pageSpecific/profile/EditBasics';
 import EditWork from '@/components/pageSpecific/profile/EditWork';
@@ -12,7 +12,7 @@ import EditEducation from '@/components/pageSpecific/profile/EditEducation';
 import EditProjects from '@/components/pageSpecific/profile/EditProjects';
 import EditSkills from '@/components/pageSpecific/profile/EditSkills';
 import { useEffect, useState } from 'react';
-import useQueryParam from '@/lib/useQueryParam';
+import useQueryParam from '@/lib/hooks/useQueryParam';
 
 const RESUME_KEY = 'saved-resume';
 

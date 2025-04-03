@@ -1,8 +1,7 @@
-import type { User } from "@supabase/supabase-js";
+'use client';
 
-interface SignInSignOutProps {
-    user: User | null
-};
+import useAuth from "@/lib/hooks/useAuth";
+import type { User } from "@supabase/supabase-js";
 
 const linkClassName = 'btn btn-primary no-underline'
 
@@ -19,6 +18,8 @@ function SignOut(){
     </div>
 }
 
-export default function SignInSignOut({user}: SignInSignOutProps){
+export default function SignInSignOut(){
+    const user = useAuth();
+    console.log('USER IS', user);
     return user ? <SignOut/> : <SignIn />
 }

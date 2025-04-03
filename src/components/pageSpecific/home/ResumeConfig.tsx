@@ -1,19 +1,20 @@
 "use client";
 
-import type Resume from "@/lib/resume";
-import { useEffect, useRef, useState } from "react";
-import { resumeFromJSONResume } from "@/lib/resume";
-import { ArrowPathIcon } from "@heroicons/react/24/solid";
-import useLocalStorage from "@/lib/useLocalStorage";
-import { DEFAULT_RESUME } from "@/lib/resumeUtils";
-import OpenResumeNewTab from "./OpenResumeNewTab";
-import ResumeContext from "./ResumeContext";
-import ResumeHiddenInput from "./ResumeHiddenInput";
-import EditResumeLink from "./EditResumeLink";
-import DownloadResume from "./DownloadResume";
-import ResumePreview from "./ResumePreview";
-import ConfigureJobTitle from "./ConfigureJobTitle";
-import ToggleList from "./ToggleList";
+import { useRef } from "react";
+import type Resume from '@/lib/resume';
+import { useEffect, useState } from 'react';
+import { resumeFromJSONResume } from '@/lib/resume';
+import { ArrowPathIcon } from '@heroicons/react/24/solid';
+import useLocalStorage from '@/lib/hooks/useLocalStorage';
+import { DEFAULT_RESUME } from '@/lib/resumeUtils';
+import OpenResumeNewTab from './OpenResumeNewTab';
+import ResumeContext from './ResumeContext';
+import ResumeHiddenInput from './ResumeHiddenInput';
+import EditResumeLink from './EditResumeLink';
+import DownloadResume from './DownloadResume';
+import ResumePreview from './ResumePreview';
+import ConfigureJobTitle from './ConfigureJobTitle';
+import ToggleList from './ToggleList';
 
 export default function ResumeConfig() {
   const [isClient, setIsClient] = useState(false);
