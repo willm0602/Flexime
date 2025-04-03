@@ -62,7 +62,7 @@ export default function ToggleField<P, F extends keyof P, C = unknown>(
                 />
                 <label
                     htmlFor={`toggle-field-${fieldName}`}
-                    className='font-bold ml-2 capitalize flex flex-1 cursor-pointer'
+                    className='font-bold ml-2 capitalize flex flex-1 cursor-pointer text-start'
                     onClick={toggleField}
                     onKeyDown={toggleField}
                 >
@@ -169,7 +169,7 @@ function ToggleChildField<C>(props: ToggleChildFieldProps<C>) {
                     id={`toggle-field-${fieldName}-${index}`}
                 />
                 <label
-                    className='font-bold ml-2 capitalize flex flex-1 cursor-pointer'
+                    className='font-bold ml-2 capitalize flex flex-1 cursor-pointer text-start'
                     htmlFor={`toggle-field-${fieldName}-${index}`}
                 >
                     {togglable.children?.[index]?.title}

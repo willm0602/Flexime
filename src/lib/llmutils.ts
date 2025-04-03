@@ -70,6 +70,7 @@ export async function tailorResumeToJobDescription(
             return JSON.parse(resumeText);
         } catch (error) {
             console.error('Failed to parse JSON:', error);
+            console.error('Resume received:', resumeText);
             throw new Error('Invalid JSON response from Gemini');
         }
     }

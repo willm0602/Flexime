@@ -1,8 +1,10 @@
 import type Resume from "@/lib/resume";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import ResumeContext from "./ResumeContext";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function AITaylorResume() {
+    const [isGenerating, setIsGenerating] = useState(false);
     const { resume, setResume } = useContext(ResumeContext);
 
     return <dialog id="tailor-with-ai-modal" className="modal">
@@ -18,16 +20,18 @@ export default function AITaylorResume() {
                     const formData = new FormData(target);
 
                     e.preventDefault();
-                    fetch('/api/pdf/ai/tailor', {
+                    setIsGenerating(true);
+                    const init = {
                         method: 'POST',
                         body: JSON.stringify({
-                            resume: resume,
-                            jobDescription: formData.get('jobDescription'),
+                            resume,
+                            jobDescription: formData.get('jobDescription')
                         }),
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    }).then((response) => {
+                        header: {
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                    fetch('/api/pdf/ai/tailor', init).then((response) => {
                         const status = response.status;
                         if (status === 200) {
                             response.json().then((data) => {
@@ -44,19 +48,21 @@ export default function AITaylorResume() {
                         }
                     }).catch((error) => {
                         console.error('Error:', error);
-                    }
-    );
+                    }).finally(() => {
+                        setIsGenerating(false);
+                    });
                 }}
             >
-                <h3 className="font-bold text-lg">Use AI to tailor a job to a job description</h3>
+                <h3 className="font-bold text-lg">Use AI to tailor your resume to a job description</h3>
                 <input type="hidden" name="resume" value={JSON.stringify(resume )} />
-                <textarea placeholder="Job Description"
+                {isGenerating ? <LoadingSpinner/> : <textarea placeholder="Job Description"
                           name="jobDescription"
                           className="textarea textarea-primary w-full resize-none"
+                          aria-label="Job Description"
                           required
                           maxLength={3000}
-                />
-                <button type="submit" className="btn btn-active mt-2">Tailor Resume</button>
+                />}
+                <button type="submit" className="btn btn-active mt-2" disabled={isGenerating}>Tailor Resume</button>
             </form>
         </div>
     </dialog>
