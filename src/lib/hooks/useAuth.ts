@@ -15,7 +15,7 @@ const useAuth = () => {
 
     getUser();
 
-    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: listener } = supabase.auth.onAuthStateChange((_, session) => {
       setUser(session?.user || null);
     });
 
