@@ -1,11 +1,12 @@
 import ResumeConfig from '@/components/pageSpecific/home/ResumeConfig';
 import SignInSignOut from '@/components/SignInSignOut';
 import getResume from '@/lib/auth/getResume';
+import getUser from '@/lib/auth/getUser';
 
 export default async function Home() {
 
     const resumeFromProfile = await getResume();
-    console.log('PROFILE IS', resumeFromProfile);
+    const user = await getUser();
 
     return (
         <div
@@ -14,7 +15,7 @@ export default async function Home() {
         >
             <div className='flex justify-between'>
                 <h1>Flexime</h1>
-                <SignInSignOut />
+                <SignInSignOut user={user}/>
             </div>
             <ResumeConfig 
                 initResume={resumeFromProfile}

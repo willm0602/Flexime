@@ -18,8 +18,10 @@ function SignOut(){
     </div>
 }
 
-export default function SignInSignOut(){
-    const user = useAuth();
-    console.log('USER IS', user);
+interface SignInSignOutProps {
+    user: User | null
+}
+
+export default function SignInSignOut({user}: SignInSignOutProps) {
     return user ? <SignOut/> : <SignIn />
 }
