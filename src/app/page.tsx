@@ -1,12 +1,11 @@
 import ResumeConfig from '@/components/pageSpecific/home/ResumeConfig';
-import { createClient } from '@/lib/supabase/client';
 import SignInSignOut from '@/components/SignInSignOut';
+import getResume from '@/lib/auth/getResume';
 
 export default async function Home() {
 
-    const supabase = createClient();
-    const userResp = await supabase.auth.getUser();
-    const user = userResp.data.user;
+    const resumeFromProfile = await getResume();
+    console.log('PROFILE IS', resumeFromProfile);
 
     return (
         <div
@@ -17,7 +16,9 @@ export default async function Home() {
                 <h1>Flexime</h1>
                 <SignInSignOut />
             </div>
-            <ResumeConfig />
+            <ResumeConfig 
+                initResume={resumeFromProfile}
+            />
         </div>
     );
 }

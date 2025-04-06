@@ -1,0 +1,16 @@
+'use server';
+
+import type Resume from '@/lib/jsonResume';
+import useProfile from "./getProfile";
+
+export default async function getResume(): Promise<Resume | undefined>{
+    const profile = await useProfile();
+    if(!profile){
+        return undefined;
+    }
+    const resume = profile.resume;
+    if(!resume){
+        return undefined;
+    }
+    return resume;
+}
