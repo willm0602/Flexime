@@ -9,15 +9,20 @@ export default redis;
 export async function get(key: string): Promise<string | null> {
     const value = await redis.get(key);
     return value;
-};
+}
 
-export async function set(key: string, value: string, timeout = 3600): Promise<'OK' | null> {
+export async function set(
+    key: string,
+    value: string,
+    timeout = 3600,
+): Promise<'OK' | null> {
     const result = await redis.set(key, value);
     await redis.expire(key, timeout);
     return result;
 }
 
 export async function canConnectToCache(): Promise<boolean> {
+    console.log('Attempting to connect to cache');
     try {
         await redis.ping();
         return true;
@@ -26,5 +31,3 @@ export async function canConnectToCache(): Promise<boolean> {
         return false;
     }
 }
-
-
