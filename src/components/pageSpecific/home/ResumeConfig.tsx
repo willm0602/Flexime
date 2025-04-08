@@ -52,6 +52,7 @@ export default function ResumeConfig(props: ResumeConfigProps) {
 
     return (
         <ResumeContext.Provider value={{ resume, setResume }}>
+            <AITaylorResumeModal />
             <form
                 className='w-full flex flex-col lg:flex-row'
                 method='POST'
@@ -65,6 +66,7 @@ export default function ResumeConfig(props: ResumeConfigProps) {
                     <div className='flex'>
                         <OpenResumeNewTab />
                         <EditResumeLink />
+                        <AITaylorTrigger/>
                     </div>
                     <ConfigureJobTitle />
                     <ToggleList />
