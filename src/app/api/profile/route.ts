@@ -1,17 +1,19 @@
+import getUser from "@/lib/auth/getUser";
 import { createClient } from "@/lib/supabase/server";
 import type{ UserProfile } from "@/lib/types";
 import { NextResponse } from "next/server";
 
 export async function GET(){
     const supabase = await createClient();
-    const userResp = await supabase.auth.getUser();
-    if(!userResp || !userResp.data.user){
-        console.log('No user');
+    if(!supabase)
+        return NextResponse.json({}, {status: 500});
+    const user = await getUser();
+    if(!user){
         return NextResponse.json({
             status: 401,
         })
     }
-    const profilesReq = await supabase.from('userprofile').select('*').eq('user_id',userResp.data.user.id);
+    const profilesReq = await supabase.from('userprofile').select('*').eq('user_id',user.id);
     if(profilesReq.error){
         console.error(profilesReq.error);
         return NextResponse.json({}, {

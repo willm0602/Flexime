@@ -1,23 +1,21 @@
-'use client';
+import ErrorBanner from "@/components/ErrorBanner";
 import Input from "@/components/pageSpecific/auth/input"
 import { login } from "@/lib/auth/actions"
-import { useSearchParams } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
+import { notFound } from "next/navigation";
 
-export default function SignupPage(){
+export default function SigninPage(){
 
-  const searchParams = useSearchParams();
-  const error = searchParams.get('error');
+  const supabase = createClient();
+  if(!supabase)
+    return notFound();
 
   return <div className="min-h-screen min-w-full flex items-center justify-center">
     <div className="card card-border bg-base-300 w-96">
     <div className="card-body">
       <form>
         <h2 className="card-title mt-1">Login</h2>
-        {error && <div className="alert alert-error shadow-lg mb-8">
-          <div>
-            <span>{error}</span>
-          </div>
-        </div>}
+        <ErrorBanner />
         <Input id='email' name='email' type='text' label='Email' placeholder='Enter your email'/>
         <Input id='password' name='password' type='password' label='Password' placeholder=''/>
         <div className="card-actions justify-end">
@@ -25,6 +23,10 @@ export default function SignupPage(){
         </div>
       </form>
       <div className="divider">OR</div>
+      <div className="flex max-w-full justify-between">
+        <a href="/signup" className="btn btn-secondary flex-1 mr-2 text-black no-underline">Sign Up</a>
+        <a href="/" className="btn btn-accent no-underline flex-1 text-black">Return Home</a>
+      </div>
       <div className='alert alert-info'>
           <span>Third-party auth coming soon</span>
       </div>

@@ -2,16 +2,19 @@
 
 import { createClient } from "../supabase/server";
 import type { UserProfile } from "../types";
+import getUser from "./getUser";
 
 export default async function useProfile(): Promise<UserProfile | null>{
 
     const supabase = await createClient();
-    const userResp = await supabase.auth.getUser();
-    if(!userResp || !userResp.data.user){
-        console.log('No user');
+    if(!supabase){
         return null;
     }
-    const profilesReq = await supabase.from('userprofile').select('*').eq('user_id',userResp.data.user.id);
+    const user = await getUser();
+    if(!user){
+        return null;
+    }
+    const profilesReq = await supabase.from('userprofile').select('*').eq('user_id',user.id);
     if(profilesReq.error){
         console.error(profilesReq.error);
         return null;

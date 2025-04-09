@@ -4,6 +4,8 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
     const resume = await request.json();
     const supabase = await createClient();
+    if(!supabase)
+        return NextResponse.json({}, {status: 500});
     const userResp = await supabase.auth.getUser();
     if(!userResp || !userResp.data.user){
         console.log('No user');

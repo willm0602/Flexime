@@ -8,6 +8,9 @@ const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
+    if(!supabase) {
+      return;
+    }
     const getUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       setUser(user);
