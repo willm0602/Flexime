@@ -11,7 +11,9 @@ interface SignupFormData {
 }
 
 export async function login(formData: FormData) {
-    const supabase = await createClient()
+    const supabase = await createClient();
+    if(!supabase)
+        return;
     // type-casting here for convenience
     // in practice, you should validate your inputs
     const signin = {
@@ -47,7 +49,10 @@ function validateForm(data: SignupFormData) {
 }
 
 export async function signup(formData: FormData) {
-    const supabase = await createClient()
+    const supabase = await createClient();
+
+    if(!supabase)
+        return;
     // type-casting here for convenience
     // in practice, you should validate your inputs
     const signUpData: SignupFormData = {
@@ -58,7 +63,6 @@ export async function signup(formData: FormData) {
 
     const validation = validateForm(signUpData)
     if (validation) {
-        console.log('VALIDATION ERROR', validation);
         // redirect to error page
         const params = new URLSearchParams({error: validation})
         redirect(`/signup?${params.toString()}`);
@@ -84,6 +88,8 @@ async function makeUserProfileFor(user: User | null){
     }
     const {id} = user;
     const supabaseClient = await createClient();
+    if(!supabaseClient)
+        return;
     const {error} = await supabaseClient.from('userprofile').insert({
         user_id: id,
         settings: {},
@@ -95,5 +101,7 @@ async function makeUserProfileFor(user: User | null){
 
 export async function signout() {
     const supabase = await createClient();
+    if(!supabase)
+        return;
     supabase.auth.signOut();
 }

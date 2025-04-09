@@ -3,6 +3,7 @@ import Input from "@/components/pageSpecific/auth/input"
 import { signup } from "@/lib/auth/actions"
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 export default async function SignupPage(){
 
@@ -15,7 +16,7 @@ export default async function SignupPage(){
     <div className="card-body">
       <form>
         <h2 className="card-title mt-1">Signup</h2>
-        <ErrorBanner/>
+        <Suspense><ErrorBanner/></Suspense>
         <Input id='email' name='email' type='text' label='Email' placeholder='Enter your email'/>
         <Input id='password' name='password' type='password' label='Password' placeholder=''/>
         <Input id='confirm-password' name='confirmPassword' type='password' label='Confirm Password' placeholder=''/>

@@ -3,6 +3,7 @@ import Input from "@/components/pageSpecific/auth/input"
 import { login } from "@/lib/auth/actions"
 import { createClient } from "@/lib/supabase/client";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 export default function SigninPage(){
 
@@ -15,7 +16,7 @@ export default function SigninPage(){
     <div className="card-body">
       <form>
         <h2 className="card-title mt-1">Login</h2>
-        <ErrorBanner />
+        <Suspense><ErrorBanner /></Suspense>
         <Input id='email' name='email' type='text' label='Email' placeholder='Enter your email'/>
         <Input id='password' name='password' type='password' label='Password' placeholder=''/>
         <div className="card-actions justify-end">
