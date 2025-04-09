@@ -1,5 +1,6 @@
 import getUser from "@/lib/auth/getUser";
 import { Bars3Icon } from "@heroicons/react/24/solid";
+import Link from "next/link";
 
 export default async function MobileNav() {
   const user = await getUser();
@@ -11,22 +12,22 @@ export default async function MobileNav() {
         </button>
         <ul className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
           <li>
-            <a href="/" className="no-underline">Configure Resume</a>
+            <Link href="/" className="no-underline">Configure Resume</Link>
           </li>
           <li>
-            <a href="/profile" className="no-underline">Modify Profile</a>
+            <Link href="/profile" className="no-underline">Modify Profile</Link>
           </li>
           { user ?
           <li>
-            <a className="no-underline" href="/signout">Signout</a>
+            <Link className="no-underline" href="/signout">Signout</Link>
           </li>
           :
           <>
             <li>
-              <a className="no-underline" href="/login">Login</a>
+              <Link className="no-underline" href="/login">Login</Link>
             </li>
             <li>
-              <a className="no-underline" href="/signup">Sign Up</a>
+              <Link className="no-underline" href="/signup">Sign Up</Link>
             </li>
           </>
         }

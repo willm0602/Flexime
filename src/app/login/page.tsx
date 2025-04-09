@@ -2,6 +2,7 @@ import ErrorBanner from '@/components/ErrorBanner';
 import Input from '@/components/pageSpecific/auth/input';
 import { login } from '@/lib/auth/actions';
 import { createClient } from '@/lib/supabase/client';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
@@ -44,18 +45,18 @@ export default function SigninPage() {
                     </form>
                     <div className='divider'>OR</div>
                     <div className='flex max-w-full justify-between'>
-                        <a
+                        <Link
                             href='/signup'
                             className='btn btn-secondary flex-1 mr-2 text-black no-underline'
                         >
                             Sign Up
-                        </a>
-                        <a
+                        </Link>
+                        <Link
                             href='/'
                             className='btn btn-accent no-underline flex-1 text-black'
                         >
                             Return Home
-                        </a>
+                        </Link>
                     </div>
                     <div className='alert alert-info'>
                         <span>Third-party auth coming soon</span>

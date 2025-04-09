@@ -1,8 +1,10 @@
+import Link from "next/link";
+
 interface NavLinkProps {
     route: string;
     children: React.ReactNode;
 }
 
 export default function NavLink({ route, children }: NavLinkProps) {
-    return <a href={route}>{children}</a>;
+    return <Link href={route}>{children}</Link>;
 }

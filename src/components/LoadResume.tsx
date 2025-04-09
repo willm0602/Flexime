@@ -1,36 +1,12 @@
 'use client';
 import type Resume from '@/lib/jsonResume';
-import { DEFAULT_RESUME } from '@/lib/resumeUtils';
+import resumeValidator from '@/lib/validators/jsonResume';
 import type { ChangeEventHandler } from 'react';
 import toast from 'react-hot-toast';
 
 type LoadResumeProps = {
     setResume: (newResume: Resume) => void;
 };
-
-function verifyResume(resumeContents: string): Resume {
-    try {
-        const resume = JSON.parse(resumeContents);
-        return {
-            basics: resume.basics || {
-                name: 'Name',
-                label: '',
-                email: '',
-                phone: '',
-                profiles: [],
-            },
-            work: resume.work || [],
-            volunteer: resume.volunteer || [],
-            education: resume.education || [],
-            awards: resume.awards || [],
-            publications: resume.publications || [],
-            skills: resume.skills || [],
-            projects: resume.projects || [],
-        };
-    } catch {
-        return DEFAULT_RESUME;
-    }
-}
 
 export default function LoadResume(props: LoadResumeProps) {
     const { setResume } = props;
@@ -48,11 +24,12 @@ export default function LoadResume(props: LoadResumeProps) {
         }
         const contents = await file.text();
         try {
-            const resume = verifyResume(contents);
-            if (!resume) {
+            const result = resumeValidator.safeParse(JSON.parse(contents));
+            if (!result.success) {
                 showErrorMsg();
                 return;
             }
+            const resume: Resume = result.data;
             setResume(resume);
             window.location.reload();
         } catch (e) {
@@ -66,9 +43,9 @@ export default function LoadResume(props: LoadResumeProps) {
         <>
             <label
                 htmlFor='load-resume'
-                className='btn btn-main btn-success ml-4'
+                className='btn btn-main btn-success'
             >
-                Load Resume
+                Load Resume JSON
             </label>
             <input
                 type='file'
