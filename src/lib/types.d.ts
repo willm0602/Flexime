@@ -3,9 +3,9 @@
 // these changes
 
 export type UserProfile = {
-    created_at: string
-    id: number
-    resume: Json | null
-    settings: Json
-    user_id: string
-}
+    created_at: string;
+    id: number;
+    resume: Json | null;
+    settings: Json;
+    user_id: string;
+};

@@ -1,7 +1,5 @@
 module.exports = {
-    extends: [
-        'eslint:recommended',
-    ],
+    extends: ['eslint:recommended'],
     plugins: ['filenames', 'prettier'],
     rules: {
         // Enforce Title Case for files inside 'src/components'

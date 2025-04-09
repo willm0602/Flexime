@@ -4,7 +4,6 @@ import getResume from '@/lib/auth/getResume';
 import getUser from '@/lib/auth/getUser';
 
 export default async function Home() {
-
     const resumeFromProfile = await getResume();
     const user = await getUser();
 
@@ -13,13 +12,8 @@ export default async function Home() {
             className='font-[family-name:var(--font-geist-sans)] w-full md:w-4/5 mx-auto px-12 py-12'
             suppressHydrationWarning
         >
-            <div className='flex justify-between'>
-                <h1>Flexime</h1>
-                <SignInSignOut user={user}/>
-            </div>
-            <ResumeConfig 
-                initResume={resumeFromProfile}
-            />
+            <h1>Configure Resume</h1>
+            <ResumeConfig initResume={resumeFromProfile} />
         </div>
     );
 }

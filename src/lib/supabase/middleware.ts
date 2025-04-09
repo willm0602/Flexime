@@ -1,10 +1,10 @@
-import { createServerClient } from '@supabase/ssr'
-import { NextResponse, type NextRequest } from 'next/server'
+import { createServerClient } from '@supabase/ssr';
+import { NextResponse, type NextRequest } from 'next/server';
 
 export async function updateSession(request: NextRequest) {
     let supabaseResponse = NextResponse.next({
         request,
-    })
+    });
 
     try {
         const supabase = createServerClient(
@@ -13,10 +13,9 @@ export async function updateSession(request: NextRequest) {
             {
                 cookies: {
                     getAll() {
-                        return request.cookies.getAll()
+                        return request.cookies.getAll();
                     },
                     setAll(cookiesToSet) {
-
                         for (const cookie of cookiesToSet) {
                             const { name, value } = cookie;
                             request.cookies.set(name, value);
@@ -24,7 +23,7 @@ export async function updateSession(request: NextRequest) {
 
                         supabaseResponse = NextResponse.next({
                             request,
-                        })
+                        });
 
                         for (const cookie of cookiesToSet) {
                             const { name, value, options } = cookie;
@@ -32,8 +31,8 @@ export async function updateSession(request: NextRequest) {
                         }
                     },
                 },
-            }
-        )
+            },
+        );
     } catch (error) {
         return NextResponse.next({
             request,
@@ -59,5 +58,5 @@ export async function updateSession(request: NextRequest) {
     // If this is not done, you may be causing the browser and server to go out
     // of sync and terminate the user's session prematurely!
 
-    return supabaseResponse
+    return supabaseResponse;
 }

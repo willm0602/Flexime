@@ -15,9 +15,16 @@ export default function Input({
     placeholder,
 }: Readonly<InputProps>) {
     return (
-        <fieldset className="fieldset mb-4">
-            <legend className="fieldset-legend">{label}</legend>
-            <input type={type} className="input w-full" placeholder={placeholder} id={id} name={name} required />
+        <fieldset className='fieldset mb-4'>
+            <legend className='fieldset-legend'>{label}</legend>
+            <input
+                type={type}
+                className='input w-full'
+                placeholder={placeholder}
+                id={id}
+                name={name}
+                required
+            />
         </fieldset>
     );
 }

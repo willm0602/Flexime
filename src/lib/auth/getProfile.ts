@@ -1,33 +1,35 @@
 'use server';
 
-import { createClient } from "../supabase/server";
-import type { UserProfile } from "../types";
-import getUser from "./getUser";
+import { createClient } from '../supabase/server';
+import type { UserProfile } from '../types';
+import getUser from './getUser';
 
-export default async function useProfile(): Promise<UserProfile | null>{
-
+export default async function useProfile(): Promise<UserProfile | null> {
     const supabase = await createClient();
-    if(!supabase){
+    if (!supabase) {
         return null;
     }
     const user = await getUser();
-    if(!user){
+    if (!user) {
         return null;
     }
-    const profilesReq = await supabase.from('userprofile').select('*').eq('user_id',user.id);
-    if(profilesReq.error){
+    const profilesReq = await supabase
+        .from('userprofile')
+        .select('*')
+        .eq('user_id', user.id);
+    if (profilesReq.error) {
         console.error(profilesReq.error);
         return null;
     }
     const profiles = profilesReq.data;
-    if(profiles.length === 0){
+    if (profiles.length === 0) {
         console.log('No profiles');
         return null;
     }
-    if(profiles.length === 2){
+    if (profiles.length === 2) {
         console.log('Too many profiles');
         return null;
-    };
+    }
     const profile = profiles[0];
     return profile;
 }
