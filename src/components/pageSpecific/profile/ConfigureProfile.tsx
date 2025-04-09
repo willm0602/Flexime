@@ -76,17 +76,14 @@ export default function ConfigureProfile(props: ConfigureResumeProps) {
                 <>
                     <h1>Modify Profile</h1>
                     <div className='flex'>
-                        <Link href='/' className='btn no-underline'>
-                            Return Home
-                        </Link>
                         <LoadResume setResume={setResume} />
-                        <a
+                        <Link
                             href={exportURL}
                             className='btn no-underline btn-secondary text-black ml-4'
                             download='resume.json'
                         >
-                            Export Profile
-                        </a>
+                            Export Profile JSON
+                        </Link>
                     </div>
 
                     <Tabs.Root

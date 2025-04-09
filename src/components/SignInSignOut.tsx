@@ -3,18 +3,19 @@
 import useAuth from '@/lib/hooks/useAuth';
 import { createClient } from '@/lib/supabase/client';
 import type { User } from '@supabase/supabase-js';
+import Link from 'next/link';
 
 const linkClassName = 'btn btn-primary no-underline';
 
 function SignIn() {
     return (
         <div>
-            <a href='/login' className={`${linkClassName} mr-4`}>
+            <Link href='/login' className={`${linkClassName} mr-4`}>
                 Login
-            </a>
-            <a href='/signup' className={linkClassName}>
+            </Link>
+            <Link href='/signup' className={linkClassName}>
                 Signup
-            </a>
+            </Link>
         </div>
     );
 }
@@ -22,9 +23,9 @@ function SignIn() {
 function SignOut() {
     return (
         <div>
-            <a className={linkClassName} href='/signout'>
+            <Link className={linkClassName} href='/signout'>
                 Signout
-            </a>
+            </Link>
         </div>
     );
 }
