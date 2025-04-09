@@ -6,6 +6,7 @@ const supabase = createClient();
 
 const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
+  console.log('USER IS', user);
 
   useEffect(() => {
     if(!supabase) {

@@ -13,11 +13,13 @@ import EditProjects from '@/components/pageSpecific/profile/EditProjects';
 import EditSkills from '@/components/pageSpecific/profile/EditSkills';
 import { useEffect, useState } from 'react';
 import useQueryParam from '@/lib/hooks/useQueryParam';
+import type { User } from '@supabase/supabase-js';
 
 const RESUME_KEY = 'saved-resume';
 
 interface ConfigureResumeProps {
     resume: Resume | undefined;
+    user: User | null;
 }
 
 const setResumeForProfile = (resume: Resume) => {
@@ -41,10 +43,12 @@ const setResumeForProfile = (resume: Resume) => {
 
 export default function ConfigureProfile(props: ConfigureResumeProps) {
     const [isClient, setIsClient] = useState(false);
-    const [resume, setResume] = props.resume ? [props.resume, setResumeForProfile] : useLocalStorage<Resume>(
+    const [resumeFromLS, setResumeInLS] = useLocalStorage<Resume>(
         RESUME_KEY,
         DEFAULT_RESUME,
     );
+    const resume = props.resume ?? resumeFromLS ?? DEFAULT_RESUME;
+    const setResume = props.user ? setResumeForProfile : setResumeInLS;
     const [exportURL, setExportURL] = useState<string>('');
     const [activeTab, setActiveTab] = useQueryParam('tab', 'basics');
 
