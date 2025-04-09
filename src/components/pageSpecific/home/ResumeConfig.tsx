@@ -1,10 +1,11 @@
 "use client";
 
+import { useRef } from "react";
 import type Resume from "@/lib/resume";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { resumeFromJSONResume } from "@/lib/resume";
 import { ArrowPathIcon } from "@heroicons/react/24/solid";
-import useLocalStorage from "@/lib/useLocalStorage";
+import useLocalStorage from "@/lib/hooks/useLocalStorage";
 import { DEFAULT_RESUME } from "@/lib/resumeUtils";
 import OpenResumeNewTab from "./OpenResumeNewTab";
 import ResumeContext from "./ResumeContext";
@@ -14,11 +15,17 @@ import DownloadResume from "./DownloadResume";
 import ResumePreview from "./ResumePreview";
 import ConfigureJobTitle from "./ConfigureJobTitle";
 import ToggleList from "./ToggleList";
+import type JSONResume from "@/lib/jsonResume";
 
-export default function ResumeConfig() {
+interface ResumeConfigProps {
+  initResume: JSONResume | undefined;
+}
+
+export default function ResumeConfig(props: ResumeConfigProps) {
   const [isClient, setIsClient] = useState(false);
   const [resume, setResume] = useState<Resume | null>(null);
-  const [initResume] = useLocalStorage("saved-resume", DEFAULT_RESUME);
+  const [storedResume] = useLocalStorage("saved-resume", DEFAULT_RESUME);
+  const initResume = props.initResume ?? storedResume;
 
   const formRef = useRef<HTMLFormElement>(null);
 

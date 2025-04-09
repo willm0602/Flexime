@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     const body = await req.formData();
 
     const resumeAsStr = body.get('resume_data') as string;
-    const shouldDownload = body.get('download') == 'true';
+    const shouldDownload = body.get('download') === 'true';
     type TemplateOption = keyof typeof Templates;
     const templateName = (body.get('template') || 'DEFAULT') as TemplateOption;
 
