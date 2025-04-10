@@ -4,7 +4,7 @@ import Link from 'next/link';
 export default function EditResumeLink() {
     return (
         <Link
-            className='btn btn-secondary text-black no-underline'
+            className='btn btn-secondary text-black no-underline mr-4'
             href='/profile'
         >
             <PencilSquareIcon width={24} height={24} title='Edit Resume' />
