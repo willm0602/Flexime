@@ -42,7 +42,7 @@ const jsonResumeSchema = z.object({
             name: z.string(),
             highlights: z.array(z.string()),
             url: z.string().url().optional(),
-            description: z.string(),
+            description: z.string().optional(),
             repository: z.string().url().optional(),
             startDate: z.string().optional(), // ISO date string
             endDate: z.string().optional(),   // ISO date string
