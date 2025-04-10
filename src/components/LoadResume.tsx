@@ -26,6 +26,7 @@ export default function LoadResume(props: LoadResumeProps) {
         try {
             const result = resumeValidator.safeParse(JSON.parse(contents));
             if (!result.success) {
+                console.error(result.error);
                 showErrorMsg();
                 return;
             }
