@@ -13,7 +13,7 @@ const jsonResumeSchema = z.object({
             city: z.string(),
             countryCode: z.string(),
             region: z.string(),
-            label: z.string(),
+            label: z.string().optional(),
         }),
         email: z.string().email(),
         phone: z.string(),
@@ -23,9 +23,9 @@ const jsonResumeSchema = z.object({
             institution: z.string(),
             area: z.string(),
             studyType: z.string(),
-            startDate: z.string(), // ISO date string
-            endDate: z.string(),   // ISO date string
-            score: z.string(),
+            startDate: z.string().optional(), // ISO date string
+            endDate: z.string().optional(),   // ISO date string
+            score: z.string().optional(),
         })
     ),
     work: z.array(
@@ -41,9 +41,9 @@ const jsonResumeSchema = z.object({
         z.object({
             name: z.string(),
             highlights: z.array(z.string()),
-            url: z.string().url().optional(),
-            description: z.string(),
-            repository: z.string().url().optional(),
+            url: z.string().optional(),
+            description: z.string().optional(),
+            repository: z.string().optional(),
             startDate: z.string().optional(), // ISO date string
             endDate: z.string().optional(),   // ISO date string
 

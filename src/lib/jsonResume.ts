@@ -39,7 +39,7 @@ export interface Education {
     url?: string;
     area: string;
     studyType: string;
-    startDate: string; // ISO 8601 Format
+    startDate?: string; // ISO 8601 Format
     endDate?: string; // ISO 8601 Format
     score?: string;
     courses?: string[];
@@ -70,7 +70,7 @@ export interface Project {
     name: string;
     startDate?: string; // ISO-8601 Format
     endDate?: string; // ISO-8601 Format
-    description: string;
+    description?: string;
     highlights: string[];
     url?: string;
     repository?: string;
