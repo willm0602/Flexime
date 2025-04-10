@@ -28,6 +28,9 @@
     "organizeImports": { "enabled": true },
     "linter": { "enabled": true, "rules": { "recommended": true } },
     "javascript": {
+        "parser": {
+            "unsafeParameterDecoratorsEnabled": true
+        },
         "formatter": {
             "jsxQuoteStyle": "single",
             "quoteProperties": "asNeeded",

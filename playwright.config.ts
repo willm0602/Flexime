@@ -71,8 +71,8 @@ export default defineConfig({
     ],
 
     webServer: {
-        command: 'npm run start',
-        url: 'http://127.0.0.1:3000',
+        command: 'npm run start -- -p 3062', // Use port 3062 for tests
+        url: 'http://127.0.0.1:3062', // Match the port with the command
         reuseExistingServer: !process.env.CI,
     },
 });

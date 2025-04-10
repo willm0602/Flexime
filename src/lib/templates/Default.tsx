@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
 });
 
 const HR = () => {
-    return <View style={styles.divider}></View>;
+    return <View style={styles.divider}/>
 };
 
 const SectionLabel = (props: { sectionName: string }) => {
@@ -176,9 +176,7 @@ const ResumeComponent = (props: { resume: Resume }) => {
     const { resume } = props;
 
     const profiles: Profile[] = resume.basics.profiles;
-
     const workExperience = resume.work || [];
-
     const education = resume.education || [];
 
     return (
@@ -263,7 +261,7 @@ const ResumeComponent = (props: { resume: Resume }) => {
                         return (
                             <ProjectComponent
                                 proj={proj}
-                                highlights={proj.highlights}
+                                highlights={proj.highlights.filter((hl) => typeof hl === 'string')}
                                 key={`proj-${idx}`}
                             />
                         );
@@ -290,6 +288,7 @@ const ResumeComponent = (props: { resume: Resume }) => {
 };
 
 const defaultTemplate: GeneratedResume = async (resume: Resume) => {
+    console.log('RESUME IS', resume);
     return await renderToStream(<ResumeComponent resume={resume} />);
 };
 

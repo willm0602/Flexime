@@ -1,6 +1,6 @@
 import type Togglable from '@/lib/togglable';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ReactSortable } from 'react-sortablejs';
 type ToggleFieldProps<P, F extends keyof P, C> = {
@@ -15,12 +15,11 @@ export default function ToggleField<P, F extends keyof P, C = unknown>(
     props: ToggleFieldProps<P, F, C>,
 ) {
     const { parent, togglable, fieldName, setParent, indent = 0 } = props;
-    const [currTogglable, $setCurrentTogglable] =
+    const [currTogglable, dispatchCurrTogglable] =
         useState<Togglable<P[F], C>>(togglable);
     const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
-
     const setCurrentTogglable = (updatedTogglable: Togglable<P[F]>) => {
-        $setCurrentTogglable(updatedTogglable);
+        dispatchCurrTogglable(updatedTogglable);
 
         const updatedParent = {
             ...parent,
@@ -43,6 +42,11 @@ export default function ToggleField<P, F extends keyof P, C = unknown>(
         setIsCollapsed(!isCollapsed);
     };
 
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    useEffect(() => {
+        setCurrentTogglable(togglable); 
+    }, [togglable]);
+
     return (
         <>
             <div
@@ -58,7 +62,7 @@ export default function ToggleField<P, F extends keyof P, C = unknown>(
                 />
                 <label
                     htmlFor={`toggle-field-${fieldName}`}
-                    className='font-bold ml-2 capitalize flex flex-1 cursor-pointer'
+                    className='font-bold ml-2 capitalize flex flex-1 cursor-pointer text-start'
                     onClick={toggleField}
                     onKeyDown={toggleField}
                 >
@@ -165,7 +169,7 @@ function ToggleChildField<C>(props: ToggleChildFieldProps<C>) {
                     id={`toggle-field-${fieldName}-${index}`}
                 />
                 <label
-                    className='font-bold ml-2 capitalize flex flex-1 cursor-pointer'
+                    className='font-bold ml-2 capitalize flex flex-1 cursor-pointer text-start'
                     htmlFor={`toggle-field-${fieldName}-${index}`}
                 >
                     {togglable.children?.[index]?.title}
