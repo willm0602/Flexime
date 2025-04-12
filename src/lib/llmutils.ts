@@ -1,76 +1,119 @@
-import type Resume from './resume';
+import type Resume from "./resume";
 
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const apiKey = process.env.GEMINI_API_KEY || '';
+const apiKey = process.env.GEMINI_API_KEY || "";
 const genAI = new GoogleGenerativeAI(apiKey);
 
 const model = genAI.getGenerativeModel({
-    model: 'gemini-2.0-flash-lite',
+  model: "gemini-2.0-flash-lite",
 });
 
 const generationConfig = {
-    temperature: 1,
-    topP: 0.95,
-    topK: 40,
-    maxOutputTokens: 8192,
-    responseModalities: [],
-    responseMimeType: 'application/json',
+  temperature: 1,
+  topP: 0.95,
+  topK: 40,
+  maxOutputTokens: 8192,
+  responseModalities: [],
+  responseMimeType: "application/json",
 };
 
 async function askGemini(prompt: string) {
-    const chatSession = model.startChat({
-        generationConfig,
-        history: [],
-    });
+  const chatSession = model.startChat({
+    generationConfig,
+    history: [],
+  });
 
-    const result = await chatSession.sendMessage(prompt);
-    const candidates = result.response.candidates;
-    return candidates || [];
+  const result = await chatSession.sendMessage(prompt);
+  const candidates = result.response.candidates;
+  return candidates || [];
 }
 
 export async function tailorResumeToJobDescription(
-    resume: Resume,
-    jobDescription: string,
+  resume: Resume,
+  jobDescription: string,
 ) {
-    const prompt = `Modify the following resume to better align with the provided job description.
+  const prompt = `
+Optimize this resume for both relevance and length by toggling \`isOn\` flags to produce 1-1.5 pages of content. Follow these rules:
 
-Resume: ${JSON.stringify(resume)}
-Job Description: ${jobDescription}
+1. **Content Range Requirements**:
+  - Work Experience:
+    - Work should include 1-2 positions with 4+ bullets each
+  - Skills:
+    - Skills should include 8-12 skills
+    - Skills should be relevant to the job description
+  - Education:
+    - Education should include 1-2 degrees
+    - Degrees do not need to be relevant to the job description
+  - Projects:
+    - Projects should include 1-2 projects
+    - Projects should be relevant to the job description
+    - Projects should include 3-5 bullets each, keeping in mind that if
+        a project has a source code link and a demo link, those will each
+        count as an additional bullet
 
-Instructions:
-- For each field with an "isOn" property, set "isOn" to true if it is directly relevant to the job or adds transferable value; otherwise, set it to false.
-- You MAY modify the "title" if it helps better match the job description. If the title is not relevant, set "isOn" to false.
-- You MAY include either the "summary" or the "title", but NOT both—whichever is more relevant.
-- Do NOT remove any fields or objects from the resume. If a field is not relevant, set "isOn" to false instead of removing it.
-- Do NOT rename or restructure fields—only modify "isOn" and optionally the "title" text.
-- The resume MUST include **between 25 and 30 bullet points total** with "isOn" set to true. Count each of the following as one bullet:
-  - Job or project highlights (i.e., resume bullets)
-  - Links (such as source code or project URLs)
-- If the total number of bullets with "isOn: true" is less than 25, turn on additional relevant highlights from jobs and projects until the total is between 25–30.
-- Prioritize **jobs over projects** when selecting highlights.
-- For each included job, at least **5 highlights** must have "isOn: true".
-- Projects must have at least **2 meaningful highlights** (excluding links) to be included.
-- Jobs with fewer than 4 meaningful highlights should have "isOn" set to false.
-- If a parent object contains children with "isOn: true", then the parent itself MUST also have "isOn: true".
-- Reorder highlights to prioritize the most relevant and impactful points based on the job description.
-- Maximize inclusion of relevant, impactful, and transferable experience.
-- Return the resume in **strict JSON format**, exactly matching the original schema, with no line breaks or markdown formatting.`;
+2. **Priority Activation System**:
+   [Relevance Tier] -> [Action]
+   Tier 1 (Direct JD matches) -> ALWAYS enable
+   Tier 2 (Related skills/experience) -> Enable until hitting minimum page length
+   Tier 3 (Everything else) -> Only enable if needed to reach minimum content
 
-    const candidates = await askGemini(prompt);
+3. **Structure Preservation**:
+   - NEVER delete fields - only modify \`isOn\` values
+   - Maintain all nested structures exactly
+4. **Job Description**:
+${jobDescription}
 
-    if (candidates.length > 0) {
-        const parts = candidates[0].content.parts;
-        const resumeText = parts.map((part) => part.text || '').join('');
+5. **Output Format**:
+\`\`\`json
+{
+  // Keep ALL original fields - example modifications:
+  "skills": {
+    "isOn": true,  // Tier 1: 8/12 skills enabled
+    "children": [
+      {"isOn": true},  // Python (direct match)
+      {"isOn": false}  // Photoshop (no match)
+    ]
+  },
+  "workExperience": {
+    "isOn": true,
+    "children": [
+      {
+        "isOn": true,
+        "children": [
+          {"isOn": true},  // Tier 1 bullet
+          {"isOn": false} // Tier 3 bullet
+        ]
+      }
+    ]
+  }
+}
+\`\`\`
 
-        try {
-            return JSON.parse(resumeText);
-        } catch (error) {
-            console.error('Failed to parse JSON:', error);
-            console.error('Resume received:', resumeText);
-            throw new Error('Invalid JSON response from Gemini');
-        }
+Resume to optimize:
+\`\`\`json
+${JSON.stringify(resume, null, 2)}
+\`\`\``;
+
+  const candidates = await askGemini(prompt);
+  console.log("CANDIDATES ARE", candidates);
+
+  if (candidates.length > 0) {
+    const parts = candidates[0].content.parts;
+    const resumeText = parts.map((part) => part.text || "").join("");
+    
+    // Clean response (Gemini sometimes adds markdown backticks)
+    const cleanText = resumeText.replace(/```json/g, '').replace(/```/g, '').trim();
+    
+    console.log("RESP FROM GEMINI IS", cleanText);
+    try {
+      return JSON.parse(cleanText) as Resume;
+    } catch (error) {
+      console.error("Failed to parse JSON:", error);
+      console.error("Raw response:", cleanText);
+      throw new Error("Invalid JSON response from Gemini");
     }
+  }
 
-    throw new Error('No candidates received from Gemini');
+  throw new Error("No candidates received from Gemini");
 }
