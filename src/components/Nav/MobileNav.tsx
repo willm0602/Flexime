@@ -17,6 +17,9 @@ export default async function MobileNav() {
           <li>
             <Link href="/profile" className="no-underline">Modify Profile</Link>
           </li>
+          <li>
+            <Link href="/about" className="no-underline">About</Link>
+          </li>
           { user ?
           <li>
             <Link className="no-underline" href="/signout">Signout</Link>
