@@ -1,7 +1,7 @@
 'use server';
 
 import { createClient } from '../supabase/server';
-import type { UserProfile } from '../types';
+import type { UserProfile } from '@/lib/types/userprofile';
 import getUser from './getUser';
 
 export default async function useProfile(): Promise<UserProfile | null> {

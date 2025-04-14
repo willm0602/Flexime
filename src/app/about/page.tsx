@@ -11,7 +11,6 @@ export default function AboutPage() {
           <li><a href="#whatisthis" className="hover:underline no-underline">What is this?</a></li>
           <li><a href="#howtouse" className="hover:underline no-underline">How do I use this?</a></li>
           <li><a href="#howtoload" className="hover:underline no-underline">How do I load in a resume?</a></li>
-          <li><a href="#howtoloadpdf" className="hover:underline no-underline">How can I load in a resume from a PDF?</a></li>
           <li><a href="#signin" className="hover:underline no-underline">How do I sign in?</a></li>
           <li><a href="#whyjobtitle" className="hover:underline no-underline">Why can I modify the job title on the configure page?</a></li>
           <li><a href="#atscompliance" className="hover:underline no-underline">Is this ATS compliant?</a></li>
@@ -55,26 +54,16 @@ export default function AboutPage() {
         <HR />
         <h2 className="my-1 text-lg" id="howtoload">How do I load a resume?</h2>
         <p>
-          You can load a resume by clicking on the "Load Resume JSON" button.
+          You can load a resume by clicking on the "Load Resume" button.
           This will allow you to select a{" "}
           <a href="https://jsonresume.org/" target="_blank" rel="noreferrer">
             JSON Resume
-          </a>{" "}
-          file from your computer. Once you select the file, it will
-          automatically load the resume and refresh the page.
+          </a>{" "}, docx or pdf file from your computer. Once you select the file, it will
+          file and automatically load the resume and refresh the page.
         </p>
         <p>
           NOTE: The resume JSON file must be in the correct format. If it is
           not, you will see an error message.
-        </p>
-        <HR />
-        <h2 className="my-1 text-lg" id="howtoloadpdf">
-          My resume is in a PDF format. How can I import this?
-        </h2>
-        <p>
-          We don't currently support importing resumes from PDF files. One
-          workaround right now is to upload the PDF to ChatGPT or another LLM
-          and ask it to parse the resume for you into resume JSON.
         </p>
         <HR />
         <h2 className="my-1 text-lg" id="signin">How do I sign in?</h2>
