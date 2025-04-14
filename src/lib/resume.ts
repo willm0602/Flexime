@@ -92,7 +92,7 @@ export function resumeFromJSONResume(
                 position,
                 `${position.name} (${position.position})`,
                 (position.highlights || []).map((highlight) => {
-                    return togglable(highlight, truncate(highlight, 25));
+                    return togglable(highlight, truncate(highlight, 45));
                 }),
             );
         }),
@@ -105,7 +105,7 @@ export function resumeFromJSONResume(
                 project,
                 project.name,
                 (project.highlights || []).map((highlight) => {
-                    return togglable(highlight, truncate(highlight, 25));
+                    return togglable(highlight, truncate(highlight, 45));
                 }),
             );
         }),

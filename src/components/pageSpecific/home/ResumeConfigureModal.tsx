@@ -17,7 +17,7 @@ function ConfigureBasics(props: {
         'location'
     ] as const;
     return (
-        <div className='modal-box'>
+        <>
             <h1>Edit Basics</h1>
             <ul className='ml-0 pl-0'>{basicsFields.map((field) => {
                 const togglable = resume[field] as Togglable<unknown, unknown>;
@@ -32,10 +32,10 @@ function ConfigureBasics(props: {
                                  setResume({ ...resume, [field]: togglable });
                            }}
                     />
-                    <label className='ml-2 text-up capitalize' htmlFor={key}>{field}</label>
+                    <label className='ml-2 mt-2 text-up capitalize' htmlFor={key}>{field}</label>
                 </li>
             })}</ul>
-        </div>
+        </>
     );
 }
 
@@ -43,7 +43,18 @@ function ConfigureSkills(){
     return <>   </>
 }
 
+
+
 type ListField = 'profiles' | 'education' | 'workExperience' | 'personalProjects';
+
+interface ToggleChildProps {
+    togglable: Togglable<unknown, unknown>;
+    idx: number;
+    setChild: CallableFunction;
+    indent: number;
+    lastID?: string
+}
+
 function ConfigureList(props: {field: ListField}) {
     const { field } = props;
     const {resume, setResume} = useContext(ResumeContext);
@@ -54,8 +65,50 @@ function ConfigureList(props: {field: ListField}) {
         personalProjects: 'Personal Projects',
     }
     const togglable = resume[field];
+
+
+    function ToggleChild({togglable, idx, indent, setChild, lastID}: ToggleChildProps){
+        const id = `${lastID}-${idx}` || `edit-resume-${field}-${idx}`;
+        return <li className={`pl-${2*indent}`}>
+            <span className="flex">
+                <input type='checkbox'
+                    className='toggle toggle-primary'
+                    id={id}
+                    checked={togglable.isOn}
+                    onChange={() => {
+                        togglable.isOn = !togglable.isOn;
+                        setChild({
+                            ...togglable,
+                        })
+                    }}
+                />
+                <label className='ml-2 mb-2 text-up capitalize cursor-pointer' htmlFor={id}>{togglable.title}</label>
+            </span>
+
+                {togglable.isOn && <ul className='mb-2'>
+                    {(togglable.children || []).map((child, subidx) => {
+                        return <ToggleChild 
+                            togglable={child}
+                            idx={subidx}
+                            setChild={(newChild: Togglable<unknown, unknown>) => {
+                                setChild({
+                                    ...togglable,
+                                    children: {
+                                        [subidx]: newChild
+                                    }
+                                })
+                            }}
+                            indent={indent+1}
+                            key={`${id} | ${child.title}`}
+                            lastID={id}
+                        />
+                    })}
+                </ul>}
+        </li>
+    }
+
     return (
-        <div className='modal-box'>
+        <>
             <h1>Edit {fieldNames[field]}</h1>
             <span className="flex">
                 <input type='checkbox'
@@ -67,28 +120,30 @@ function ConfigureList(props: {field: ListField}) {
                            setResume({ ...resume, [field]: togglable });
                        }}
                 />
-                <label className='ml-2 text-up capitalize' htmlFor={`edit-${field}-toggle`}>All {fieldNames[field]}</label>
+                <label className='ml-2 mb-2 text-up capitalize' htmlFor={`edit-${field}-toggle`}>All {fieldNames[field]}</label>
             </span>
-            <ul className='ml-0 pl-0'>
+            {togglable.isOn && <ul className='ml-0 pl-0 list-none not-prose mt-2'>
                 {togglable.children?.map((child, index) => {
-                    const key = `${field}-item-${index}`;
+                    const key = `toggle-${field}-item-${index}`;
                     return (
-                        <li className='list-none' key={key}>
-                            <input type='checkbox'
-                                   className='toggle toggle-primary'
-                                   id={key}
-                                   checked={child.isOn}
-                                   onChange={() => {
-                                        child.isOn = !child.isOn;
-                                        setResume({ ...resume, [field]: togglable });
-                                   }}
-                            />
-                            <label className='ml-2 text-up capitalize' htmlFor={key}>{child.title}</label>
-                        </li>
+                        <ToggleChild key={key}
+                                     idx={index}
+                                     togglable={child}
+                                     indent={1}
+                                     setChild={(newChild: typeof child) => {
+                                        setResume({
+                                            ...resume,
+                                            [field]: {
+                                                ...resume[field],
+                                                [index]: newChild
+                                            }
+                                        })
+                                     }}
+                        />
                     );
                 })}
-            </ul>
-        </div>
+            </ul>}
+        </>
     );
 }
 
