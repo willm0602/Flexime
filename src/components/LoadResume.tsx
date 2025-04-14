@@ -3,26 +3,30 @@ import type Resume from '@/lib/jsonResume';
 import resumeValidator from '@/lib/validators/jsonResume';
 import type { ChangeEventHandler } from 'react';
 import toast from 'react-hot-toast';
+import LoadingSpinner from './LoadingSpinner';
 
 type LoadResumeProps = {
     setResume: (newResume: Resume) => void;
+    isLoadingResume: boolean;
+    setIsLoadingResume: (isNowLoading: boolean) => unknown;
 };
 
 export async function parseResumeFile(file: File){
     const formData = new FormData();
     formData.append('resume', file);
-    fetch('/api/parse_resume', {
+    return await fetch('/api/parse_resume', {
         method: 'POST',
         body: formData,
-    }).then((resp) => {
-        console.log(resp);
+    }).then(async (resp) => {
+        const resume = await resp.json();
+        return resume;
     }).catch((err) => {
         console.error('Error parsing resume file:', err);
 });
 }
 
 export default function LoadResume(props: LoadResumeProps) {
-    const { setResume } = props;
+    const { isLoadingResume, setIsLoadingResume, setResume } = props;
 
     const showErrorMsg = () => {
         toast('Invalid Resume File.');
@@ -31,14 +35,19 @@ export default function LoadResume(props: LoadResumeProps) {
     const loadFile: ChangeEventHandler<HTMLInputElement> = async (e) => {
         const files = e.target.files;
         const file = files?.length ? files[0] : undefined;
+        setIsLoadingResume(true);
         if (!file) {
             showErrorMsg();
+            setIsLoadingResume(false);
             return;
         }
 
         const mimeType = file.type;
         if (mimeType !== 'application/json') {
-            parseResumeFile(file);
+            const {resume} = await parseResumeFile(file);
+            setIsLoadingResume(false);
+            setResume(resume);
+            window.location.reload();
             return;
         }
 
@@ -48,13 +57,16 @@ export default function LoadResume(props: LoadResumeProps) {
             if (!result.success) {
                 console.error(result.error);
                 showErrorMsg();
+                setIsLoadingResume(false);
                 return;
             }
             const resume: Resume = result.data;
             setResume(resume);
+            setIsLoadingResume(false);
             window.location.reload();
         } catch (e) {
             console.error(e);
+            setIsLoadingResume(false);
             showErrorMsg();
             return;
         }
@@ -66,7 +78,7 @@ export default function LoadResume(props: LoadResumeProps) {
                 htmlFor='load-resume'
                 className='btn btn-main btn-success'
             >
-                Load Resume JSON
+                {isLoadingResume ? <LoadingSpinner className='w-24 h-12'/> : "Load Resume"}
             </label>
             <input
                 type='file'

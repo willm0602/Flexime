@@ -14,6 +14,7 @@ import EditSkills from '@/components/pageSpecific/profile/EditSkills';
 import { useEffect, useState } from 'react';
 import useQueryParam from '@/lib/hooks/useQueryParam';
 import type { User } from '@supabase/supabase-js';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const RESUME_KEY = 'saved-resume';
 
@@ -54,6 +55,7 @@ export default function ConfigureProfile(props: ConfigureResumeProps) {
     const setResume = props.user ? setResumeForProfile : setResumeInLS;
     const [exportURL, setExportURL] = useState<string>('');
     const [activeTab, setActiveTab] = useQueryParam('tab', 'basics');
+    const [isLoadingResume, setIsLoadingResume] = useState(false);
 
     useEffect(() => {
         setIsClient(true);
@@ -76,13 +78,16 @@ export default function ConfigureProfile(props: ConfigureResumeProps) {
                 <>
                     <h1>Modify Profile</h1>
                     <div className='flex'>
-                        <LoadResume setResume={setResume} />
+                        <LoadResume setResume={setResume}
+                                    isLoadingResume={isLoadingResume}
+                                    setIsLoadingResume={setIsLoadingResume}
+                        />
                         <Link
                             href={exportURL}
                             className='btn no-underline btn-secondary text-black ml-4'
                             download='resume.json'
                         >
-                            Export Profile JSON
+                            {isLoadingResume ? <LoadingSpinner className='w-24 h-12'/>  : "Export Profile JSON"}
                         </Link>
                     </div>
 
