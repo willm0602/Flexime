@@ -1,6 +1,6 @@
 import getUser from '@/lib/auth/getUser';
 import { createClient } from '@/lib/supabase/server';
-import type { UserProfile } from '@/lib/types/UserProfile';
+import type { UserProfile } from '@/lib/types/userprofile';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
