@@ -8,6 +8,19 @@ type LoadResumeProps = {
     setResume: (newResume: Resume) => void;
 };
 
+export async function parseResumeFile(file: File){
+    const formData = new FormData();
+    formData.append('resume', file);
+    fetch('/api/parse_resume', {
+        method: 'POST',
+        body: formData,
+    }).then((resp) => {
+        console.log(resp);
+    }).catch((err) => {
+        console.error('Error parsing resume file:', err);
+});
+}
+
 export default function LoadResume(props: LoadResumeProps) {
     const { setResume } = props;
 
@@ -22,6 +35,13 @@ export default function LoadResume(props: LoadResumeProps) {
             showErrorMsg();
             return;
         }
+
+        const mimeType = file.type;
+        if (mimeType !== 'application/json') {
+            parseResumeFile(file);
+            return;
+        }
+
         const contents = await file.text();
         try {
             const result = resumeValidator.safeParse(JSON.parse(contents));
@@ -51,7 +71,7 @@ export default function LoadResume(props: LoadResumeProps) {
             <input
                 type='file'
                 className='hidden'
-                accept='.json'
+                accept='.json, .txt, .html, .doc, .docx, .pdf'
                 name='import-resume'
                 id='load-resume'
                 onChange={loadFile}

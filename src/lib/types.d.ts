@@ -9,3 +9,9 @@ export type UserProfile = {
     settings: Json;
     user_id: string;
 };
+
+declare module "pdf-parse/lib/pdf-parse" {
+    const pdfParse: unknown;
+    export default pdfParse;
+  }
+  
