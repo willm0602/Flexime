@@ -5,7 +5,7 @@ const HR = () => {
 export default function AboutPage() {
   return (
     <div className="flex px-8 py-12 max-w-7xl mx-auto gap-12">
-      <div className="w-48 sticky top-4 self-start">
+      <div className="w-48 sticky top-4 self-start hidden md:block">
         <h2 className="text-lg font-semibold mb-2 mt-0">FAQ</h2>
         <ul className="list-disc pl-5">
           <li><a href="#whatisthis" className="hover:underline no-underline">What is this?</a></li>
