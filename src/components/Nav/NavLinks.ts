@@ -9,6 +9,10 @@ const navLinks: NavLinkData[] = [
         route: '/profile',
         text: 'Modify Profile',
     },
+    {
+        route: '/about',
+        text: 'About',
+    }
 ];
 
 export default navLinks;
