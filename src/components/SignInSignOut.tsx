@@ -23,9 +23,9 @@ function SignIn() {
 function SignOut() {
     return (
         <div>
-            <Link className={linkClassName} href='/signout'>
+            <a className={linkClassName} href='/signout'>
                 Signout
-            </Link>
+            </a>
         </div>
     );
 }
