@@ -82,13 +82,13 @@ export default function ConfigureProfile(props: ConfigureResumeProps) {
                                     isLoadingResume={isLoadingResume}
                                     setIsLoadingResume={setIsLoadingResume}
                         />
-                        <Link
+                        <a
                             href={exportURL}
                             className='btn no-underline btn-secondary text-black ml-4'
                             download='resume.json'
                         >
                             {isLoadingResume ? <LoadingSpinner className='w-24 h-12'/>  : "Export Profile JSON"}
-                        </Link>
+                        </a>
                     </div>
 
                     <Tabs.Root
