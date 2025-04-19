@@ -1,6 +1,6 @@
 import type Resume from '@/lib/jsonResume';
 import type { Profile } from '@/lib/jsonResume';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import type { Location } from '@/lib/jsonResume';
 import EditList, {
     type ListItem,
@@ -8,6 +8,7 @@ import EditList, {
 } from '@/components/EditList';
 import EditableText from '@/components/EditableText';
 import EditLocation from '@/components/EditLocation';
+import JSONResumeContext from './JSONResumeContext';
 
 type ResumeSetter = (resume: Resume) => void;
 
@@ -41,11 +42,6 @@ const EditField = (props: EditFieldProps) => {
             </button>
         </label>
     );
-};
-
-type EditBasicsProps = {
-    resume: Resume;
-    setResume: ResumeSetter;
 };
 
 const EditProfile: ListItem<Profile> = (props: ListItemProps<Profile>) => {
@@ -82,6 +78,7 @@ const EditProfile: ListItem<Profile> = (props: ListItemProps<Profile>) => {
             <h3 className='mt-0'>
                 {val.network}{' '}
                 <button
+                    type='button'
                     className='btn btn-xs btn-error mr-2'
                     onClick={() => {
                         removeItem();
@@ -109,8 +106,6 @@ const EditProfile: ListItem<Profile> = (props: ListItemProps<Profile>) => {
 };
 
 type EditSimpleFieldProps<F extends string & keyof Resume['basics']> = {
-    resume: Resume;
-    setResume: (resume: Resume) => void;
     fieldName: F;
     label: string;
 };
@@ -118,9 +113,10 @@ type EditSimpleFieldProps<F extends string & keyof Resume['basics']> = {
 function EditSimpleBasicField<F extends string & keyof Resume['basics']>(
     props: EditSimpleFieldProps<F>,
 ) {
-    const { resume, setResume, fieldName, label } = props;
-    const initVal = resume['basics'][fieldName] || '';
-    if (typeof initVal != 'string') {
+    const { fieldName, label } = props;
+    const {resume, setResume} = useContext(JSONResumeContext);
+    const initVal = resume.basics[fieldName] || '';
+    if (typeof initVal !== 'string') {
         throw 'Resume basic fields need to be strings';
     }
 
@@ -140,8 +136,8 @@ function EditSimpleBasicField<F extends string & keyof Resume['basics']>(
     );
 }
 
-export default function EditBasics(props: EditBasicsProps) {
-    const { resume, setResume } = props;
+export default function EditBasics() {
+    const {resume, setResume} = useContext(JSONResumeContext);
     const [profiles, $setProfiles] = useState<Profile[]>(
         resume.basics?.profiles || [],
     );
@@ -161,36 +157,26 @@ export default function EditBasics(props: EditBasicsProps) {
             <h2>Edit Basics</h2>
             <div className='flex flex-wrap gap-y-4 gap-x-12'>
                 <EditSimpleBasicField
-                    resume={resume}
-                    setResume={setResume}
                     fieldName='name'
                     label='Full Name'
                 />
 
                 <EditSimpleBasicField
-                    resume={resume}
-                    setResume={setResume}
                     fieldName='label'
                     label='Title / Label'
                 />
 
                 <EditSimpleBasicField
-                    resume={resume}
-                    setResume={setResume}
                     fieldName='email'
                     label='Email'
                 />
 
                 <EditSimpleBasicField
-                    resume={resume}
-                    setResume={setResume}
                     fieldName='phone'
                     label='Phone Number'
                 />
 
                 <EditSimpleBasicField
-                    resume={resume}
-                    setResume={setResume}
                     fieldName='summary'
                     label='Summary'
                 />

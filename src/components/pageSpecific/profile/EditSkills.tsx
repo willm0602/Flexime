@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
-import type EditProfileProps from './EditProfileProps';
+import { useContext, useEffect, useState } from 'react';
 import type { Skill } from '@/lib/jsonResume';
 import { XCircleIcon } from '@heroicons/react/24/solid';
 import { ReactSortable } from 'react-sortablejs';
+import JSONResumeContext from './JSONResumeContext';
+import toast from 'react-hot-toast';
 
 function getAnnotatedSkills(skills: Skill[]) {
     return skills.map((skill, idx) => {
@@ -13,14 +14,14 @@ function getAnnotatedSkills(skills: Skill[]) {
     });
 }
 
-export default function EditSkills(props: EditProfileProps) {
-    const { resume, dispatchResume } = props;
+export default function EditSkills() {
+    const {resume, setResume} = useContext(JSONResumeContext);
     const [skills, dispatchSkills] = useState(resume.skills || []);
     const [skillToAdd, setSkillToAdd] = useState<string>('');
 
     const setSkills = (skills: Skill[]) => {
         dispatchSkills(skills);
-        dispatchResume({
+        setResume({
             ...resume,
             skills,
         });
@@ -39,6 +40,10 @@ export default function EditSkills(props: EditProfileProps) {
     }, [skills]);
 
     const addSkill = () => {
+        if(!skillToAdd){
+            toast('Skill cannot be empty');
+            return;
+        }
         const skill: Skill = {
             name: skillToAdd,
         };
@@ -62,10 +67,11 @@ export default function EditSkills(props: EditProfileProps) {
                 {skills.map((skill, idx) => {
                     return (
                         <div
-                            key={`skill-${idx}`}
+                            key={`skill-${skill.name}`}
                             className='badge badge-primary mr-2 rounded-lg cursor-pointer'
                         >
                             <button
+                                type='button'
                                 onClick={() => {
                                     const updatedSkills = skills;
                                     updatedSkills.splice(idx, 1);
@@ -87,18 +93,24 @@ export default function EditSkills(props: EditProfileProps) {
                     );
                 })}
             </ReactSortable>
-            <div className='input input-bordered w-40 px-0 flex'>
+            <div className='join'>
                 <input
                     type='text'
-                    className='h-full flex-1 max-w-full px-4'
+                    className='input join-item input-bordered'
                     placeholder='Enter Skill Here'
                     onChange={(e) => {
                         setSkillToAdd(e.target.value);
                     }}
+                    onKeyDown={(e) => {
+                        const key = e.key;
+                        if(key === 'Enter')
+                            addSkill();
+                    }}
                     value={skillToAdd}
                 />
                 <button
-                    className='btn btn-main btn-info'
+                    type='button'
+                    className='btn join-item rounded-r-full btn-accent'
                     onClick={() => {
                         addSkill();
                     }}
