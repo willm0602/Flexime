@@ -56,6 +56,7 @@ function EditField(props: EditFieldProps) {
 
     return (
         <div className='min-w-fit'>
+            <h4 className='label text-xs pl-0 font-bold'>{label}</h4>
             <input
                 defaultValue={currVal}
                 className='input input-bordered input-sm'
@@ -68,10 +69,12 @@ function EditField(props: EditFieldProps) {
             <button
                 className='btn btn-main btn-sm btn-secondary mt-2'
                 onClick={saveField}
+                type='button'
             >
                 Save
             </button>
             <button
+                type='button'
                 className='btn btn-main btn-sm btn-warning ml-4'
                 onClick={() => {
                     dispatchEdit(false);
@@ -93,21 +96,22 @@ type EditFieldDisplayProps = {
 function EditFieldDisplay(props: EditFieldDisplayProps) {
     const { val, dispatchEdit, remove, label } = props;
     return (
-        <div>
-            <label className='text-xs'>{label}</label>
-            <br />
-            <label className='font-bold'>{val}</label>
+        <div className='max-h-fit'>
+            <h4 className='label text-xs pl-0 font-bold mb-0'>{label}</h4>
+            <span className='font-bold'>{val}</span>
             <br />
             <button
                 className='btn btn-info btn-xs'
                 onClick={() => {
                     dispatchEdit(true);
                 }}
+                type='button'
             >
                 Edit
             </button>
             {remove && (
                 <button
+                    type='button'
                     onClick={() => remove()}
                     className='btn btn-error btn-xs ml-4'
                 >

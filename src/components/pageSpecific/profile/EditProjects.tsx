@@ -1,10 +1,10 @@
 import EditList, { type ListItem } from '@/components/EditList';
-import type EditProfileProps from './EditProfileProps';
 import type { Project } from '@/lib/jsonResume';
 import TitleWithRemove from './TitleWithRemove';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import EditableText from '@/components/EditableText';
 import EditableTextArea from '@/components/EditableTextArea';
+import JSONResumeContext from './JSONResumeContext';
 
 const DefaultProject: Project = {
     name: 'Untitled Project',
@@ -99,12 +99,12 @@ const EditProject: ListItem<Project> = (props) => {
     );
 };
 
-export default function EditProjects(props: EditProfileProps) {
-    const { resume, dispatchResume } = props;
+export default function EditProjects() {
+    const { resume, setResume } = useContext(JSONResumeContext);
     const projects = resume.projects || [];
 
     const setProjects = (newProjects: Project[]) => {
-        dispatchResume({
+        setResume({
             ...resume,
             projects: newProjects,
         });

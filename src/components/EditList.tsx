@@ -62,7 +62,7 @@ export default function EditList<T>(props: EditListProps<T>) {
 
     useEffect(() => {
         dispatchAnnotatedItems(getAnnotatedItems(vals));
-    }, [vals, dispatchAnnotatedItems]);
+    }, [vals]);
 
     const addNew = () => {
         setList([...vals, defaultChild]);
@@ -118,7 +118,10 @@ export default function EditList<T>(props: EditListProps<T>) {
                     </div>
                 );
             })}
-            <button onClick={addNew} className='btn btn-primary mt-8'>
+            <button onClick={addNew}
+                    className='btn btn-primary mt-8'
+                    type='button'
+            >
                 {addBtnText || DEFAULT_ADD_BTN_TEXT}
             </button>
         </ReactSortable>

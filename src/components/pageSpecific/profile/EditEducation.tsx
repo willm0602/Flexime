@@ -1,11 +1,11 @@
 import EditList, { type ListItem } from '@/components/EditList';
-import type EditProfileProps from './EditProfileProps';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import type { Education } from '@/lib/jsonResume';
 import EditableText from '@/components/EditableText';
 import TitleWithRemove from './TitleWithRemove';
 import EditableNumber from '@/components/EditableNumber';
 import EditDate from '@/components/EditDate';
+import JSONResumeContext from './JSONResumeContext';
 
 const DEFAULT_EDUCATION: Education = {
     institution: 'Untitled School',
@@ -98,13 +98,13 @@ const EditDegree: ListItem<Education> = (props) => {
     );
 };
 
-export default function EditEducation(props: EditProfileProps) {
-    const { resume, dispatchResume } = props;
+export default function EditEducation() {
+    const { resume, setResume } = useContext(JSONResumeContext);
     const [degrees, dispatchDegrees] = useState(resume.education);
 
     const setDegrees = (newDegrees: Education[]) => {
         dispatchDegrees(newDegrees);
-        dispatchResume({
+        setResume({
             ...resume,
             education: newDegrees,
         });

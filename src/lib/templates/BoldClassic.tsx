@@ -149,7 +149,7 @@ function ContactInfo(props: ResumeComponentProps) {
                     <LinkOrSpan
                         link={link}
                         idx={idx}
-                        key={`link-or-span-${idx}`}
+                        key={`link-or-span-${link.text}`}
                     />
                 );
             })}
@@ -173,20 +173,20 @@ function SummarySection(props: ResumeComponentProps) {
 
 function AllWorkSection(props: ResumeComponentProps) {
     const { resume } = props;
-    if (!resume.work || resume.work.length == 0) return;
+    if (!resume.work || resume.work.length === 0) return;
     return (
         <ResumeSection name='Work Experience'>
-            {resume.work.map((role, idx) => {
+            {resume.work.map((role) => {
                 return (
-                    <View style={styles.role} key={`role-${idx}`}>
+                    <View style={styles.role} key={`role-${role.name}-${role.position}`}>
                         <Text style={styles.position}>
                             {role.name} ({role.position})
                         </Text>
-                        {role.highlights.map((hl, hlidx) => {
+                        {role.highlights.map((hl) => {
                             return (
                                 <Text
                                     style={styles.hl}
-                                    key={`role-${idx}-hl-${hlidx}`}
+                                    key={`highlight-${hl}`}
                                 >
                                     - {hl}
                                 </Text>
@@ -201,12 +201,12 @@ function AllWorkSection(props: ResumeComponentProps) {
 
 function AllEducationSection(props: ResumeComponentProps) {
     const { resume } = props;
-    if (!resume.education || resume.education.length == 0) return;
+    if (!resume.education || resume.education.length === 0) return;
     return (
         <ResumeSection name='Education'>
             {resume.education.map((education, idx) => {
                 return (
-                    <View style={styles.role} key={`idx-${idx}`}>
+                    <View style={styles.role} key={`${education.institution} ${education.area} ${education.studyType}`}>
                         <Text style={styles.institution}>
                             {education.institution}
                         </Text>
@@ -222,12 +222,12 @@ function AllEducationSection(props: ResumeComponentProps) {
 
 function AllProjectsSection(props: ResumeComponentProps) {
     const { resume } = props;
-    if (!resume.projects || resume.projects.length == 0) return;
+    if (!resume.projects || resume.projects.length === 0) return;
     return (
         <ResumeSection name='Personal Projects'>
             {resume.projects.map((proj, idx) => {
                 return (
-                    <View style={styles.role} key={`proj-${idx}`}>
+                    <View style={styles.role} key={`proj-${proj.name}`}>
                         <Text style={styles.position}>{proj.name}</Text>
                         <View style={styles.flex}>
                             {proj.url && (
@@ -246,7 +246,7 @@ function AllProjectsSection(props: ResumeComponentProps) {
                         </View>
                         {proj.highlights.map((hl, hlidx) => {
                             return (
-                                <Text key={`hl-${hlidx}`} style={styles.hl}>
+                                <Text key={`hl-${hl}`} style={styles.hl}>
                                     - {hl}
                                 </Text>
                             );
@@ -261,7 +261,7 @@ function AllProjectsSection(props: ResumeComponentProps) {
 function SkillsSection(props: ResumeComponentProps) {
     const { resume } = props;
     const { skills } = resume;
-    if (!skills || skills.length == 0) return;
+    if (!skills || skills.length === 0) return;
     const skillNames = skills.map((skill) => skill.name);
 
     return (

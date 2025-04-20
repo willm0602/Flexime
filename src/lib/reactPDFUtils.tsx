@@ -19,9 +19,9 @@ export function UL(props: { items: React.ReactNode[] }) {
     const { items } = props;
     return (
         <View style={styles.list}>
-            {items.map((item, idx) => {
+            {items.map((item) => {
                 return (
-                    <View key={`list-item-${idx}`} style={styles.listItem}>
+                    <View key={`list-item-${item?.toString()}`} style={styles.listItem}>
                         <Text style={styles.bullet}>{bulletChar}</Text>
                         <Text style={styles.listItemContent}>{item}</Text>
                     </View>

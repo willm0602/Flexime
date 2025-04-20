@@ -9,9 +9,10 @@ export default function EditDate(props: EditDateProps) {
 
     return (
         <div className='block'>
-            <label className='text-xs'>{label}</label>
+            <label className='text-xs' htmlFor="edit-date">{label}</label>
             <br />
             <input
+                id='edit-date' // TODO: generalize
                 className='input input-sm input-bordered'
                 type='date'
                 defaultValue={defaultDate}

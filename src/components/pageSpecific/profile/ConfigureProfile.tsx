@@ -1,7 +1,6 @@
 'use client';
 
 import { DEFAULT_RESUME } from '@/lib/resumeUtils';
-import Link from 'next/link';
 import LoadResume from '@/components/LoadResume';
 import type Resume from '@/lib/jsonResume';
 import useLocalStorage from '@/lib/hooks/useLocalStorage';
@@ -15,6 +14,7 @@ import { useEffect, useState } from 'react';
 import useQueryParam from '@/lib/hooks/useQueryParam';
 import type { User } from '@supabase/supabase-js';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import JSONResumeContext from './JSONResumeContext';
 
 const RESUME_KEY = 'saved-resume';
 
@@ -51,8 +51,12 @@ export default function ConfigureProfile(props: ConfigureResumeProps) {
         RESUME_KEY,
         DEFAULT_RESUME,
     );
-    const resume = props.resume ?? resumeFromLS ?? DEFAULT_RESUME;
-    const setResume = props.user ? setResumeForProfile : setResumeInLS;
+    const initResume = props.resume ?? resumeFromLS ?? DEFAULT_RESUME;
+    const [resume, dispatchResume] = useState(initResume);
+    const setResume = (newResume: Resume) => {
+        props.user ? setResumeForProfile(newResume) : setResumeInLS(newResume);
+        dispatchResume(newResume);
+    };
     const [exportURL, setExportURL] = useState<string>('');
     const [activeTab, setActiveTab] = useQueryParam('tab', 'basics');
     const [isLoadingResume, setIsLoadingResume] = useState(false);
@@ -75,19 +79,24 @@ export default function ConfigureProfile(props: ConfigureResumeProps) {
                     <span className='loading loading-spinner w-1/4 mx-auto' />
                 </div>
             ) : (
-                <>
+                <JSONResumeContext.Provider value={{ resume, setResume }}>
                     <h1>Modify Profile</h1>
                     <div className='flex'>
-                        <LoadResume setResume={setResume}
-                                    isLoadingResume={isLoadingResume}
-                                    setIsLoadingResume={setIsLoadingResume}
+                        <LoadResume
+                            setResume={setResume}
+                            isLoadingResume={isLoadingResume}
+                            setIsLoadingResume={setIsLoadingResume}
                         />
                         <a
                             href={exportURL}
                             className='btn no-underline btn-secondary text-black ml-4'
                             download='resume.json'
                         >
-                            {isLoadingResume ? <LoadingSpinner className='w-24 h-12'/>  : "Export Profile JSON"}
+                            {isLoadingResume ? (
+                                <LoadingSpinner className='w-24 h-12' />
+                            ) : (
+                                'Export Profile JSON'
+                            )}
                         </a>
                     </div>
 
@@ -116,34 +125,22 @@ export default function ConfigureProfile(props: ConfigureResumeProps) {
                             </Tabs.Trigger>
                         </Tabs.List>
                         <Tabs.Content value='basics'>
-                            <EditBasics resume={resume} setResume={setResume} />
+                            <EditBasics />
                         </Tabs.Content>
                         <Tabs.Content value='work'>
-                            <EditWork
-                                resume={resume}
-                                dispatchResume={setResume}
-                            />
+                            <EditWork />
                         </Tabs.Content>
                         <Tabs.Content value='education'>
-                            <EditEducation
-                                resume={resume}
-                                dispatchResume={setResume}
-                            />
+                            <EditEducation />
                         </Tabs.Content>
                         <Tabs.Content value='projects'>
-                            <EditProjects
-                                resume={resume}
-                                dispatchResume={setResume}
-                            />
+                            <EditProjects />
                         </Tabs.Content>
                         <Tabs.Content value='skills'>
-                            <EditSkills
-                                resume={resume}
-                                dispatchResume={setResume}
-                            />
+                            <EditSkills />
                         </Tabs.Content>
                     </Tabs.Root>
-                </>
+                </JSONResumeContext.Provider>
             )}
         </div>
     );

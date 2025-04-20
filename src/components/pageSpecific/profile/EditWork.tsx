@@ -1,10 +1,11 @@
 import EditableText from '@/components/EditableText';
 import EditList, { type ListItem } from '@/components/EditList';
 import type { Work } from '@/lib/jsonResume';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import type EditProfileProps from './EditProfileProps';
 import EditDate from '@/components/EditDate';
 import EditableTextArea from '@/components/EditableTextArea';
+import JSONResumeContext from './JSONResumeContext';
 
 const EditHighlight: ListItem<string> = (props) => {
     const { setItem, removeItem } = props;
@@ -30,7 +31,7 @@ function parseDate(date: string | undefined): string {
 
     // assumes that the date is in the format of year-day
     const numOfVals = date.split('-').length;
-    if (numOfVals == 2) return `${date}-01`;
+    if (numOfVals === 2) return `${date}-01`;
     return `${date}`;
 }
 
@@ -52,6 +53,7 @@ const EditPosition: ListItem<Work> = (props) => {
                     {job.name} ({job.position})
                 </h2>
                 <button
+                    type='button'
                     className='btn btn-error ml-8'
                     onClick={() => removeItem()}
                 >
@@ -120,13 +122,13 @@ const EditPosition: ListItem<Work> = (props) => {
 
 export { EditPosition };
 
-export default function EditWork(props: EditProfileProps) {
-    const { resume, dispatchResume } = props;
+export default function EditWork() {
+    const { resume, setResume } = useContext(JSONResumeContext);
     const [work, dispatchWork] = useState(resume.work);
 
     const setWork = (newWork: Work[]) => {
         dispatchWork(newWork);
-        dispatchResume({
+        setResume({
             ...resume,
             work: newWork,
         });

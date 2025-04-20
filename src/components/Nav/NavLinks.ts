@@ -12,7 +12,7 @@ const navLinks: NavLinkData[] = [
     {
         route: '/about',
         text: 'About',
-    }
+    },
 ];
 
 export default navLinks;
