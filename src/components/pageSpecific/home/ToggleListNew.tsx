@@ -1,81 +1,70 @@
-import { useContext, useState } from 'react';
-import ResumeContext from './ResumeContext';
+import { useCallback, useState } from 'react';
 import ResumeConfigureModal from './ResumeConfigureModal';
 import ResumeConfigureSection from './ResumeConfigureSection';
-import { document } from 'pdfkit/js/page';
-import { Profile } from '../../../lib/jsonResume';
+
+const ConfigureSectionNames: Record<ResumeConfigureSection, string> = {
+    [ResumeConfigureSection.Basics]: 'basics',
+    [ResumeConfigureSection.Education]: 'education',
+    [ResumeConfigureSection.Profiles]: 'profiles',
+    [ResumeConfigureSection.Projects]: 'projects',
+    [ResumeConfigureSection.Skills]: 'skills',
+    [ResumeConfigureSection.Work]: 'work'
+}
+
+type ModalTriggerProps = {
+  section: ResumeConfigureSection;
+  setActiveSection: (s: ResumeConfigureSection) => void;
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+
+const ModalTrigger = ({
+  section,
+  setActiveSection,
+  children,
+  ...rest
+}: ModalTriggerProps) => {
+  const open = useCallback(() => {
+    setActiveSection(section);
+    const dialog = document.getElementById(
+      'resume-configure-modal'
+    ) as HTMLDialogElement;
+    dialog?.showModal();
+  }, [section, setActiveSection]);
+
+  return (
+    <button type="button" onClick={open} {...rest}>
+      {children}
+    </button>
+  );
+};
 
 export default function ToggleList() {
-    const [activeSection, setActiveSection] = useState(
-        ResumeConfigureSection.Basics,
-    );
+  const [activeSection, setActiveSection] = useState(
+    ResumeConfigureSection.Basics
+  );
 
-    const [modalIsOpen, setModalIsOpen] = useState(false);
+  const sections = [
+    ResumeConfigureSection.Basics,
+    ResumeConfigureSection.Education,
+    ResumeConfigureSection.Profiles,
+    ResumeConfigureSection.Projects,
+    ResumeConfigureSection.Skills,
+    ResumeConfigureSection.Work,
+  ];
 
-    type ModalTriggerProps = {
-        section: ResumeConfigureSection;
-    } & React.ButtonHTMLAttributes<HTMLButtonElement>;
+  return (
+    <div className="flex flex-col">
+      <ResumeConfigureModal activeSection={activeSection} />
 
-    const ModalTrigger = (props: ModalTriggerProps) => {
-        const { children, section, ...rest } = props;
-        return (
-            <button
-                type='button'
-                onClick={() => {
-                    setActiveSection(section);
-                    setModalIsOpen(true);
-                }}
-                {...rest}
-            >
-                {children}
-            </button>
-        );
-    };
-
-    return (
-        <div className='flex flex-col'>
-            <ResumeConfigureModal
-                activeSection={activeSection}
-                isOpen={modalIsOpen}
-                setIsOpen={setModalIsOpen}
-            />
-            <ModalTrigger
-                section={ResumeConfigureSection.Basics}
-                className='btn btn-primary mt-4'
-            >
-                Edit Basics
-            </ModalTrigger>
-
-            <ModalTrigger
-                section={ResumeConfigureSection.Education}
-                className='btn btn-primary mt-4'
-            >
-                Edit Education
-            </ModalTrigger>
-            <ModalTrigger
-                section={ResumeConfigureSection.Profiles}
-                className='btn btn-primary mt-4'
-            >
-                Edit Profiles
-            </ModalTrigger>
-            <ModalTrigger
-                section={ResumeConfigureSection.Projects}
-                className='btn btn-primary mt-4'
-            >
-                Edit Projects
-            </ModalTrigger>
-            <ModalTrigger
-                section={ResumeConfigureSection.Skills}
-                className='btn btn-primary mt-4'
-            >
-                Edit Skills
-            </ModalTrigger>
-            <ModalTrigger
-                section={ResumeConfigureSection.Work}
-                className='btn btn-primary mt-4'
-            >
-                Edit Work
-            </ModalTrigger>
-        </div>
-    );
+      {sections.map((section) => (
+        <ModalTrigger
+          key={section}
+          section={section}
+          setActiveSection={setActiveSection}
+          className="btn btn-primary mt-4 capitalize"
+        >
+          Edit {ConfigureSectionNames[section]}
+        </ModalTrigger>
+      ))}
+    </div>
+  );
 }

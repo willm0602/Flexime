@@ -1,8 +1,9 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ResumeConfigureSection from './ResumeConfigureSection';
 import ResumeContext from './ResumeContext';
 import type Resume from '@/lib/resume';
-import Togglable from '@/lib/togglable';
+import type Togglable from '@/lib/togglable';
+import { updateSession } from '@/lib/supabase/middleware';
 
 function ConfigureBasics(props: {
     resume: Resume;
@@ -40,7 +41,52 @@ function ConfigureBasics(props: {
 }
 
 function ConfigureSkills(){
-    return <>   </>
+    const {resume, setResume} = useContext(ResumeContext);
+    const [skills, setSkills] = useState(resume.skills.children || []);
+
+    return <>
+        <h1>Configure Skills</h1>
+        <div className="join mb-4">
+            <label className="join-item font-bold mr-4" htmlFor='toggle-all-skills' >All Skills</label>
+            <input type="checkbox" id="toggle-all-skills" defaultChecked={resume.skills.isOn} className="toggle toggle-xl"
+                onChange={() => {
+                    setResume({
+                        ...resume,
+                        skills: {
+                            ...resume.skills,
+                            isOn: !resume.skills.isOn
+                        }
+                    })
+                }}
+            />
+        </div>
+        <div className='flex max-w-full flex-wrap gap-y-2 gap-x-2'>
+            {resume.skills.children?.map((togglableSkill, idx) => {
+                const toggleSkill = () => {
+                    const updatedSkills = [
+                        ...skills,
+                    ];
+                    updatedSkills[idx] = {
+                        ...togglableSkill,
+                        isOn: !togglableSkill.isOn
+                    };
+                    setSkills(updatedSkills);
+                    setResume({
+                        ...resume,
+                        skills: {
+                            ...resume.skills,
+                            children: updatedSkills
+                        }
+                    })
+                }
+                return <button key={togglableSkill.val.name}
+                               type='button'
+                               onClick={toggleSkill}
+                               className={`badge badge-accent rounded-3xl ${!togglableSkill.isOn ? 'badge-outline' : ''}`}
+                >{togglableSkill.val.name}</button>
+            })}
+        </div>
+    </>
 }
 
 
@@ -85,7 +131,7 @@ function ConfigureList(props: {field: ListField}) {
                 <label className='ml-2 mb-2 text-up capitalize cursor-pointer' htmlFor={id}>{togglable.title}</label>
             </span>
 
-                {togglable.isOn && <ul className='mb-2'>
+                {togglable.isOn && <ul className={togglable.children ? 'mb-2' : ''}>
                     {(togglable.children || []).map((child, subidx) => {
                         return <ToggleChild 
                             togglable={child}
@@ -94,6 +140,7 @@ function ConfigureList(props: {field: ListField}) {
                                 setChild({
                                     ...togglable,
                                     children: {
+                                        ...togglable.children,
                                         [subidx]: newChild
                                     }
                                 })
@@ -149,12 +196,8 @@ function ConfigureList(props: {field: ListField}) {
 
 export default function ResumeConfigureModal({
     activeSection,
-    isOpen,
-    setIsOpen,
 }: {
     activeSection: ResumeConfigureSection;
-    isOpen: boolean;
-    setIsOpen: (isNowOpen: boolean) => unknown;
 }) {
     const { resume, setResume } = useContext(ResumeContext);
 
@@ -180,20 +223,17 @@ export default function ResumeConfigureModal({
     };
 
     return (
-        <dialog id='resume-configure-modal' open={isOpen} className='modal'
-                onClose={() => {setIsOpen(false)}}
-        >
-            <div className="modal-box">
-                <form method='dialog'
-                >
+        <dialog id='resume-configure-modal' className='modal'>
+            <div className='modal-box relative'>
+                <form method='dialog'>
                     <button
                         className='btn btn-sm btn-circle btn-ghost absolute right-2 top-2'
                         type='submit'
                     >
                         ✕
                     </button>
-                    {components[activeSection]}
                 </form>
+                {components[activeSection]}
             </div>
         </dialog>
     );
