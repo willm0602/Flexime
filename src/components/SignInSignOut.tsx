@@ -1,6 +1,5 @@
 'use client';
 
-import useAuth from '@/lib/hooks/useAuth';
 import { createClient } from '@/lib/supabase/client';
 import type { User } from '@supabase/supabase-js';
 import Link from 'next/link';
