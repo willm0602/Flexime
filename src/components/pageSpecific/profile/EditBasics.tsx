@@ -10,8 +10,6 @@ import EditableText from '@/components/EditableText';
 import EditLocation from '@/components/EditLocation';
 import JSONResumeContext from './JSONResumeContext';
 
-type ResumeSetter = (resume: Resume) => void;
-
 type EditFieldProps = {
     defaultValue: string;
     placeholder: string;
@@ -37,6 +35,7 @@ const EditField = (props: EditFieldProps) => {
                 onClick={() => {
                     onSave();
                 }}
+                type='button'
             >
                 Save
             </button>
@@ -114,7 +113,7 @@ function EditSimpleBasicField<F extends string & keyof Resume['basics']>(
     props: EditSimpleFieldProps<F>,
 ) {
     const { fieldName, label } = props;
-    const {resume, setResume} = useContext(JSONResumeContext);
+    const { resume, setResume } = useContext(JSONResumeContext);
     const initVal = resume.basics[fieldName] || '';
     if (typeof initVal !== 'string') {
         throw 'Resume basic fields need to be strings';
@@ -137,7 +136,7 @@ function EditSimpleBasicField<F extends string & keyof Resume['basics']>(
 }
 
 export default function EditBasics() {
-    const {resume, setResume} = useContext(JSONResumeContext);
+    const { resume, setResume } = useContext(JSONResumeContext);
     const [profiles, $setProfiles] = useState<Profile[]>(
         resume.basics?.profiles || [],
     );
@@ -156,30 +155,15 @@ export default function EditBasics() {
         <div role='tabpanel' className='mt-4'>
             <h2>Edit Basics</h2>
             <div className='flex flex-wrap gap-y-4 gap-x-12'>
-                <EditSimpleBasicField
-                    fieldName='name'
-                    label='Full Name'
-                />
+                <EditSimpleBasicField fieldName='name' label='Full Name' />
 
-                <EditSimpleBasicField
-                    fieldName='label'
-                    label='Title / Label'
-                />
+                <EditSimpleBasicField fieldName='label' label='Title / Label' />
 
-                <EditSimpleBasicField
-                    fieldName='email'
-                    label='Email'
-                />
+                <EditSimpleBasicField fieldName='email' label='Email' />
 
-                <EditSimpleBasicField
-                    fieldName='phone'
-                    label='Phone Number'
-                />
+                <EditSimpleBasicField fieldName='phone' label='Phone Number' />
 
-                <EditSimpleBasicField
-                    fieldName='summary'
-                    label='Summary'
-                />
+                <EditSimpleBasicField fieldName='summary' label='Summary' />
             </div>
 
             <h2 className='mb-0'>Edit Location</h2>

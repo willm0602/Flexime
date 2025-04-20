@@ -1,5 +1,4 @@
 import EditList, { type ListItem } from '@/components/EditList';
-import type EditProfileProps from './EditProfileProps';
 import type { Project } from '@/lib/jsonResume';
 import TitleWithRemove from './TitleWithRemove';
 import { useContext, useState } from 'react';
@@ -100,8 +99,8 @@ const EditProject: ListItem<Project> = (props) => {
     );
 };
 
-export default function EditProjects(props: EditProfileProps) {
-    const {resume, setResume} = useContext(JSONResumeContext);
+export default function EditProjects() {
+    const { resume, setResume } = useContext(JSONResumeContext);
     const projects = resume.projects || [];
 
     const setProjects = (newProjects: Project[]) => {

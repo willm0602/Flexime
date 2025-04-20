@@ -84,13 +84,14 @@ export default function Typeahead<T>({
                     {shownVals.map((val, idx) => {
                         return (
                             <li
-                                key={`typeahead-item-${idx}`}
+                                key={`typeahead-item-${val.label}`}
                                 className={twMerge(
                                     'focus-within:border-solid px-4 focus-within:border-2 focus-within:border-white',
                                     listItemClassName,
                                 )}
                             >
                                 <button
+                                    type='button'
                                     className={twMerge(
                                         'focus:outline-none',
                                         buttonClassName,

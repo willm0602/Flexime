@@ -31,7 +31,7 @@ function parseDate(date: string | undefined): string {
 
     // assumes that the date is in the format of year-day
     const numOfVals = date.split('-').length;
-    if (numOfVals == 2) return `${date}-01`;
+    if (numOfVals === 2) return `${date}-01`;
     return `${date}`;
 }
 
@@ -123,7 +123,7 @@ const EditPosition: ListItem<Work> = (props) => {
 export { EditPosition };
 
 export default function EditWork() {
-    const {resume, setResume} = useContext(JSONResumeContext);
+    const { resume, setResume } = useContext(JSONResumeContext);
     const [work, dispatchWork] = useState(resume.work);
 
     const setWork = (newWork: Work[]) => {

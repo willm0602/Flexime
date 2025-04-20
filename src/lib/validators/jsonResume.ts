@@ -1,4 +1,4 @@
-import {z} from 'zod';
+import { z } from 'zod';
 
 const jsonResumeSchema = z.object({
     basics: z.object({
@@ -7,7 +7,7 @@ const jsonResumeSchema = z.object({
             z.object({
                 network: z.string(),
                 url: z.string().url(),
-            })
+            }),
         ),
         location: z.object({
             city: z.string(),
@@ -24,18 +24,18 @@ const jsonResumeSchema = z.object({
             area: z.string(),
             studyType: z.string(),
             startDate: z.string().optional(), // ISO date string
-            endDate: z.string().optional(),   // ISO date string
+            endDate: z.string().optional(), // ISO date string
             score: z.string().optional(),
-        })
+        }),
     ),
     work: z.array(
         z.object({
             name: z.string(),
             position: z.string(),
             startDate: z.string(), // ISO date string
-            endDate: z.string(),   // ISO date string
+            endDate: z.string(), // ISO date string
             highlights: z.array(z.string()),
-        })
+        }),
     ),
     projects: z.array(
         z.object({
@@ -45,14 +45,13 @@ const jsonResumeSchema = z.object({
             description: z.string().optional(),
             repository: z.string().optional(),
             startDate: z.string().optional(), // ISO date string
-            endDate: z.string().optional(),   // ISO date string
-
-        })
+            endDate: z.string().optional(), // ISO date string
+        }),
     ),
     skills: z.array(
         z.object({
             name: z.string(),
-        })
+        }),
     ),
 });
 

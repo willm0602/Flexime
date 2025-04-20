@@ -43,7 +43,7 @@ export function getIncludedVals<T, C>(togglable?: Togglable<T, C>): C[] {
 
 export function isTogglable(value: unknown): value is Togglable<unknown> {
     return (
-        typeof value == 'object' &&
+        typeof value === 'object' &&
         'val' in (value || {}) &&
         'isOn' in (value || {})
     );

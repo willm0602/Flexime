@@ -56,7 +56,7 @@ export default function ConfigureProfile(props: ConfigureResumeProps) {
     const setResume = (newResume: Resume) => {
         props.user ? setResumeForProfile(newResume) : setResumeInLS(newResume);
         dispatchResume(newResume);
-    }
+    };
     const [exportURL, setExportURL] = useState<string>('');
     const [activeTab, setActiveTab] = useQueryParam('tab', 'basics');
     const [isLoadingResume, setIsLoadingResume] = useState(false);
@@ -79,19 +79,24 @@ export default function ConfigureProfile(props: ConfigureResumeProps) {
                     <span className='loading loading-spinner w-1/4 mx-auto' />
                 </div>
             ) : (
-                <JSONResumeContext.Provider value={{resume, setResume}}>
+                <JSONResumeContext.Provider value={{ resume, setResume }}>
                     <h1>Modify Profile</h1>
                     <div className='flex'>
-                        <LoadResume setResume={setResume}
-                                    isLoadingResume={isLoadingResume}
-                                    setIsLoadingResume={setIsLoadingResume}
+                        <LoadResume
+                            setResume={setResume}
+                            isLoadingResume={isLoadingResume}
+                            setIsLoadingResume={setIsLoadingResume}
                         />
                         <a
                             href={exportURL}
                             className='btn no-underline btn-secondary text-black ml-4'
                             download='resume.json'
                         >
-                            {isLoadingResume ? <LoadingSpinner className='w-24 h-12'/>  : "Export Profile JSON"}
+                            {isLoadingResume ? (
+                                <LoadingSpinner className='w-24 h-12' />
+                            ) : (
+                                'Export Profile JSON'
+                            )}
                         </a>
                     </div>
 
@@ -120,31 +125,19 @@ export default function ConfigureProfile(props: ConfigureResumeProps) {
                             </Tabs.Trigger>
                         </Tabs.List>
                         <Tabs.Content value='basics'>
-                            <EditBasics resume={resume} setResume={setResume} />
+                            <EditBasics />
                         </Tabs.Content>
                         <Tabs.Content value='work'>
-                            <EditWork
-                                resume={resume}
-                                dispatchResume={setResume}
-                            />
+                            <EditWork />
                         </Tabs.Content>
                         <Tabs.Content value='education'>
-                            <EditEducation
-                                resume={resume}
-                                dispatchResume={setResume}
-                            />
+                            <EditEducation />
                         </Tabs.Content>
                         <Tabs.Content value='projects'>
-                            <EditProjects
-                                resume={resume}
-                                dispatchResume={setResume}
-                            />
+                            <EditProjects />
                         </Tabs.Content>
                         <Tabs.Content value='skills'>
-                            <EditSkills
-                                resume={resume}
-                                dispatchResume={setResume}
-                            />
+                            <EditSkills />
                         </Tabs.Content>
                     </Tabs.Root>
                 </JSONResumeContext.Provider>

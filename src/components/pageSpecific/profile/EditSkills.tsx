@@ -15,7 +15,7 @@ function getAnnotatedSkills(skills: Skill[]) {
 }
 
 export default function EditSkills() {
-    const {resume, setResume} = useContext(JSONResumeContext);
+    const { resume, setResume } = useContext(JSONResumeContext);
     const [skills, dispatchSkills] = useState(resume.skills || []);
     const [skillToAdd, setSkillToAdd] = useState<string>('');
 
@@ -40,7 +40,7 @@ export default function EditSkills() {
     }, [skills]);
 
     const addSkill = () => {
-        if(!skillToAdd){
+        if (!skillToAdd) {
             toast('Skill cannot be empty');
             return;
         }
@@ -103,8 +103,7 @@ export default function EditSkills() {
                     }}
                     onKeyDown={(e) => {
                         const key = e.key;
-                        if(key === 'Enter')
-                            addSkill();
+                        if (key === 'Enter') addSkill();
                     }}
                     value={skillToAdd}
                 />

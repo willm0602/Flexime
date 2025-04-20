@@ -1,8 +1,8 @@
 import type { Page } from '@playwright/test';
-import path from 'path';
+import path from 'node:path';
 import loadResume from './loadResume';
 
-const sampleDir = path.dirname + '../sample';
+const sampleDir = `${path.dirname}../sample`;
 const samples = [
     `${sampleDir}/juniorEngineer.json`,
     `${sampleDir}/misformattedResume.json`,
@@ -14,8 +14,8 @@ export default async function forEachResume(
     page: Page,
     callback: (page: Page) => unknown,
 ) {
-    samples.forEach(async (path) => {
-        loadResume(path, page);
-        callback(page);
-    });
+    for(const path of samples){
+        await loadResume(path, page);
+        await callback(page);
+    }
 }

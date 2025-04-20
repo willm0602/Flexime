@@ -23,7 +23,7 @@ type TogglableProject = TogglableList<Project>;
 
 function truncate(text: string, maxLen: number): string {
     if (text.length < maxLen) return text;
-    return text.substring(0, maxLen) + '...';
+    return `${text.substring(0, maxLen)}...`;
 }
 
 export default interface Resume {
@@ -41,9 +41,8 @@ export default interface Resume {
 }
 
 export function resumeFromJSONResume(
-    jsonResume: JSONResume | undefined,
+    jsonResume: JSONResume | undefined = DEFAULT_RESUME,
 ): Resume {
-    jsonResume = jsonResume || DEFAULT_RESUME;
     const name: string = jsonResume.basics?.name || 'Name';
     const profiles: TogglableList<Profile> = togglable(
         undefined,

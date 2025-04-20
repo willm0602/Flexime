@@ -82,6 +82,7 @@ function EditField(props: EditFieldProps) {
                 Save
             </button>
             <button
+                type='button'
                 className='btn btn-main btn-sm btn-warning ml-4'
                 onClick={() => {
                     dispatchEdit(false);
@@ -104,11 +105,11 @@ function EditFieldDisplay(props: EditFieldDisplayProps) {
     const { val, dispatchEdit, remove, label } = props;
     return (
         <div>
-            <label className='text-xs'>{label}</label>
-            <br />
-            <label className='font-bold'>{val}</label>
+            <h4 className='text-xs'>{label}</h4>
+            <span className='font-bold'>{val}</span>
             <br />
             <button
+                type='button'
                 className='btn btn-info btn-xs'
                 onClick={() => {
                     dispatchEdit(true);
@@ -118,6 +119,7 @@ function EditFieldDisplay(props: EditFieldDisplayProps) {
             </button>
             {remove && (
                 <button
+                    type='button'
                     onClick={() => remove()}
                     className='btn btn-error btn-xs ml-4'
                 >

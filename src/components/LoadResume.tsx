@@ -11,18 +11,20 @@ type LoadResumeProps = {
     setIsLoadingResume: (isNowLoading: boolean) => unknown;
 };
 
-export async function parseResumeFile(file: File){
+export async function parseResumeFile(file: File) {
     const formData = new FormData();
     formData.append('resume', file);
     return await fetch('/api/parse_resume', {
         method: 'POST',
         body: formData,
-    }).then(async (resp) => {
-        const resume = await resp.json();
-        return resume;
-    }).catch((err) => {
-        console.error('Error parsing resume file:', err);
-});
+    })
+        .then(async (resp) => {
+            const resume = await resp.json();
+            return resume;
+        })
+        .catch((err) => {
+            console.error('Error parsing resume file:', err);
+        });
 }
 
 export default function LoadResume(props: LoadResumeProps) {
@@ -44,7 +46,7 @@ export default function LoadResume(props: LoadResumeProps) {
 
         const mimeType = file.type;
         if (mimeType !== 'application/json') {
-            const {resume} = await parseResumeFile(file);
+            const { resume } = await parseResumeFile(file);
             setIsLoadingResume(false);
             setResume(resume);
             window.location.reload();
@@ -74,11 +76,12 @@ export default function LoadResume(props: LoadResumeProps) {
 
     return (
         <>
-            <label
-                htmlFor='load-resume'
-                className='btn btn-main btn-success'
-            >
-                {isLoadingResume ? <LoadingSpinner className='w-24 h-12'/> : "Load Resume"}
+            <label htmlFor='load-resume' className='btn btn-main btn-success'>
+                {isLoadingResume ? (
+                    <LoadingSpinner className='w-24 h-12' />
+                ) : (
+                    'Load Resume'
+                )}
             </label>
             <input
                 type='file'

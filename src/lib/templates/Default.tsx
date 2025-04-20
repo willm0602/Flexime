@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
 });
 
 const HR = () => {
-    return <View style={styles.divider}></View>;
+    return <View style={styles.divider}/>;
 };
 
 const SectionLabel = (props: { sectionName: string }) => {
@@ -213,7 +213,7 @@ const ResumeComponent = (props: { resume: Resume }) => {
 
                         {profiles.map((profile, idx) => {
                             return (
-                                <Link key={`profile-${idx}`} href={profile.url}>
+                                <Link key={`profile-${profile.network}`} href={profile.url}>
                                     {profile.network}
                                 </Link>
                             );
@@ -229,7 +229,7 @@ const ResumeComponent = (props: { resume: Resume }) => {
                                     try {
                                         return (
                                             <RoleComponent
-                                                key={`idx-${idx}`}
+                                                key={`idx-${role.position}-${role.startDate}`}
                                                 role={role}
                                                 highlights={role.highlights}
                                             />
@@ -250,7 +250,7 @@ const ResumeComponent = (props: { resume: Resume }) => {
                         return (
                             <EducationComponent
                                 school={school}
-                                key={`school-${idx}`}
+                                key={`school-${school.institution}-${school.studyType}-${school.area}`}
                             />
                         );
                     })}
@@ -264,7 +264,7 @@ const ResumeComponent = (props: { resume: Resume }) => {
                             <ProjectComponent
                                 proj={proj}
                                 highlights={proj.highlights}
-                                key={`proj-${idx}`}
+                                key={`proj-${proj.name}`}
                             />
                         );
                     })}
@@ -275,9 +275,8 @@ const ResumeComponent = (props: { resume: Resume }) => {
                     )}
                     <View>
                         <Text>
-                            {resume.skills &&
-                                resume.skills
-                                    .map(
+                            {resume.skills
+                                    ?.map(
                                         (togglableSkill) => togglableSkill.name,
                                     )
                                     .join(', ')}

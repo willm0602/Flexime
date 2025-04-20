@@ -1,4 +1,4 @@
-declare module "pdf-parse/lib/pdf-parse" {
+declare module 'pdf-parse/lib/pdf-parse' {
     interface PDFParseResult {
         text: string;
         numpages: number;
@@ -12,4 +12,3 @@ declare module "pdf-parse/lib/pdf-parse" {
 
     export default pdfParse;
 }
-  
