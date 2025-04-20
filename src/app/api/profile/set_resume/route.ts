@@ -44,8 +44,6 @@ export async function POST(request: Request) {
         console.error(error);
         return NextResponse.json({}, { status: 500 });
     }
-    console.log(userResp.data.user.id);
-    console.log(resume);
     return NextResponse.json({
         status: 200,
         message: 'Resume updated',

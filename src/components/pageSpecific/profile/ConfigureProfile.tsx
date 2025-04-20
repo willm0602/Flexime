@@ -12,15 +12,15 @@ import EditProjects from '@/components/pageSpecific/profile/EditProjects';
 import EditSkills from '@/components/pageSpecific/profile/EditSkills';
 import { useEffect, useState } from 'react';
 import useQueryParam from '@/lib/hooks/useQueryParam';
-import type { User } from '@supabase/supabase-js';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import JSONResumeContext from './JSONResumeContext';
+import type { UserProfile } from '@/lib/types/userprofile';
 
 const RESUME_KEY = 'saved-resume';
 
 interface ConfigureResumeProps {
     resume: Resume | undefined;
-    user: User | null;
+    profile: UserProfile | null;
 }
 
 const setResumeForProfile = (resume: Resume) => {
@@ -54,7 +54,7 @@ export default function ConfigureProfile(props: ConfigureResumeProps) {
     const initResume = props.resume ?? resumeFromLS ?? DEFAULT_RESUME;
     const [resume, dispatchResume] = useState(initResume);
     const setResume = (newResume: Resume) => {
-        props.user ? setResumeForProfile(newResume) : setResumeInLS(newResume);
+        props.profile ? setResumeForProfile(newResume) : setResumeInLS(newResume);
         dispatchResume(newResume);
     };
     const [exportURL, setExportURL] = useState<string>('');
