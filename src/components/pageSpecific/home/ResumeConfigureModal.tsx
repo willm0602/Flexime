@@ -4,6 +4,7 @@ import ResumeContext from './ResumeContext';
 import type Resume from '@/lib/resume';
 import type Togglable from '@/lib/togglable';
 import { updateSession } from '@/lib/supabase/middleware';
+import { ReactSortable } from 'react-sortablejs';
 
 function ConfigureBasics(props: {
     resume: Resume;
@@ -115,7 +116,7 @@ function ConfigureList(props: {field: ListField}) {
 
     function ToggleChild({togglable, idx, indent, setChild, lastID}: ToggleChildProps){
         const id = `${lastID}-${idx}` || `edit-resume-${field}-${idx}`;
-        return <li className={`pl-${2*indent}`}>
+        return <div className={`pl-${2*indent}`}>
             <span className="flex">
                 <input type='checkbox'
                     className='toggle toggle-primary'
@@ -151,7 +152,7 @@ function ConfigureList(props: {field: ListField}) {
                         />
                     })}
                 </ul>}
-        </li>
+        </div>
     }
 
     return (
@@ -169,9 +170,9 @@ function ConfigureList(props: {field: ListField}) {
                 />
                 <label className='ml-2 mb-2 text-up capitalize' htmlFor={`edit-${field}-toggle`}>All {fieldNames[field]}</label>
             </span>
-            {togglable.isOn && <ul className='ml-0 pl-0 list-none not-prose mt-2'>
+            {togglable.isOn && <ReactSortable className='ml-0 pl-0 list-none not-prose mt-2'>
                 {togglable.children?.map((child, index) => {
-                    const key = `toggle-${field}-item-${index}`;
+                    const key = togglable.id;
                     return (
                         <ToggleChild key={key}
                                      idx={index}
@@ -189,7 +190,7 @@ function ConfigureList(props: {field: ListField}) {
                         />
                     );
                 })}
-            </ul>}
+            </ReactSortable>}
         </>
     );
 }

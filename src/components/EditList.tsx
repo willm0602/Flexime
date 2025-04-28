@@ -6,7 +6,7 @@ const DEFAULT_ADD_BTN_TEXT = 'Add';
 const DEFAULT_WRAPPER_CLASS = 'w-full flex flex-col';
 const DEFAULT_ITEM_CLASS =
     'flex flex-col border-solid border-slate-500 border-2 my-4 p-4 cursor-pointer';
-
+z
 export type ListItemProps<T> = {
     val: T;
     vals: T[];

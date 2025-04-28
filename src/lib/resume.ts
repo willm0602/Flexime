@@ -62,6 +62,7 @@ export function resumeFromJSONResume(
             },
             isOn: true,
             title: 'Personal Site',
+            id: 'Personal Site',
         });
     }
     const title = togglable(jsonResume.basics?.label, 'Title');
