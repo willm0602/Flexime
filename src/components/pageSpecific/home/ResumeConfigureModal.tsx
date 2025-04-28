@@ -1,241 +1,331 @@
-import { useContext, useEffect, useState } from 'react';
-import ResumeConfigureSection from './ResumeConfigureSection';
-import ResumeContext from './ResumeContext';
-import type Resume from '@/lib/resume';
-import type Togglable from '@/lib/togglable';
-import { updateSession } from '@/lib/supabase/middleware';
-import { ReactSortable } from 'react-sortablejs';
+import { useContext, useEffect, useState } from "react";
+import ResumeConfigureSection from "./ResumeConfigureSection";
+import ResumeContext from "./ResumeContext";
+import type Resume from "@/lib/resume";
+import type Togglable from "@/lib/togglable";
+import { ReactSortable } from "react-sortablejs";
+import { replaceAtIndex } from "@/lib/utils"; // 👈 new helper import
+import { Skill } from "@/lib/jsonResume";
 
-function ConfigureBasics(props: {
-    resume: Resume;
-    setResume: (resume: Resume) => unknown;
+function ConfigureBasics({
+  resume,
+  setResume,
+}: {
+  resume: Resume;
+  setResume: (resume: Resume) => unknown;
 }) {
-    const { resume, setResume } = props;
-    const basicsFields = [
-        'title',
-        'summary',
-        'email',
-        'phone',
-        'location'
-    ] as const;
-    return (
-        <>
-            <h1>Edit Basics</h1>
-            <ul className='ml-0 pl-0'>{basicsFields.map((field) => {
-                const togglable = resume[field] as Togglable<unknown, unknown>;
-                const key = `edit-basics-field-${field}`
-                return <li className='list-none ' key={key}>
-                    <input type='checkbox'
-                            className='toggle toggle-primary'
-                           id={key}
-                           checked={togglable.isOn}
-                           onChange={() => {
-                                 togglable.isOn = !togglable.isOn;
-                                 setResume({ ...resume, [field]: togglable });
-                           }}
-                    />
-                    <label className='ml-2 mt-2 text-up capitalize' htmlFor={key}>{field}</label>
-                </li>
-            })}</ul>
-        </>
-    );
-}
+  const basicsFields = [
+    "title",
+    "summary",
+    "email",
+    "phone",
+    "location",
+  ] as const;
 
-function ConfigureSkills(){
-    const {resume, setResume} = useContext(ResumeContext);
-    const [skills, setSkills] = useState(resume.skills.children || []);
+  return (
+    <>
+      <h1>Edit Basics</h1>
+      <ul className="ml-0 pl-0">
+        {basicsFields.map((field) => {
+          const togglable = resume[field] as Togglable<unknown, unknown>;
+          const key = `edit-basics-field-${field}`;
 
-    return <>
-        <h1>Configure Skills</h1>
-        <div className="join mb-4">
-            <label className="join-item font-bold mr-4" htmlFor='toggle-all-skills' >All Skills</label>
-            <input type="checkbox" id="toggle-all-skills" defaultChecked={resume.skills.isOn} className="toggle toggle-xl"
+          return (
+            <li key={key} className="list-none">
+              <input
+                type="checkbox"
+                className="toggle toggle-primary"
+                id={key}
+                checked={togglable.isOn}
                 onChange={() => {
-                    setResume({
-                        ...resume,
-                        skills: {
-                            ...resume.skills,
-                            isOn: !resume.skills.isOn
-                        }
-                    })
+                  setResume({
+                    ...resume,
+                    [field]: {
+                      ...togglable,
+                      isOn: !togglable.isOn,
+                    },
+                  });
                 }}
-            />
-        </div>
-        <div className='flex max-w-full flex-wrap gap-y-2 gap-x-2'>
-            {resume.skills.children?.map((togglableSkill, idx) => {
-                const toggleSkill = () => {
-                    const updatedSkills = [
-                        ...skills,
-                    ];
-                    updatedSkills[idx] = {
-                        ...togglableSkill,
-                        isOn: !togglableSkill.isOn
-                    };
-                    setSkills(updatedSkills);
-                    setResume({
-                        ...resume,
-                        skills: {
-                            ...resume.skills,
-                            children: updatedSkills
-                        }
-                    })
-                }
-                return <button key={togglableSkill.val.name}
-                               type='button'
-                               onClick={toggleSkill}
-                               className={`badge badge-accent rounded-3xl ${!togglableSkill.isOn ? 'badge-outline' : ''}`}
-                >{togglableSkill.val.name}</button>
-            })}
-        </div>
+              />
+              <label htmlFor={key} className="ml-2 mt-2 text-up capitalize">
+                {field}
+              </label>
+            </li>
+          );
+        })}
+      </ul>
     </>
+  );
 }
 
+function ConfigureSkills() {
+  const { resume, setResume } = useContext(ResumeContext);
+  const [skills, setSkills] = useState(resume.skills.children || []);
 
+  return (
+    <>
+      <h1>Configure Skills</h1>
+      <div className="join mb-4">
+        <label className="join-item font-bold mr-4" htmlFor="toggle-all-skills">
+          All Skills
+        </label>
+        <input
+          type="checkbox"
+          id="toggle-all-skills"
+          defaultChecked={resume.skills.isOn}
+          className="toggle toggle-xl"
+          onChange={() => {
+            setResume({
+              ...resume,
+              skills: {
+                ...resume.skills,
+                isOn: !resume.skills.isOn,
+              },
+            });
+          }}
+        />
+      </div>
+      <ReactSortable
+        className="flex max-w-full flex-wrap gap-y-2 gap-x-2"
+        list={skills}
+        setList={(newList) => {
+          setSkills(newList);
+          setResume({
+            ...resume,
+            skills: {
+              ...resume.skills,
+              children: newList,
+            },
+          });
+        }}
+      >
+        {skills.map((skill, idx) => {
+          const toggleSkill = () => {
+            const updatedSkills = replaceAtIndex(skills, idx, {
+              ...skill,
+              isOn: !skill.isOn,
+            });
+            setSkills(updatedSkills);
+            setResume({
+              ...resume,
+              skills: {
+                ...resume.skills,
+                children: updatedSkills,
+              },
+            });
+          };
 
-type ListField = 'profiles' | 'education' | 'workExperience' | 'personalProjects';
+          return (
+            <button
+              key={skill.val.name}
+              type="button"
+              onClick={toggleSkill}
+              className={`badge badge-accent rounded-3xl ${!skill.isOn ? "badge-outline" : ""}`}
+            >
+              {skill.val.name}
+            </button>
+          );
+        })}
+      </ReactSortable>
+    </>
+  );
+}
+
+type ListField =
+  | "profiles"
+  | "education"
+  | "workExperience"
+  | "personalProjects";
 
 interface ToggleChildProps {
-    togglable: Togglable<unknown, unknown>;
-    idx: number;
-    setChild: CallableFunction;
-    indent: number;
-    lastID?: string
+  child: Togglable<unknown, unknown>;
+  idx: number;
+  setChild: (child: Togglable<unknown, unknown>) => void;
+  indent: number;
+  lastID?: string;
 }
 
-function ConfigureList(props: {field: ListField}) {
-    const { field } = props;
-    const {resume, setResume} = useContext(ResumeContext);
-    const fieldNames: Record<ListField, string> = {
-        profiles: 'Profiles',
-        education: 'Education',
-        workExperience: 'Work Experience',
-        personalProjects: 'Personal Projects',
-    }
-    const togglable = resume[field];
+function ToggleChild({
+  child,
+  idx,
+  setChild,
+  indent,
+  lastID,
+}: ToggleChildProps) {
+  const id = `${lastID}-${idx}` || `edit-resume-${idx}`;
+  const subchildren = child.children || [];
 
+  return (
+    <div className={`pl-${2 * indent}`}>
+      <span className="flex">
+        <input
+          type="checkbox"
+          className="toggle toggle-primary"
+          id={id}
+          checked={child.isOn}
+          onChange={() => {
+            setChild({
+              ...child,
+              isOn: !child.isOn,
+            });
+          }}
+        />
+        <label
+          className="ml-2 mb-2 text-up capitalize cursor-pointer"
+          htmlFor={id}
+        >
+          {child.title}
+        </label>
+      </span>
 
-    function ToggleChild({togglable, idx, indent, setChild, lastID}: ToggleChildProps){
-        const id = `${lastID}-${idx}` || `edit-resume-${field}-${idx}`;
-        return <div className={`pl-${2*indent}`}>
-            <span className="flex">
-                <input type='checkbox'
-                    className='toggle toggle-primary'
-                    id={id}
-                    checked={togglable.isOn}
-                    onChange={() => {
-                        togglable.isOn = !togglable.isOn;
-                        setChild({
-                            ...togglable,
-                        })
-                    }}
-                />
-                <label className='ml-2 mb-2 text-up capitalize cursor-pointer' htmlFor={id}>{togglable.title}</label>
-            </span>
+      {child.isOn && subchildren.length > 0 && (
+        <ReactSortable<Togglable<unknown, unknown>>
+          className="mb-2"
+          list={child.children}
+          setList={(newList) => {
+            setChild({
+              ...child,
+              children: newList,
+            });
+          }}
+        >
+          {(child.children || []).map((subchild, subidx) => (
+            <ToggleChild
+              key={subchild.id}
+              child={subchild}
+              idx={subidx}
+              indent={indent + 1}
+              lastID={id}
+              setChild={(newChild) => {
+                setChild({
+                  ...child,
+                  children: replaceAtIndex(
+                    child.children || [],
+                    subidx,
+                    newChild,
+                  ),
+                });
+              }}
+            />
+          ))}
+        </ReactSortable>
+      )}
+    </div>
+  );
+}
 
-                {togglable.isOn && <ul className={togglable.children ? 'mb-2' : ''}>
-                    {(togglable.children || []).map((child, subidx) => {
-                        return <ToggleChild 
-                            togglable={child}
-                            idx={subidx}
-                            setChild={(newChild: Togglable<unknown, unknown>) => {
-                                setChild({
-                                    ...togglable,
-                                    children: {
-                                        ...togglable.children,
-                                        [subidx]: newChild
-                                    }
-                                })
-                            }}
-                            indent={indent+1}
-                            key={`${id} | ${child.title}`}
-                            lastID={id}
-                        />
-                    })}
-                </ul>}
-        </div>
-    }
+function ConfigureList({ field }: { field: ListField }) {
+  const { resume, setResume } = useContext(ResumeContext);
+  const togglable = resume[field];
+  const fieldNames: Record<ListField, string> = {
+    profiles: "Profiles",
+    education: "Education",
+    workExperience: "Work Experience",
+    personalProjects: "Personal Projects",
+  };
 
-    return (
-        <>
-            <h1>Edit {fieldNames[field]}</h1>
-            <span className="flex">
-                <input type='checkbox'
-                       className='toggle toggle-primary'
-                       id={`edit-${field}-toggle`}
-                       checked={togglable.isOn}
-                       onChange={() => {
-                           togglable.isOn = !togglable.isOn;
-                           setResume({ ...resume, [field]: togglable });
-                       }}
-                />
-                <label className='ml-2 mb-2 text-up capitalize' htmlFor={`edit-${field}-toggle`}>All {fieldNames[field]}</label>
-            </span>
-            {togglable.isOn && <ReactSortable className='ml-0 pl-0 list-none not-prose mt-2'>
-                {togglable.children?.map((child, index) => {
-                    const key = togglable.id;
-                    return (
-                        <ToggleChild key={key}
-                                     idx={index}
-                                     togglable={child}
-                                     indent={1}
-                                     setChild={(newChild: typeof child) => {
-                                        setResume({
-                                            ...resume,
-                                            [field]: {
-                                                ...resume[field],
-                                                [index]: newChild
-                                            }
-                                        })
-                                     }}
-                        />
-                    );
-                })}
-            </ReactSortable>}
-        </>
-    );
+  return (
+    <>
+      <h1>Edit {fieldNames[field]}</h1>
+      <span className="flex">
+        <input
+          type="checkbox"
+          className="toggle toggle-primary"
+          id={`edit-${field}-toggle`}
+          checked={togglable.isOn}
+          onChange={() => {
+            setResume({
+              ...resume,
+              [field]: {
+                ...togglable,
+                isOn: !togglable.isOn,
+              },
+            });
+          }}
+        />
+        <label
+          className="ml-2 mb-2 text-up capitalize"
+          htmlFor={`edit-${field}-toggle`}
+        >
+          All {fieldNames[field]}
+        </label>
+      </span>
+
+      {togglable.isOn && (
+        <ReactSortable<Togglable<unknown, unknown>>
+          list={togglable.children || []}
+          setList={(newList) => {
+            setResume({
+              ...resume,
+              [field]: {
+                ...resume[field],
+                children: newList,
+              },
+            });
+          }}
+          className="ml-0 pl-0 list-none not-prose mt-2"
+        >
+          {togglable.children?.map((child, index) => (
+            <ToggleChild
+              key={child.id}
+              idx={index}
+              child={child}
+              indent={1}
+              lastID={`edit-${field}`}
+              setChild={(newChild) => {
+                setResume({
+                  ...resume,
+                  [field]: {
+                    ...resume[field],
+                    children: replaceAtIndex(
+                      togglable.children || [],
+                      index,
+                      newChild,
+                    ),
+                  },
+                });
+              }}
+            />
+          ))}
+        </ReactSortable>
+      )}
+    </>
+  );
 }
 
 export default function ResumeConfigureModal({
-    activeSection,
+  activeSection,
 }: {
-    activeSection: ResumeConfigureSection;
+  activeSection: ResumeConfigureSection;
 }) {
-    const { resume, setResume } = useContext(ResumeContext);
+  const { resume, setResume } = useContext(ResumeContext);
 
-    const components: Record<ResumeConfigureSection, React.ReactNode> = {
-        [ResumeConfigureSection.Basics]: (
-            <ConfigureBasics resume={resume} setResume={setResume} />
-        ),
-        [ResumeConfigureSection.Education]: (
-            <ConfigureList field='education' />
-        ),
-        [ResumeConfigureSection.Work]: (
-            <ConfigureList field='workExperience' />
-        ),
-        [ResumeConfigureSection.Projects]: (
-            <ConfigureList field='personalProjects' />
-        ),
-        [ResumeConfigureSection.Profiles]: (
-            <ConfigureList field='personalProjects' />
-        ),
-        [ResumeConfigureSection.Skills]: (
-            <ConfigureSkills />
-        ),
-    };
+  const components: Record<ResumeConfigureSection, React.ReactNode> = {
+    [ResumeConfigureSection.Basics]: (
+      <ConfigureBasics resume={resume} setResume={setResume} />
+    ),
+    [ResumeConfigureSection.Education]: <ConfigureList field="education" />,
+    [ResumeConfigureSection.Work]: <ConfigureList field="workExperience" />,
+    [ResumeConfigureSection.Projects]: (
+      <ConfigureList field="personalProjects" />
+    ),
+    [ResumeConfigureSection.Profiles]: <ConfigureList field="profiles" />,
+    [ResumeConfigureSection.Skills]: <ConfigureSkills />,
+  };
 
-    return (
-        <dialog id='resume-configure-modal' className='modal'>
-            <div className='modal-box relative'>
-                <form method='dialog'>
-                    <button
-                        className='btn btn-sm btn-circle btn-ghost absolute right-2 top-2'
-                        type='submit'
-                    >
-                        ✕
-                    </button>
-                </form>
-                {components[activeSection]}
-            </div>
-        </dialog>
-    );
+  return (
+    <dialog id="resume-configure-modal" className="modal">
+      <div className="modal-box relative">
+        <form method="dialog">
+          <button
+            type="submit"
+            className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+          >
+            ✕
+          </button>
+        </form>
+        {components[activeSection]}
+      </div>
+    </dialog>
+  );
 }
