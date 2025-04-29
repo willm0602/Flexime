@@ -3,6 +3,7 @@ export default interface Togglable<T, C = unknown> {
     isOn: boolean;
     title: string;
     children?: Togglable<C>[];
+    id: string;
 }
 
 type NotUndefined<T> = Exclude<T, undefined>;
@@ -21,6 +22,7 @@ export function togglable<T, C>(
         isOn: true,
         title,
         children,
+        id: title
     };
 }
 

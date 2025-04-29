@@ -14,7 +14,7 @@ import EditResumeLink from './EditResumeLink';
 import DownloadResume from './DownloadResume';
 import ResumePreview from './ResumePreview';
 import ConfigureJobTitle from './ConfigureJobTitle';
-import ToggleList from './ToggleList';
+import ToggleList from './ToggleListNew';
 import type JSONResume from '@/lib/jsonResume';
 
 interface ResumeConfigProps {
@@ -50,14 +50,7 @@ export default function ResumeConfig(props: ResumeConfigProps) {
 
     return (
         <ResumeContext.Provider value={{ resume, setResume }}>
-            <form
-                className='w-full flex flex-col lg:flex-row'
-                method='POST'
-                target='resume-preview'
-                action={'/api/pdf'}
-                id='resume-config-form'
-                ref={formRef}
-            >
+            <div className='w-full flex flex-col lg:flex-row'>
                 <ResumeHiddenInput />
                 <div className='flex-4'>
                     <div className='flex'>
@@ -67,7 +60,15 @@ export default function ResumeConfig(props: ResumeConfigProps) {
                     <ConfigureJobTitle />
                     <ToggleList />
                 </div>
-                <div className='flex-1'>
+                <form
+                    className='flex-1'
+                    method='POST'
+                    target='resume-preview'
+                    action={'/api/pdf'}
+                    id='resume-config-form'
+                    ref={formRef}
+                >
+                    <ResumeHiddenInput />
                     <div className='flex'>
                         <button
                             className='btn btn-primary ml-12 mb-4'
@@ -83,8 +84,8 @@ export default function ResumeConfig(props: ResumeConfigProps) {
                         <DownloadResume />
                     </div>
                     <ResumePreview />
-                </div>
-            </form>
+                </form>
+            </div>
         </ResumeContext.Provider>
     );
 }

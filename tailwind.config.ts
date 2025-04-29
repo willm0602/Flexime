@@ -2,8 +2,6 @@ import type { Config } from 'tailwindcss';
 import typography from '@tailwindcss/typography';
 import daisyui from 'daisyui';
 
-console.log('TAILWIND LOADING');
-
 export default {
     content: [
         './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -22,4 +20,10 @@ export default {
     daisyui: {
         themes: ['business'],
     },
+    safelist: [
+        'pl-2',
+        'pl-4',
+        'pl-6',
+        'pl-8',
+    ]
 } satisfies Config;
