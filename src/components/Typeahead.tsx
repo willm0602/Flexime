@@ -55,7 +55,7 @@ export default function Typeahead<T>({
         }
         const shownVals = annotatedVals
             .filter((annotatedVal) => {
-                return annotatedVal.label.includes(searchQuery);
+                return annotatedVal.label.toLowerCase().includes(searchQuery.toLowerCase());
             })
             .slice(0, MAX_SHOWN_ENTRIES);
         setShownVals(shownVals);
