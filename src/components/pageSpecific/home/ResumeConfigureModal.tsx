@@ -154,6 +154,8 @@ function ToggleChild({
 }: ToggleChildProps) {
   const id = `${lastID}-${idx}` || `edit-resume-${idx}`;
   const subchildren = child.children || [];
+  const isTruncated = child.title.length >= 30;
+  const label = isTruncated ? `${child.title.substring(0, 30)}...` : child.title;
 
   return (
     <div className={`pl-${2 * indent}`}>
@@ -171,10 +173,11 @@ function ToggleChild({
           }}
         />
         <label
-          className="ml-2 mb-2 text-up capitalize cursor-pointer"
+          className={`ml-2 mb-2 text-up capitalize cursor-pointer ${isTruncated && 'tooltip tooltip-info'}`}
+          data-tip={child.title}
           htmlFor={id}
         >
-          {child.title}
+          {label}
         </label>
       </span>
 
