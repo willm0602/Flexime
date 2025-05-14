@@ -21,11 +21,6 @@ export type TogglableRole = Togglable<Work, string>;
 export type TogglableWork = TogglableList<Work>;
 type TogglableProject = TogglableList<Project>;
 
-function truncate(text: string, maxLen: number): string {
-    if (text.length < maxLen) return text;
-    return `${text.substring(0, maxLen)}...`;
-}
-
 export default interface Resume {
     name: string;
     profiles: TogglableList<Profile>;
@@ -93,7 +88,7 @@ export function resumeFromJSONResume(
                 position,
                 `${position.name} (${position.position})`,
                 (position.highlights || []).map((highlight) => {
-                    return togglable(highlight, truncate(highlight, 30));
+                    return togglable(highlight, highlight);
                 }),
             );
         }),
@@ -106,7 +101,7 @@ export function resumeFromJSONResume(
                 project,
                 project.name,
                 (project.highlights || []).map((highlight) => {
-                    return togglable(highlight, truncate(highlight, 30));
+                    return togglable(highlight, highlight);
                 }),
             );
         }),
