@@ -5,6 +5,7 @@ enum ResumeConfigureSection {
     Skills = 3,
     Projects = 4,
     Profiles = 5,
+    Publications = 6,
 }
 
 export default ResumeConfigureSection;

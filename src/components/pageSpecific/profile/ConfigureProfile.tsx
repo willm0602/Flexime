@@ -15,6 +15,7 @@ import useQueryParam from '@/lib/hooks/useQueryParam';
 import type { User } from '@supabase/supabase-js';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import JSONResumeContext from './JSONResumeContext';
+import EditPublications from './EditPublications';
 
 const RESUME_KEY = 'saved-resume';
 
@@ -123,6 +124,9 @@ export default function ConfigureProfile(props: ConfigureResumeProps) {
                             <Tabs.Trigger value='skills' className='tab'>
                                 Skills
                             </Tabs.Trigger>
+                            <Tabs.Trigger value='publications' className='tab'>
+                                Publications
+                            </Tabs.Trigger>
                         </Tabs.List>
                         <Tabs.Content value='basics'>
                             <EditBasics />
@@ -138,6 +142,9 @@ export default function ConfigureProfile(props: ConfigureResumeProps) {
                         </Tabs.Content>
                         <Tabs.Content value='skills'>
                             <EditSkills />
+                        </Tabs.Content>
+                        <Tabs.Content value='publications'>
+                            <EditPublications/>
                         </Tabs.Content>
                     </Tabs.Root>
                 </JSONResumeContext.Provider>

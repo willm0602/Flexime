@@ -10,7 +10,7 @@ type EditableTextAreaProps = {
     height: number;
 };
 
-export default function EditableText(props: EditableTextAreaProps) {
+export default function EditableTextArea(props: EditableTextAreaProps) {
     const { defaultVal, dispatch, label, remove, className, width, height } =
         props;
 

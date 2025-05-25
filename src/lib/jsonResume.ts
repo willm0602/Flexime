@@ -58,6 +58,7 @@ export interface Publication {
     releaseDate: string; // ISO-8601 Format
     url: string;
     summary: string;
+    isTalk?: boolean; // custom field to indicate if the publication given was a talk or not
 }
 
 export interface Skill {

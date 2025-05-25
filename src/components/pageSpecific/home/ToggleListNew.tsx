@@ -8,7 +8,8 @@ const ConfigureSectionNames: Record<ResumeConfigureSection, string> = {
     [ResumeConfigureSection.Profiles]: 'profiles',
     [ResumeConfigureSection.Projects]: 'projects',
     [ResumeConfigureSection.Skills]: 'skills',
-    [ResumeConfigureSection.Work]: 'work'
+    [ResumeConfigureSection.Work]: 'work',
+    [ResumeConfigureSection.Publications]: 'publications'
 }
 
 type ModalTriggerProps = {
@@ -44,11 +45,12 @@ export default function ToggleList() {
 
   const sections = [
     ResumeConfigureSection.Basics,
-    ResumeConfigureSection.Education,
     ResumeConfigureSection.Profiles,
+    ResumeConfigureSection.Work,
+    ResumeConfigureSection.Education,
     ResumeConfigureSection.Projects,
     ResumeConfigureSection.Skills,
-    ResumeConfigureSection.Work,
+    ResumeConfigureSection.Publications
   ];
 
   return (

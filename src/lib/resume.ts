@@ -10,6 +10,7 @@ import type {
     Project,
     Work,
     Location,
+    Publication,
 } from './jsonResume';
 import type Togglable from '@/lib/togglable';
 import { getUsedVal } from '@/lib/togglable';
@@ -38,6 +39,7 @@ export default interface Resume {
     skills: TogglableList<Skill>;
     workExperience: TogglableWork;
     personalProjects: TogglableProject;
+    publications: TogglableList<Publication>;
 }
 
 export function resumeFromJSONResume(
@@ -112,6 +114,14 @@ export function resumeFromJSONResume(
         }),
     );
 
+    const publications = togglable(
+        undefined,
+        'Publications',
+        (jsonResume.publications || []).map((publication) => {
+            return togglable(publication, publication.name, undefined)
+        })
+    );
+
     return {
         name,
         profiles,
@@ -124,6 +134,7 @@ export function resumeFromJSONResume(
         skills,
         workExperience,
         personalProjects,
+        publications,
     };
 }
 
@@ -187,6 +198,8 @@ export function jsonResumeFromResume(resume: Resume): JSONResume {
               .filter((skill) => skill.isOn)
               .map((toggSkill) => toggSkill.val)
         : [];
+    
+    const usedPublications: Publication[] = resume.publications.isOn ? (resume.publications.children || []).filter((pub) => pub.isOn).map((pub) => pub.val) : [];
 
     const jsonResume: JSONResume = {
         basics: {
@@ -202,6 +215,7 @@ export function jsonResumeFromResume(resume: Resume): JSONResume {
         work: usedWork,
         projects: usedProjects,
         skills: usedSkills,
+        publications: usedPublications
     };
 
     return jsonResume;

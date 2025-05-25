@@ -135,6 +135,7 @@ type ListField =
   | "profiles"
   | "education"
   | "workExperience"
+  | "publications"
   | "personalProjects";
 
 interface ToggleChildProps {
@@ -222,6 +223,7 @@ function ConfigureList({ field }: { field: ListField }) {
     education: "Education",
     workExperience: "Work Experience",
     personalProjects: "Personal Projects",
+    publications: "Publications"
   };
 
   return (
@@ -310,6 +312,7 @@ export default function ResumeConfigureModal({
       <ConfigureList field="personalProjects" />
     ),
     [ResumeConfigureSection.Profiles]: <ConfigureList field="profiles" />,
+    [ResumeConfigureSection.Publications]: <ConfigureList field="publications" />,
     [ResumeConfigureSection.Skills]: <ConfigureSkills />,
   };
 

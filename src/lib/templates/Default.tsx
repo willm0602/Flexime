@@ -9,7 +9,7 @@ import {
     View,
     Link,
 } from '@react-pdf/renderer';
-import type { Education, Profile, Project, Work } from '@/lib/jsonResume';
+import type { Education, Profile, Project, Publication, Work } from '@/lib/jsonResume';
 import { UL } from '../reactPDFUtils';
 
 const styles = StyleSheet.create({
@@ -172,6 +172,14 @@ const ProjectComponent = (props: {
     );
 };
 
+const PublicationComponent = ({publication}: {publication: Publication}) => {
+    return <View>
+        <Text style={styles.italics}>{publication.name}{publication.url && (<><Text> (available </Text><Link href={publication.url}>here</Link></>)})</Text>
+        {publication.releaseDate && <Text>{publication.releaseDate}</Text>}
+        {publication.summary && <Text>{publication.summary}</Text>}
+    </View>
+}
+
 const ResumeComponent = (props: { resume: Resume }) => {
     const { resume } = props;
 
@@ -282,6 +290,19 @@ const ResumeComponent = (props: { resume: Resume }) => {
                                     .join(', ')}
                         </Text>
                     </View>
+
+                    {/* Publications  */}
+                    {resume.publications?.length && (
+                        <SectionLabel sectionName='Publications'/>
+                    )}
+                    {resume.publications && <View>
+                        {resume.publications.map((publication) => {
+                            return <PublicationComponent 
+                            key={`resume-publication-${publication.name}`}
+                            publication={publication} />
+                        })}    
+                    </View>}
+
                 </View>
             </Page>
         </Document>
