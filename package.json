@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "dev": "next dev --turbopack",
-        "build": "./onbuild.sh && next build",
+        "build": "next build",
         "start": "next start",
         "lint": "git ls-files | xargs biome lint --write",
         "test": "next build && npx playwright test",
