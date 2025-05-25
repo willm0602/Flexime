@@ -8,7 +8,6 @@
         "start": "next start",
         "lint": "git ls-files | xargs biome lint --write",
         "test": "next build && npx playwright test",
-        "prepare": "husky install",
         "format": "biome format --write",
         "supabase": "npx supabase start"
     },
@@ -78,6 +77,7 @@
         "lint-staged": "^15.4.3",
         "postcss": "^8",
         "prettier": "^3.4.2",
+        "prisma": "^6.8.2",
         "supabase": "^2.20.5",
         "tailwindcss": "^3.4.1",
         "typescript": "^5.7.3"
