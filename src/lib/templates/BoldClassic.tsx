@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
         fontSize: 10,
         textDecoration: 'none',
     },
-    skills: {
+    normal: {
         fontSize: 10,
     },
     spacingX: {
@@ -266,9 +266,24 @@ function SkillsSection(props: ResumeComponentProps) {
 
     return (
         <ResumeSection name='Skills'>
-            <Text style={styles.skills}>{skillNames.join(', ')}</Text>
+            <Text style={styles.normal}>{skillNames.join(', ')}</Text>
         </ResumeSection>
     );
+}
+
+function PublicationsSection({resume}: ResumeComponentProps){
+    const {publications} = resume;
+    if(!publications)
+        return;
+    return <ResumeSection name='Publications'>
+        {publications.map((publication) => {
+            return <View key={`${publication.name}@${publication.releaseDate}`}>
+                <Text style={styles.title}>{publication.name}</Text>
+                <Link style={styles.normal} href={publication.url}>Available Here</Link>
+                {publication.summary && <Text style={styles.normal}>{publication.summary}</Text>}
+            </View>
+        })}
+    </ResumeSection>
 }
 
 function ResumeSection(props: { name: string; children?: React.ReactNode }) {
@@ -296,6 +311,7 @@ function ResumeComponent(props: ResumeComponentProps) {
                 <AllEducationSection resume={resume} />
                 <AllProjectsSection resume={resume} />
                 <SkillsSection resume={resume} />
+                <PublicationsSection resume={resume} />
             </Page>
         </Document>
     );

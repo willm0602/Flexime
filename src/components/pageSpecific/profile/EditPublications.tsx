@@ -5,10 +5,14 @@ import type { Publication } from "@/lib/jsonResume";
 import EditableText from "@/components/EditableText";
 import EditDate from "@/components/EditDate";
 import EditableTextArea from "@/components/EditableTextArea";
+import TitleWithRemove from "./TitleWithRemove";
 
-const EditPublication: ListItem<Publication> = ({val, setItem}) => {
+const EditPublication: ListItem<Publication> = ({val, setItem, removeItem}) => {
     return <div>
-        <h2>{val.name}</h2>
+        <TitleWithRemove
+            title={val.name}
+            remove={removeItem}
+        />
         <div className="flex items-center gap-8">
         <EditableText
             defaultVal={val.name}

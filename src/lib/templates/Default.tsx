@@ -52,6 +52,12 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'space-evenly',
     },
+    split: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        width: '100%',
+        flexDirection: 'row'
+    },
     subsubheader: {
         fontSize: 13,
         fontFamily: 'Times-Italic',
@@ -97,10 +103,10 @@ const SectionLabel = (props: { sectionName: string }) => {
     );
 };
 
-const reformatDate = (datestr: string | undefined) => {
+const reformatDate = (datestr: string | undefined, fullYear=false) => {
     if (!datestr) return '';
     const [year, month] = datestr.split('-');
-    const abbreviatedYear = Number.parseInt(year) % 100;
+    const abbreviatedYear = fullYear ? year : Number.parseInt(year) % 100;
     return `${month}/${abbreviatedYear}`;
 };
 
@@ -174,8 +180,10 @@ const ProjectComponent = (props: {
 
 const PublicationComponent = ({publication}: {publication: Publication}) => {
     return <View>
-        <Text style={styles.italics}>{publication.name}{publication.url && (<><Text> (available </Text><Link href={publication.url}>here</Link></>)})</Text>
-        {publication.releaseDate && <Text>{publication.releaseDate}</Text>}
+        <View style={styles.split}>
+            <Text style={styles.italics}>{publication.name}{publication.url && (<><Text> (available </Text><Link href={publication.url}>here</Link></>)})</Text>
+            {publication.releaseDate && <Text>{reformatDate(publication.releaseDate, true)}</Text>}
+        </View>
         {publication.summary && <Text>{publication.summary}</Text>}
     </View>
 }
