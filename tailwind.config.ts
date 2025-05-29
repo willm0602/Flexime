@@ -16,10 +16,10 @@ export default {
             },
         },
     },
-    plugins: [daisyui, typography],
-    daisyui: {
-        themes: ['business'],
-    },
+    // plugins: [daisyui, typography],
+    // daisyui: {
+    //     themes: ['business'],
+    // },
     safelist: [
         'pl-2',
         'pl-4',

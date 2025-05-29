@@ -6,6 +6,10 @@ const navLinks: NavLinkData[] = [
         text: 'Configure Resume',
     },
     {
+        route: '/configurations',
+        text: 'Configurations'
+    },
+    {
         route: '/profile',
         text: 'Modify Profile',
     },
