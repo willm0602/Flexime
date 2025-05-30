@@ -52,7 +52,7 @@ export default function ResumeConfig(props: ResumeConfigProps) {
         <ResumeContext.Provider value={{ resume, setResume }}>
             <div className='w-full flex flex-col lg:flex-row'>
                 <ResumeHiddenInput />
-                <div className='flex-4'>
+                <div className='flex-1'>
                     <div className='flex'>
                         <OpenResumeNewTab />
                         <EditResumeLink />
@@ -61,7 +61,7 @@ export default function ResumeConfig(props: ResumeConfigProps) {
                     <ToggleList />
                 </div>
                 <form
-                    className='flex-1'
+                    className='flex-4'
                     method='POST'
                     target='resume-preview'
                     action={'/api/pdf'}

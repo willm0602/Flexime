@@ -1,4 +1,4 @@
-import type Resume from '@/lib/jsonResume'
+import type Resume from '@/lib/resume'
 
 export type Configuration = {
     id: number,
