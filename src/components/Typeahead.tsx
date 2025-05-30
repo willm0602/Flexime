@@ -93,7 +93,7 @@ export default function Typeahead<T>({
                                 <button
                                     type='button'
                                     className={twMerge(
-                                        'focus:outline-none',
+                                        'focus:outline-hidden',
                                         buttonClassName,
                                     )}
                                     onClick={() => {

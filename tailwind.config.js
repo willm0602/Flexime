@@ -1,4 +1,3 @@
-import type { Config } from 'tailwindcss';
 import typography from '@tailwindcss/typography';
 import daisyui from 'daisyui';
 
@@ -16,14 +15,14 @@ export default {
             },
         },
     },
-    // plugins: [daisyui, typography],
-    // daisyui: {
-    //     themes: ['business'],
-    // },
+    plugins: [daisyui, typography],
+    daisyui: {
+        themes: ['business'],
+    },
     safelist: [
         'pl-2',
         'pl-4',
         'pl-6',
         'pl-8',
     ]
-} satisfies Config;
+};
