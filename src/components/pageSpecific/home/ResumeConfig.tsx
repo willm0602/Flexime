@@ -16,6 +16,8 @@ import ResumePreview from './ResumePreview';
 import ConfigureJobTitle from './ConfigureJobTitle';
 import ToggleList from './ToggleListNew';
 import type JSONResume from '@/lib/jsonResume';
+import SaveConfig from './SaveConfig';
+import SelectConfiguration from './SelectConfiguration';
 
 interface ResumeConfigProps {
     initResume: JSONResume | undefined;
@@ -55,9 +57,10 @@ export default function ResumeConfig(props: ResumeConfigProps) {
                 <div className='flex-1'>
                     <div className='flex'>
                         <OpenResumeNewTab />
-                        <EditResumeLink />
+                        <SaveConfig />
                     </div>
                     <ConfigureJobTitle />
+                    <SelectConfiguration />
                     <ToggleList />
                 </div>
                 <form

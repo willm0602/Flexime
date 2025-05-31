@@ -326,6 +326,9 @@ export default function ResumeConfigureModal({
         </form>
         {components[activeSection]}
       </div>
+      <form method="dialog" className="modal-backdrop">
+        <button type="submit">close</button>
+      </form>
     </dialog>
   );
 }
