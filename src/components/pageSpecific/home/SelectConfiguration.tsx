@@ -14,9 +14,6 @@ export default function SelectConfiguration(){
         }
     }, []);
 
-    // HACK: preview the resume through the form when the select is clicked
-    
-
     if((configurations?.length || 0) === 0)
         return null;
 

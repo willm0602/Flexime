@@ -45,7 +45,7 @@ export default function SaveConfig(){
                     {configurations.length > 0  ?
                         <>
                             <h3>Overwrite an existing configuration</h3>
-                            <select onChange={(e) => setConfigIDX(Number.parseInt(e.target.value))}>    
+                            <select className="select select-bordered w-full max-w-xs my-4" value={configIDX} onChange={(e) => setConfigIDX(Number.parseInt(e.target.value))}>    
                                 {configurations.map((config, idx) => <option key={config.name} value={idx} className="min-h-4">{config.name}</option>)}
                             </select><br className="h-12"/>
                             <button type='button' className='btn btn-primary' onClick={() => overwrite()}>Save</button>
