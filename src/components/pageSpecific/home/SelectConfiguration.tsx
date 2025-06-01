@@ -1,18 +1,24 @@
 import type { Configuration } from "@/lib/types/configuration";
 import { useContext, useEffect, useState } from "react";
 import ResumeContext from "./ResumeContext";
+import type { User } from "@supabase/supabase-js";
+import { getSavedConfigurationsForUser } from "@/lib/configurations";
+import { get } from "sortablejs";
 
-export default function SelectConfiguration(){
+export default function SelectConfiguration({user}: {user: User | null}) {
     
     const [configurations, setConfigurations] = useState<Configuration[]>([]);
     const {setResume} = useContext(ResumeContext);
     
     useEffect(() => {
-        const storedConfigurations = window.localStorage.getItem('resume-configurations');
-        if (storedConfigurations) {
-            setConfigurations(JSON.parse(storedConfigurations));
-        }
-    }, []);
+        getSavedConfigurationsForUser(user).then((configurations) => {
+            setConfigurations(configurations);
+        })
+    }, [user]);
+
+    getSavedConfigurationsForUser(user).then((configurations) => {
+        console.log(configurations);
+    });
 
     if((configurations?.length || 0) === 0)
         return null;
