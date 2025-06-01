@@ -54,7 +54,7 @@ export default function ResumeConfig(props: ResumeConfigProps) {
 
     return (
         <ResumeContext.Provider value={{ resume, setResume }}>
-            <div className='w-full flex flex-col lg:flex-row'>
+            <div className='w-full flex flex-col lg:flex-row gap-y-8'>
                 <ResumeHiddenInput />
                 <div className='flex-1'>
                     <div className='flex'>
@@ -74,9 +74,9 @@ export default function ResumeConfig(props: ResumeConfigProps) {
                     ref={formRef}
                 >
                     <ResumeHiddenInput />
-                    <div className='flex'>
+                    <div className='flex flex-col md:flex-row'>
                         <button
-                            className='btn btn-primary ml-12 mb-4'
+                            className='btn btn-primary md:ml-12 mb-4 w-full md:w-24'
                             type='submit'
                         >
                             <ArrowPathIcon
