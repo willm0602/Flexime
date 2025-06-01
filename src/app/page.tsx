@@ -13,7 +13,7 @@ export default async function Home() {
             suppressHydrationWarning
         >
             <h1>Configure Resume</h1>
-            <ResumeConfig initResume={resumeFromProfile} />
+            <ResumeConfig user={user} initResume={resumeFromProfile} />
         </div>
     );
 }

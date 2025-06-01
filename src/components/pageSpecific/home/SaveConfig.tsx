@@ -2,8 +2,10 @@ import { BookmarkSquareIcon } from "@heroicons/react/24/solid";
 import { useContext, useEffect, useRef, useState } from "react";
 import ResumeContext from "./ResumeContext";
 import type { Configuration } from "@/lib/types/configuration";
+import type { User } from "@supabase/supabase-js";
+import { addConfigurationToLS, addConfigurationToSupabase, getSavedConfigurationsForUser } from "@/lib/configurations";
 
-export default function SaveConfig(){
+export default function SaveConfig({user}: {user: User | null}) {
     const dialog = useRef<HTMLDialogElement | null>(null);
     const [configName, setConfigName] = useState<string>('');
     const resumeContext = useContext(ResumeContext);
@@ -12,20 +14,41 @@ export default function SaveConfig(){
     const [configIDX, setConfigIDX] = useState<number>(0);
 
     useEffect(() => {
-        const storedConfigurations = window.localStorage.getItem('resume-configurations');
-        if (storedConfigurations) {
-            setConfigurations(JSON.parse(storedConfigurations));
-        }
-    }, []);
+        getSavedConfigurationsForUser(user).then((configurations) => {
+            setConfigurations(configurations);
+        })
+    }, [user]);
 
-    const saveNewConfig = () => {
+    const saveNewConfig = async () => {
         if (!configName) return;
-        const id = Date.now();
-        const newConfigurations = [...configurations, {id, user_id: '', resume: resumeContext.resume, name: configName}];
-        setConfigurations(newConfigurations);
-        setConfigName('');
-        window.localStorage.setItem('resume-configurations', JSON.stringify(newConfigurations));
-        dialog.current?.close();
+        if(user){
+            await addConfigurationToSupabase({
+                user_id: user.id,
+                resume: resumeContext.resume,
+                name: configName,
+                id: 0 // not used
+            }).then((error) => {
+                if(error){
+                    console.error(error);
+                }
+                setConfigName('');
+                dialog.current?.close();
+            }).catch((error) => {
+                console.error(error);
+            });
+        } else{
+            addConfigurationToLS({
+                user_id: '',
+                resume: resumeContext.resume,
+                name: configName,
+                id: 0 // not used
+            }).then(() => {
+                setConfigName('');
+                dialog.current?.close();
+            }).catch((error) => {
+                console.error(error);
+            });
+        }
     }
 
     const overwrite = () => {

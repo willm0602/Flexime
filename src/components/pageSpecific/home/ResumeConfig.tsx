@@ -18,9 +18,11 @@ import ToggleList from './ToggleListNew';
 import type JSONResume from '@/lib/jsonResume';
 import SaveConfig from './SaveConfig';
 import SelectConfiguration from './SelectConfiguration';
+import type { User } from '@supabase/supabase-js';
 
 interface ResumeConfigProps {
     initResume: JSONResume | undefined;
+    user: User | null
 }
 
 export default function ResumeConfig(props: ResumeConfigProps) {
@@ -57,10 +59,10 @@ export default function ResumeConfig(props: ResumeConfigProps) {
                 <div className='flex-1'>
                     <div className='flex'>
                         <OpenResumeNewTab />
-                        <SaveConfig />
+                        <SaveConfig user={props.user} />
                     </div>
                     <ConfigureJobTitle />
-                    <SelectConfiguration />
+                    <SelectConfiguration user={props.user} />
                     <ToggleList />
                 </div>
                 <form
