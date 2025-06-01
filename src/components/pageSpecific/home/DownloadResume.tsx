@@ -48,7 +48,7 @@ export default function DownloadResume() {
 
     return (
         <>
-            <label className='input input-bordered pr-0 ml-4 flex'>
+            <label className='input input-bordered pr-0 ml-0 md:ml-4 flex w-full md:w-60 md:mb-0 mb-4'>
                 <input
                     type='text'
                     className='grow'
@@ -71,7 +71,7 @@ export default function DownloadResume() {
                 </button>
             </label>
             <select
-                className='select select-bordered ml-8'
+                className='select select-bordered ml-0 md:ml-8 w-full md:w-60 mb-4 md:mb-0'
                 name='template'
                 id='resume-template'
                 onChange={(e) => {
