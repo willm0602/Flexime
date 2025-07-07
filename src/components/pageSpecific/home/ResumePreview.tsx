@@ -1,6 +1,6 @@
 export default function ResumePreview() {
     return (
-        <div className='ml-12 '>
+        <div className='md:ml-12 '>
             <iframe
                 title='Resume Preview'
                 width={'100%'}

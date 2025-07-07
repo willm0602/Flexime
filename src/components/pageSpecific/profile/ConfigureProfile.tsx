@@ -73,7 +73,7 @@ export default function ConfigureProfile(props: ConfigureResumeProps) {
     }, [resume]);
 
     return (
-        <div className='font-[family-name:var(--font-geist-sans)] w-full md:w-4/5 mx-auto px-12 py-12'>
+        <div className='font-(family-name:--font-geist-sans) w-full md:w-4/5 mx-auto md:px-12 md:py-12 px-4 py-4'>
             {!isClient || !resume ? (
                 <div className='flex'>
                     <span className='loading loading-spinner w-1/4 mx-auto' />

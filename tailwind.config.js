@@ -1,4 +1,3 @@
-import type { Config } from 'tailwindcss';
 import typography from '@tailwindcss/typography';
 import daisyui from 'daisyui';
 
@@ -26,4 +25,4 @@ export default {
         'pl-6',
         'pl-8',
     ]
-} satisfies Config;
+};

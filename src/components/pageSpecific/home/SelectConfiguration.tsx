@@ -24,7 +24,7 @@ export default function SelectConfiguration({user}: {user: User | null}) {
         return null;
 
     return <select id="load-resume-config" onChange={(e) => setResume(configurations[+e.target.value].resume)} className="select select-bordered w-full max-w-xs my-4" defaultValue={-1}>
-        <option disabled value={-1}>Load Configuration</option>
+        <option disabled value={-1}>Load Resume</option>
         {configurations.map((configuration, idx) => {
             return <option key={configuration.id} value={idx}>{configuration.name}</option>
         })}

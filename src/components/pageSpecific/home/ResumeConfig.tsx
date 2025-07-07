@@ -16,9 +16,13 @@ import ResumePreview from './ResumePreview';
 import ConfigureJobTitle from './ConfigureJobTitle';
 import ToggleList from './ToggleListNew';
 import type JSONResume from '@/lib/jsonResume';
+import SaveConfig from './SaveConfig';
+import SelectConfiguration from './SelectConfiguration';
+import type { User } from '@supabase/supabase-js';
 
 interface ResumeConfigProps {
     initResume: JSONResume | undefined;
+    user: User | null
 }
 
 export default function ResumeConfig(props: ResumeConfigProps) {
@@ -50,18 +54,19 @@ export default function ResumeConfig(props: ResumeConfigProps) {
 
     return (
         <ResumeContext.Provider value={{ resume, setResume }}>
-            <div className='w-full flex flex-col lg:flex-row'>
+            <div className='w-full flex flex-col lg:flex-row gap-y-8'>
                 <ResumeHiddenInput />
-                <div className='flex-4'>
+                <div className='flex-1'>
                     <div className='flex'>
                         <OpenResumeNewTab />
-                        <EditResumeLink />
+                        <SaveConfig user={props.user} />
                     </div>
                     <ConfigureJobTitle />
+                    <SelectConfiguration user={props.user} />
                     <ToggleList />
                 </div>
                 <form
-                    className='flex-1'
+                    className='flex-4'
                     method='POST'
                     target='resume-preview'
                     action={'/api/pdf'}
@@ -69,9 +74,9 @@ export default function ResumeConfig(props: ResumeConfigProps) {
                     ref={formRef}
                 >
                     <ResumeHiddenInput />
-                    <div className='flex'>
+                    <div className='flex flex-col md:flex-row'>
                         <button
-                            className='btn btn-primary ml-12 mb-4'
+                            className='btn btn-primary md:ml-12 mb-4 w-full md:w-24'
                             type='submit'
                         >
                             <ArrowPathIcon
