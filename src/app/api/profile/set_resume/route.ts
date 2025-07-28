@@ -7,7 +7,7 @@ export async function POST(request: Request) {
     if (!supabase) return NextResponse.json({}, { status: 500 });
     const userResp = await supabase.auth.getUser();
     if (!userResp || !userResp.data.user) {
-        console.log('No user');
+        console.error('No user');
         return NextResponse.json({
             status: 401,
         });
@@ -44,8 +44,6 @@ export async function POST(request: Request) {
         console.error(error);
         return NextResponse.json({}, { status: 500 });
     }
-    console.log(userResp.data.user.id);
-    console.log(resume);
     return NextResponse.json({
         status: 200,
         message: 'Resume updated',

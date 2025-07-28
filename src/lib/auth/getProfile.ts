@@ -23,11 +23,11 @@ export default async function useProfile(): Promise<UserProfile | null> {
     }
     const profiles = profilesReq.data;
     if (profiles.length === 0) {
-        console.log('No profiles');
+        console.error('No profiles');
         return null;
     }
     if (profiles.length === 2) {
-        console.log('Too many profiles');
+        console.error('Too many profiles');
         return null;
     }
     const profile = profiles[0];

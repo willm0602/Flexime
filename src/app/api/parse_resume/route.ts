@@ -26,6 +26,8 @@ const parseDocx: ResumeParser = async (file) => {
     return text.value;
 };
 
+export const maxDuration = 60;
+
 export async function POST(request: Request) {
     const body = await request.formData();
     const file = body.get('resume') as File;
@@ -60,3 +62,4 @@ export async function POST(request: Request) {
         return NextResponse.json({ msg: e }, { status: 500 });
     }
 }
+
