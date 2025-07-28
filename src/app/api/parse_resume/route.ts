@@ -26,7 +26,7 @@ const parseDocx: ResumeParser = async (file) => {
     return text.value;
 };
 
-export const maxDudation = 60;
+export const maxDuration = 60;
 
 export async function POST(request: Request) {
     const body = await request.formData();
