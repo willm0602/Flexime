@@ -15,12 +15,12 @@ const EditHighlight: ListItem<string> = (props) => {
     return (
         <>
             <EditableTextArea
-                defaultVal={highlight}
-                dispatch={setItem}
-                label='Highlight'
-                remove={removeItem}
-                width={100}
-                height={4}
+                val={highlight}
+                onSave={setItem}
+                onDelete={removeItem}
+                textAreaProps={{
+                    className: 'textarea w-full mb-4',
+                }}
             />
         </>
     );

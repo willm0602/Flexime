@@ -77,7 +77,7 @@ export default function Typeahead<T>({
             {showOptions && (
                 <ul
                     className={twMerge(
-                        'list-none absolute bg-base-200 mt-0 pl-0',
+                        'list-none absolute z-50 bg-base-200 mt-0 pl-0',
                         listClassName,
                     )}
                 >
