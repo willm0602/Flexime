@@ -27,7 +27,7 @@ export async function GET() {
     }
     const profiles: UserProfile[] = profilesReq.data;
     if (profiles.length === 0) {
-        console.log('No profiles');
+        console.error('No profiles');
         return NextResponse.json({}, { status: 401 });
     }
     if (profiles.length === 2) {
