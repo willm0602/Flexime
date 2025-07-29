@@ -1,4 +1,5 @@
 import { type Dispatch, useState } from 'react';
+import EditableInput from './EditableInput';
 
 type EditableNumberProps = {
     defaultVal: number;
@@ -15,32 +16,19 @@ export default function EditableNumber(props: EditableNumberProps) {
     const { defaultVal, dispatch, label, remove, minVal, maxVal, step } = props;
     const digits = props.digits || 0;
 
-    const [isInEditMode, dispatchEdit] = useState<boolean>(false);
-    const [currVal, setVal] = useState(defaultVal);
-
     return (
-        <>
-            {isInEditMode ? (
-                <EditField
-                    val={currVal}
-                    setVal={setVal}
-                    dispatch={dispatch}
-                    label={label}
-                    minVal={minVal}
-                    maxVal={maxVal}
-                    step={step}
-                    dispatchEdit={dispatchEdit}
-                />
-            ) : (
-                <EditFieldDisplay
-                    val={currVal}
-                    remove={remove}
-                    digits={digits}
-                    dispatchEdit={dispatchEdit}
-                    label={label}
-                />
-            )}
-        </>
+        <EditableInput
+            label={label}
+            val={defaultVal.toPrecision(digits)}
+            onSave={(unparsed) => {dispatch(Number.parseFloat(unparsed))}}
+            inputProps={{
+                min: minVal,
+                max: maxVal,
+                step,
+                className: 'input validator',
+                type: 'number'
+            }}
+        />
     );
 }
 

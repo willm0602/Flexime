@@ -3,25 +3,29 @@
 import { useId, useRef, useState, type ReactNode } from 'react';
 
 interface EditableInputProps {
-    textAreaProps?: React.InputHTMLAttributes<HTMLTextAreaElement>;
+    label: string;
+    inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
     val: string;
     onSave: (newVal: string) => unknown;
     onDelete?: CallableFunction;
 }
 
-export default function EditableTextArea<T>({
-    textAreaProps,
+export default function EditableInput<T>({
+    inputProps,
+    label,
     val,
     onSave,
     onDelete,
 }: EditableInputProps) {
     const [inViewMode, setinViewMode] = useState(true);
-    const input = useRef<HTMLTextAreaElement | null>(null);
+    const input = useRef<HTMLInputElement | null>(null);
     const id = useId();
+
     return (
-        <div>
+        <div className='mr-8'>
             {inViewMode ? (
                 <div className='flex flex-col justify-start items-start h-full'>
+                    <span className='label text-xl font-bold'>{label}</span>
                     <span className='text-lg'>{val}</span>
                     <div className='flex flex-col flex-1 w-full'>
                         <div className='flex-1' />
@@ -31,14 +35,14 @@ export default function EditableTextArea<T>({
                                 onClick={() => {
                                     setinViewMode(false);
                                 }}
-                                className='btn btn-info btn-md'
+                                className='btn btn-info mt-2'
                             >
                                 Edit
                             </button>
                             {onDelete && (
                                 <button
                                     type='button'
-                                    className='btn btn-error btn-md ml-4'
+                                    className='btn btn-error'
                                     onClick={() => {
                                         onDelete();
                                     }}
@@ -51,7 +55,15 @@ export default function EditableTextArea<T>({
                 </div>
             ) : (
                 <div>
-                    <textarea id={id} {...textAreaProps} ref={input} defaultValue={val}/>
+                    <label htmlFor={id} className='label text-xl bold'>
+                        {label}
+                    </label>
+                    <input
+                        id={id}
+                        {...inputProps}
+                        ref={input}
+                        defaultValue={val}
+                    />
                     <div className='flex'>
                         <button
                             type='button'
