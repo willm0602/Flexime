@@ -10,7 +10,6 @@ import { DEFAULT_RESUME } from '@/lib/resumeUtils';
 import OpenResumeNewTab from './OpenResumeNewTab';
 import ResumeContext from './ResumeContext';
 import ResumeHiddenInput from './ResumeHiddenInput';
-import EditResumeLink from './EditResumeLink';
 import DownloadResume from './DownloadResume';
 import ResumePreview from './ResumePreview';
 import ConfigureJobTitle from './ConfigureJobTitle';
@@ -22,7 +21,7 @@ import type { User } from '@supabase/supabase-js';
 
 interface ResumeConfigProps {
     initResume: JSONResume | undefined;
-    user: User | null
+    user: User | null;
 }
 
 export default function ResumeConfig(props: ResumeConfigProps) {

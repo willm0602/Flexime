@@ -2,6 +2,7 @@ export default interface Togglable<T, C = unknown> {
     val: T;
     isOn: boolean;
     title: string;
+    id: string;
     children?: Togglable<C>[];
 }
 
@@ -20,6 +21,7 @@ export function togglable<T, C>(
         val,
         isOn: true,
         title,
+        id: title,
         children,
     };
 }

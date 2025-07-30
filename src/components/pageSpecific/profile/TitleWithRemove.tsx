@@ -12,9 +12,10 @@ export default function TitleWithRemove(props: {
     return (
         <div className='flex'>
             <TitleHeader className='mt-0 pt-0 mr-4'>{title}</TitleHeader>
-            <button className='btn btn-error btn-xs'
-                    onClick={() => remove()}
-                    type='button'
+            <button
+                className='btn btn-error btn-xs'
+                onClick={() => remove()}
+                type='button'
             >
                 Remove
             </button>

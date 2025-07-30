@@ -1,5 +1,4 @@
 import ResumeConfig from '@/components/pageSpecific/home/ResumeConfig';
-import SignInSignOut from '@/components/SignInSignOut';
 import getResume from '@/lib/auth/getResume';
 import getUser from '@/lib/auth/getUser';
 

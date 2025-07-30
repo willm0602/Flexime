@@ -14,14 +14,14 @@
     },
     "work": [
         {
-            "company": "Tech Startup Inc.",
+            "name": "Tech Startup Inc.",
             "position": "Full-Stack Developer",
             "startDate": "2021-06-01",
             "endDate": "Present",
             "summary": "Developed scalable web applications using Node.js, React, and AWS. Led backend optimizations and collaborated with frontend teams to enhance performance."
         },
         {
-            "company": "Cloud Solutions LLC",
+            "name": "Cloud Solutions LLC",
             "position": "Software Engineer",
             "startDate": "2019-01-01",
             "endDate": "2021-05-01",

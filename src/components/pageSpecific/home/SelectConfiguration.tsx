@@ -3,7 +3,6 @@ import { useContext, useEffect, useState } from 'react';
 import ResumeContext from './ResumeContext';
 import type { User } from '@supabase/supabase-js';
 import { getSavedConfigurationsForUser } from '@/lib/configurations';
-import { get } from 'sortablejs';
 
 export default function SelectConfiguration({ user }: { user: User | null }) {
     const [configurations, setConfigurations] = useState<Configuration[]>([]);

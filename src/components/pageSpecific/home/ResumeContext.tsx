@@ -1,5 +1,5 @@
 import type Resume from '@/lib/resume';
-import React, { useState } from 'react';
+import React from 'react';
 import { resumeFromJSONResume } from '../../../lib/resume';
 import { DEFAULT_RESUME } from '@/lib/resumeUtils';
 

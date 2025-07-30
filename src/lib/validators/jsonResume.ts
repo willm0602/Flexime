@@ -3,12 +3,14 @@ import { z } from 'zod';
 const jsonResumeSchema = z.object({
     basics: z.object({
         name: z.string(),
-        profiles: z.array(
-            z.object({
-                network: z.string(),
-                url: z.string().url(),
-            }),
-        ).optional(),
+        profiles: z
+            .array(
+                z.object({
+                    network: z.string(),
+                    url: z.string().url(),
+                }),
+            )
+            .optional(),
         location: z.object({
             city: z.string(),
             countryCode: z.string(),
@@ -30,7 +32,7 @@ const jsonResumeSchema = z.object({
     ),
     work: z.array(
         z.object({
-            company: z.string(),
+            name: z.string(),
             position: z.string(),
             startDate: z.string(), // ISO date string
             endDate: z.string(), // ISO date string

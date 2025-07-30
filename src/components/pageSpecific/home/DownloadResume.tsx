@@ -5,7 +5,7 @@ import { ArrowDownTrayIcon } from '@heroicons/react/24/solid';
 import Templates, { TemplateNames } from '@/lib/templates';
 
 export default function DownloadResume() {
-    const { resume, setResume } = useContext(ResumeContext);
+    const { resume } = useContext(ResumeContext);
 
     const [resumeName, dispatchResumeName] = useState('');
     const [template, setTemplate] = useState(Object.keys(Templates)[0]);

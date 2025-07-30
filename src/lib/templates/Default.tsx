@@ -1,3 +1,4 @@
+// biome-ignore lint/style/useImportType: using React for rendering
 import React from 'react';
 import type { GeneratedResume } from '../generatedResume';
 import type Resume from '@/lib/jsonResume';
@@ -86,7 +87,7 @@ const styles = StyleSheet.create({
 });
 
 const HR = () => {
-    return <View style={styles.divider}/>;
+    return <View style={styles.divider} />;
 };
 
 const SectionLabel = (props: { sectionName: string }) => {
@@ -143,7 +144,8 @@ const ProjectComponent = (props: {
     proj: Project;
     highlights: React.ReactNode[];
 }) => {
-    const { proj, highlights } = props;
+    const { proj } = props;
+    const highlights: React.ReactNode[] = proj.highlights || [];
 
     if (proj.repository) {
         highlights.push(
@@ -176,7 +178,7 @@ const ProjectComponent = (props: {
 const ResumeComponent = (props: { resume: Resume }) => {
     const { resume } = props;
 
-    const profiles: Profile[] = resume.basics.profiles;
+    const profiles: Profile[] = resume.basics.profiles || [];
 
     const workExperience = resume.work || [];
 
@@ -214,7 +216,10 @@ const ResumeComponent = (props: { resume: Resume }) => {
 
                         {profiles.map((profile, idx) => {
                             return (
-                                <Link key={`profile-${profile.network}`} href={profile.url}>
+                                <Link
+                                    key={`profile-${profile.network}`}
+                                    href={profile.url}
+                                >
                                     {profile.network}
                                 </Link>
                             );
@@ -232,7 +237,9 @@ const ResumeComponent = (props: { resume: Resume }) => {
                                             <RoleComponent
                                                 key={`idx-${role.position}-${role.startDate}`}
                                                 role={role}
-                                                highlights={role.highlights}
+                                                highlights={
+                                                    role.highlights || []
+                                                }
                                             />
                                         );
                                     } catch {
@@ -264,7 +271,7 @@ const ResumeComponent = (props: { resume: Resume }) => {
                         return (
                             <ProjectComponent
                                 proj={proj}
-                                highlights={proj.highlights}
+                                highlights={proj.highlights || []}
                                 key={`proj-${proj.name}`}
                             />
                         );
@@ -277,10 +284,8 @@ const ResumeComponent = (props: { resume: Resume }) => {
                     <View>
                         <Text>
                             {resume.skills
-                                    ?.map(
-                                        (togglableSkill) => togglableSkill.name,
-                                    )
-                                    .join(', ')}
+                                ?.map((togglableSkill) => togglableSkill.name)
+                                .join(', ')}
                         </Text>
                     </View>
                 </View>
