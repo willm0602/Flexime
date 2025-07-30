@@ -1,3 +1,4 @@
+import React from 'react';
 import type { GeneratedResume } from '../generatedResume';
 import type Resume from '@/lib/jsonResume';
 import {

@@ -1,6 +1,6 @@
 /**
  * Resume format to follow JSON Resume format
- * https://jsonresume.org/schema
+* https://jsonresume.org/schema
  */
 
 export interface Location {

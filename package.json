@@ -7,9 +7,11 @@
         "build": "next build",
         "start": "next start",
         "lint": "git ls-files | xargs biome lint --write",
-        "test": "next build && npx playwright test",
+        "test": "vitest",
         "format": "biome format --write",
-        "supabase": "npx supabase start"
+        "supabase": "npx supabase start",
+        "test:ui": "vitest --ui",
+        "test:watch": "vitest"
     },
     "dependencies": {
         "@emotion/react": "^11.14.0",
@@ -65,12 +67,13 @@
         "@tailwindcss/typography": "^0.5.16",
         "@types/formidable": "^3.4.5",
         "@types/json5": "^0.0.30",
-        "@types/node": "^20.17.30",
+        "@types/node": "^20.19.9",
         "@types/pdf-parse": "^1.1.5",
         "@types/pdfkit": "^0.13.8",
         "@types/react": "^19",
         "@types/react-dom": "^19",
         "@types/sortablejs": "^1.15.8",
+        "@vitest/ui": "^3.2.4",
         "autoprefixer": "^10.4.21",
         "daisyui": "^5.0.40",
         "eslint-config-next": "15.1.3",
@@ -83,7 +86,11 @@
         "prisma": "^6.8.2",
         "supabase": "^2.23.4",
         "tailwindcss": "^4.1.11",
-        "typescript": "^5.7.3"
+        "tsx": "^4.20.3",
+        "typescript": "^5.7.3",
+        "vite": "^7.0.6",
+        "vite-tsconfig-paths": "^5.1.4",
+        "vitest": "^3.2.4"
     },
     "lint-staged": {
         "*.js": "git ls-files | xargs biome lint"
