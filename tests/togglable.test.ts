@@ -6,8 +6,8 @@ describe('Togglable data structure tests', () => {
     const sampleTogglable = togglable('foo', 'title');
     const offTogglable = {
         ...sampleTogglable,
-        isOn: false
-    }
+        isOn: false,
+    };
     const sampleParent = togglable('parent', 'parent', [sampleTogglable]);
     const undefinedTogglable = togglable(undefined, 'undefined');
 
@@ -16,6 +16,7 @@ describe('Togglable data structure tests', () => {
         expect(sampleTogglable).toEqual({
             val: 'foo',
             isOn: true,
+            id: 'title',
             title: 'title',
             children: undefined,
         });
@@ -27,6 +28,7 @@ describe('Togglable data structure tests', () => {
             val: 'parent',
             isOn: true,
             title: 'parent',
+            id: 'parent',
             children: [sampleTogglable],
         });
     });
@@ -44,6 +46,6 @@ describe('Togglable data structure tests', () => {
         expect(getUsedVal('a')).toBe(undefined);
         expect(getUsedVal(offTogglable)).toBe(undefined);
         expect(getUsedVal(sampleTogglable)).toBe('foo');
-        expect(getUsedVal(sampleParent)).toBe('parent')
+        expect(getUsedVal(sampleParent)).toBe('parent');
     });
 });
