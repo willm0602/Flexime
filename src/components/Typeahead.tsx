@@ -55,7 +55,9 @@ export default function Typeahead<T>({
         }
         const shownVals = annotatedVals
             .filter((annotatedVal) => {
-                return annotatedVal.label.toLowerCase().includes(searchQuery.toLowerCase());
+                return annotatedVal.label
+                    .toLowerCase()
+                    .includes(searchQuery.toLowerCase());
             })
             .slice(0, MAX_SHOWN_ENTRIES);
         setShownVals(shownVals);
@@ -81,7 +83,7 @@ export default function Typeahead<T>({
                         listClassName,
                     )}
                 >
-                    {shownVals.map((val, idx) => {
+                    {shownVals.map((val) => {
                         return (
                             <li
                                 key={`typeahead-item-${val.label}`}

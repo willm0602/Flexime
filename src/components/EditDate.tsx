@@ -18,7 +18,7 @@ export default function EditDate(props: EditDateProps) {
             }}
             inputProps={{
                 type: 'date',
-                className: 'input'
+                className: 'input',
             }}
         />
     );

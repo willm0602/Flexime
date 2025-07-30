@@ -23,7 +23,7 @@ interface Experience {
     startDate: string; // ISO 8601 format
     endDate?: string; // ISO 8601 format
     summary?: string;
-    highlights: string[];
+    highlights?: string[];
 }
 
 export interface Work extends Experience {
@@ -71,7 +71,7 @@ export interface Project {
     startDate?: string; // ISO-8601 Format
     endDate?: string; // ISO-8601 Format
     description?: string;
-    highlights: string[];
+    highlights?: string[];
     url?: string;
     repository?: string;
 }
@@ -85,7 +85,7 @@ export interface ResumeBasics {
     url?: string;
     summary?: string;
     location?: Location;
-    profiles: Profile[];
+    profiles?: Profile[];
 }
 
 export interface Resume {

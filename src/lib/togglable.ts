@@ -2,8 +2,8 @@ export default interface Togglable<T, C = unknown> {
     val: T;
     isOn: boolean;
     title: string;
-    children?: Togglable<C>[];
     id: string;
+    children?: Togglable<C>[];
 }
 
 type NotUndefined<T> = Exclude<T, undefined>;
@@ -21,32 +21,16 @@ export function togglable<T, C>(
         val,
         isOn: true,
         title,
+        id: title,
         children,
-        id: title
     };
-}
-
-export function getIncludedVals<T, C>(togglable?: Togglable<T, C>): C[] {
-    if (!togglable) return [];
-
-    if (!togglable.isOn) return [];
-
-    const togglables = togglable.children || [];
-    const vals = togglables
-        .filter((val) => {
-            return val.isOn;
-        })
-        .map((togglable) => {
-            return togglable.val;
-        });
-
-    return vals;
 }
 
 export function isTogglable(value: unknown): value is Togglable<unknown> {
     return (
         typeof value === 'object' &&
         'val' in (value || {}) &&
+        'title' in (value || {}) &&
         'isOn' in (value || {})
     );
 }

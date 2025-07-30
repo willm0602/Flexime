@@ -1,6 +1,6 @@
 'use client';
 
-import { useId, useRef, useState, type ReactNode } from 'react';
+import { useId, useRef, useState } from 'react';
 
 interface EditableInputProps {
     textAreaProps?: React.InputHTMLAttributes<HTMLTextAreaElement>;
@@ -51,7 +51,12 @@ export default function EditableTextArea<T>({
                 </div>
             ) : (
                 <div>
-                    <textarea id={id} {...textAreaProps} ref={input} defaultValue={val}/>
+                    <textarea
+                        id={id}
+                        {...textAreaProps}
+                        ref={input}
+                        defaultValue={val}
+                    />
                     <div className='flex'>
                         <button
                             type='button'

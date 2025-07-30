@@ -1,3 +1,5 @@
+// biome-ignore lint/style/useImportType: required for testing
+import React from 'react';
 import {
     renderToStream,
     View,
@@ -135,7 +137,7 @@ function ContactInfo(props: ResumeComponentProps) {
         );
     };
 
-    profiles.map((profile) => {
+    (profiles || []).map((profile) => {
         links.push({
             text: profile.network,
             href: profile.url,
@@ -178,16 +180,16 @@ function AllWorkSection(props: ResumeComponentProps) {
         <ResumeSection name='Work Experience'>
             {resume.work.map((role) => {
                 return (
-                    <View style={styles.role} key={`role-${role.name}-${role.position}`}>
+                    <View
+                        style={styles.role}
+                        key={`role-${role.name}-${role.position}`}
+                    >
                         <Text style={styles.position}>
                             {role.name} ({role.position})
                         </Text>
-                        {role.highlights.map((hl) => {
+                        {(role.highlights || []).map((hl) => {
                             return (
-                                <Text
-                                    style={styles.hl}
-                                    key={`highlight-${hl}`}
-                                >
+                                <Text style={styles.hl} key={`highlight-${hl}`}>
                                     - {hl}
                                 </Text>
                             );
@@ -206,7 +208,10 @@ function AllEducationSection(props: ResumeComponentProps) {
         <ResumeSection name='Education'>
             {resume.education.map((education, idx) => {
                 return (
-                    <View style={styles.role} key={`${education.institution} ${education.area} ${education.studyType}`}>
+                    <View
+                        style={styles.role}
+                        key={`${education.institution} ${education.area} ${education.studyType}`}
+                    >
                         <Text style={styles.institution}>
                             {education.institution}
                         </Text>
@@ -244,7 +249,7 @@ function AllProjectsSection(props: ResumeComponentProps) {
                                 </Link>
                             )}
                         </View>
-                        {proj.highlights.map((hl, hlidx) => {
+                        {(proj.highlights || []).map((hl, hlidx) => {
                             return (
                                 <Text key={`hl-${hl}`} style={styles.hl}>
                                     - {hl}

@@ -16,16 +16,14 @@ const EditHighlight: ListItem<string> = (props) => {
     const { removeItem, setItem, val } = props;
 
     return (
-        <>
-            <EditableTextArea
-                val={val}
-                onSave={setItem}
-                onDelete={removeItem}
-                textAreaProps={{
-                    className: 'textarea w-full mb-4'
-                }}
-            />
-        </>
+        <EditableTextArea
+            val={val}
+            onSave={setItem}
+            onDelete={removeItem}
+            textAreaProps={{
+                className: 'textarea w-full mb-4',
+            }}
+        />
     );
 };
 

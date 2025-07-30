@@ -17,7 +17,7 @@ with check (user_id = auth.uid());  -- Ensures users can only insert their own p
 create policy "Allow users to update their userprofile"
 on public.userprofile
 for update
-using (user_id = auth.uid());  -- 'USING' is correct for UPDATE
+using (user_id = auth.uid());
 
 -- Allow users to view their own userprofile instance
 create policy "Allow users to view their userprofile"

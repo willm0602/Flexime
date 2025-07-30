@@ -1,6 +1,6 @@
 'use client';
 
-import { useId, useRef, useState, type ReactNode } from 'react';
+import { useId, useRef, useState } from 'react';
 
 interface EditableInputProps {
     label: string;
@@ -10,7 +10,7 @@ interface EditableInputProps {
     onDelete?: CallableFunction;
 }
 
-export default function EditableInput<T>({
+export default function EditableInput({
     inputProps,
     label,
     val,

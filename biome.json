@@ -1,18 +1,12 @@
 {
-    "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-    "vcs": { "enabled": false, "clientKind": "git", "useIgnoreFile": false },
+    "$schema": "https://biomejs.dev/schemas/2.1.3/schema.json",
     "files": {
-        "ignoreUnknown": false,
-        "ignore": [
-            "**/.next/**",
-            "**/node_modules/**",
-            "**/dist/**",
-            "**/build/**",
-            "**/*.min.js",
-            "**/*.map",
-            "**/src/data/cities.json",
-            "**/tests/sample/misformattedResume.json"
-        ]
+        "maxSize": 18446744073709551615
+    },
+    "vcs": {
+        "enabled": true,
+        "clientKind": "git",
+        "useIgnoreFile": true
     },
     "formatter": {
         "enabled": true,
@@ -25,8 +19,12 @@
         "attributePosition": "auto",
         "bracketSpacing": true
     },
-    "organizeImports": { "enabled": true },
-    "linter": { "enabled": true, "rules": { "recommended": true } },
+    "linter": {
+        "enabled": true,
+        "rules": {
+            "recommended": true
+        }
+    },
     "javascript": {
         "formatter": {
             "jsxQuoteStyle": "single",

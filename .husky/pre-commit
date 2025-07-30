@@ -1,1 +1,3 @@
+echo "Running pre-commit hook to format codebase";
+
 npx lint-staged
