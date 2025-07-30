@@ -8,7 +8,7 @@
         "start": "next start",
         "lint": "biome check src",
         "test": "vitest",
-        "format": "biome format src --write",
+        "format": "biome format . --write",
         "supabase": "npx supabase start",
         "test:ui": "vitest --ui",
         "test:watch": "vitest",

@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import juniorResume from './sample/juniorEngineer.json';
-import seniorResume from './sample/seniorEngineer.json';
+import juniorResume from '../sample/juniorEngineer.json';
+import seniorResume from '../sample/seniorEngineer.json';
 import { describe, expect } from 'vitest';
 import { test } from 'vitest';
 import { DefaultTemplate } from '@/lib/templates/index';
