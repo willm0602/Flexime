@@ -174,11 +174,6 @@ export default function EditEducation() {
                                 type='date'
                                 name='endDate'
                             />
-                            <Input
-                                label='Type of Study'
-                                required
-                                name='institution'
-                            />
                         </div>
                     </>
                 }
