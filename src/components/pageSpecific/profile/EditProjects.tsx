@@ -5,6 +5,7 @@ import { useContext, useState } from 'react';
 import EditableText from '@/components/EditableText';
 import EditableTextArea from '@/components/EditableTextArea';
 import JSONResumeContext from './JSONResumeContext';
+import Input from '@/components/Input';
 
 const DefaultProject: Project = {
     name: 'Untitled Project',
@@ -88,7 +89,17 @@ const EditProject: ListItem<Project> = (props) => {
                 vals={project.highlights}
                 setList={setHighlights}
                 RenderItem={EditHighlight}
-                defaultChild='Untitled Highlight'
+                NewItemFormBody={
+                    <>
+                        <h4>Add Highlight</h4>
+                        <textarea
+                            className='textarea w-full resize-none'
+                            name='text'
+                            placeholder='Highlight'
+                        />
+                    </>
+                }
+                defaultItem='Untitled Highlight'
                 addBtnText='Add Highlight'
                 containerClassName='mb-4'
                 itemWrapperClass='mb-0 mt-2'
@@ -114,8 +125,18 @@ export default function EditProjects() {
                 vals={projects}
                 setList={setProjects}
                 RenderItem={EditProject}
+                NewItemFormBody={
+                    <>
+                        <h4>Add a new project</h4>
+                        <div className='flex gap-4'>
+                            <Input required name='name' label='Project Name' />
+                            <Input name='url' label='Project URL' />
+                            <Input name='repository' label='Source Code' />
+                        </div>
+                    </>
+                }
                 addBtnText='Add Project'
-                defaultChild={DefaultProject}
+                defaultItem={DefaultProject}
             />
         </div>
     );
