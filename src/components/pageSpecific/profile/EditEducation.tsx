@@ -6,6 +6,7 @@ import TitleWithRemove from './TitleWithRemove';
 import EditableNumber from '@/components/EditableNumber';
 import EditDate from '@/components/EditDate';
 import JSONResumeContext from './JSONResumeContext';
+import Input from '@/components/Input';
 
 const DEFAULT_EDUCATION: Education = {
     institution: 'Untitled School',
@@ -117,8 +118,72 @@ export default function EditEducation() {
                 vals={degrees}
                 setList={setDegrees}
                 RenderItem={EditDegree}
+                NewItemFormBody={
+                    <>
+                        <h4>Add Education</h4>
+                        <div className='flex gap-4'>
+                            <Input
+                                label='Institution'
+                                required
+                                name='institution'
+                            />
+                            <Input label='Area' required name='area' />
+                            <fieldset className='fieldset'>
+                                <legend className='fieldset-legend'>
+                                    Study Type
+                                </legend>
+                                <select
+                                    name='studyType'
+                                    className='select select-bordered w-full max-w-xs'
+                                    defaultValue="Bachelor's degree"
+                                >
+                                    <option value='High School'>
+                                        High School
+                                    </option>
+                                    <option value="Associate's degree">
+                                        Associate's degree
+                                    </option>
+                                    <option value="Bachelor's degree">
+                                        Bachelor's degree
+                                    </option>
+                                    <option value="Master's degree">
+                                        Master's degree
+                                    </option>
+                                    <option value='Doctorate'>Doctorate</option>
+                                    <option value='Certificate'>
+                                        Certificate
+                                    </option>
+                                    <option value='Diploma'>Diploma</option>
+                                    <option value='Bootcamp'>Bootcamp</option>
+                                    <option value='Online Course'>
+                                        Online Course
+                                    </option>
+                                    <option value='Self-taught'>
+                                        Self-taught
+                                    </option>
+                                </select>
+                            </fieldset>
+                            <Input
+                                label='Start Date'
+                                type='date'
+                                required
+                                name='startDate'
+                            />
+                            <Input
+                                label='End Date'
+                                type='date'
+                                name='endDate'
+                            />
+                            <Input
+                                label='Type of Study'
+                                required
+                                name='institution'
+                            />
+                        </div>
+                    </>
+                }
                 addBtnText='Add Education'
-                defaultChild={DEFAULT_EDUCATION}
+                defaultItem={DEFAULT_EDUCATION}
             />
         </div>
     );

@@ -1,3 +1,4 @@
+import type React from 'react';
 import { type JSX, useEffect, useMemo, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { ReactSortable } from 'react-sortablejs';
@@ -23,7 +24,8 @@ type EditListProps<T> = {
     vals?: T[];
     setList: (newList: T[]) => void;
     RenderItem: ListItem<T>;
-    defaultChild: T;
+    NewItemFormBody: React.ReactElement;
+    defaultItem: T;
     addBtnText?: string;
     containerClassName?: string;
     itemWrapperClass?: string;
@@ -44,7 +46,8 @@ export default function EditList<T>(props: EditListProps<T>) {
         setList,
         RenderItem,
         containerClassName,
-        defaultChild,
+        NewItemFormBody,
+        defaultItem,
         addBtnText,
         itemWrapperClass,
     } = props;
@@ -64,8 +67,8 @@ export default function EditList<T>(props: EditListProps<T>) {
         dispatchAnnotatedItems(getAnnotatedItems(vals));
     }, [vals]);
 
-    const addNew = () => {
-        setList([...vals, defaultChild]);
+    const addNew = (item: T) => {
+        setList([...vals, item]);
     };
 
     const setAnnotatedItems = (annotatedItems: AnnotatedItem[]) => {
@@ -84,47 +87,69 @@ export default function EditList<T>(props: EditListProps<T>) {
         return true;
     };
     return (
-        <ReactSortable
-            className={twMerge(containerClassName, DEFAULT_WRAPPER_CLASS)}
-            list={annotatedItems}
-            setList={setAnnotatedItems}
-        >
-            {vals.map((val, idx) => {
-                return (
-                    <div
-                        className={twMerge(
-                            DEFAULT_ITEM_CLASS,
-                            itemWrapperClass,
-                        )}
-                        key={`edit-list-${idx}-${JSON.stringify(val)}`}
-                    >
-                        <RenderItem
-                            val={val}
-                            vals={vals}
-                            setItem={(updatedVal: T) => {
-                                const updatedList = [...vals];
-                                updatedList[idx] = updatedVal;
-                                setList(updatedList);
-                            }}
-                            setList={setList}
-                            confirmThenRemove={confirmThenRemoveAtIdx()}
-                            removeItem={() => {
-                                const updatedVals = vals;
-                                updatedVals.splice(idx, 1);
-                                setList(updatedVals);
-                            }}
-                            idx={idx}
-                        />
-                    </div>
-                );
-            })}
-            <button
-                onClick={addNew}
-                className='btn btn-primary mt-8'
-                type='button'
+        <>
+            <ReactSortable
+                className={twMerge(containerClassName, DEFAULT_WRAPPER_CLASS)}
+                list={annotatedItems}
+                setList={setAnnotatedItems}
             >
-                {addBtnText || DEFAULT_ADD_BTN_TEXT}
-            </button>
-        </ReactSortable>
+                {vals.map((val, idx) => {
+                    const id =
+                        typeof val === 'string' ? val : JSON.stringify(val);
+                    return (
+                        <div
+                            className={twMerge(
+                                DEFAULT_ITEM_CLASS,
+                                itemWrapperClass,
+                            )}
+                            key={`edit-list-${idx}-${id}`}
+                        >
+                            <RenderItem
+                                val={val}
+                                vals={vals}
+                                setItem={(updatedVal: T) => {
+                                    const updatedList = [...vals];
+                                    updatedList[idx] = updatedVal;
+                                    setList(updatedList);
+                                }}
+                                setList={setList}
+                                confirmThenRemove={confirmThenRemoveAtIdx()}
+                                removeItem={() => {
+                                    const updatedVals = vals;
+                                    updatedVals.splice(idx, 1);
+                                    setList(updatedVals);
+                                }}
+                                idx={idx}
+                            />
+                        </div>
+                    );
+                })}
+            </ReactSortable>
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    const form = e.target as HTMLFormElement;
+                    const formData = new FormData(form);
+                    form.reset();
+                    const data = Object.fromEntries(formData.entries());
+                    if (typeof defaultItem === 'string') {
+                        const text = data.text || defaultItem || '';
+                        // @ts-ignore
+                        addNew(text);
+                        return;
+                    }
+                    const newItem = {
+                        ...defaultItem,
+                        ...data,
+                    };
+                    addNew(newItem);
+                }}
+            >
+                {NewItemFormBody}
+                <button className='btn btn-primary mt-8' type='submit'>
+                    {addBtnText || DEFAULT_ADD_BTN_TEXT}
+                </button>
+            </form>
+        </>
     );
 }

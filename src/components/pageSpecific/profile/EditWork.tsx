@@ -6,6 +6,7 @@ import type EditProfileProps from './EditProfileProps';
 import EditDate from '@/components/EditDate';
 import EditableTextArea from '@/components/EditableTextArea';
 import JSONResumeContext from './JSONResumeContext';
+import Input from '@/components/Input';
 
 const EditHighlight: ListItem<string> = (props) => {
     const { setItem, removeItem } = props;
@@ -112,8 +113,18 @@ const EditPosition: ListItem<Work> = (props) => {
                 vals={job.highlights}
                 setList={setHighlights}
                 RenderItem={EditHighlight}
+                NewItemFormBody={
+                    <>
+                        <h4>Add Highlight</h4>
+                        <textarea
+                            className='textarea w-full resize-none'
+                            name='text'
+                            placeholder='Highlight'
+                        />
+                    </>
+                }
                 itemWrapperClass='bg-base-300 mb-0 mt-3'
-                defaultChild={''}
+                defaultItem={''}
                 addBtnText='Add Highlight'
             />
         </>
@@ -142,9 +153,29 @@ export default function EditWork() {
                 vals={work}
                 setList={setWork}
                 RenderItem={EditPosition}
+                NewItemFormBody={
+                    <>
+                        <h4>Add a new role</h4>
+                        <div className='flex gap-4'>
+                            <Input required name='name' label='Company Name' />
+                            <Input required name='position' label='Position' />
+                            <Input
+                                required
+                                name='startDate'
+                                label='Start Date'
+                                type='date'
+                            />
+                            <Input
+                                name='endDate'
+                                label='End Date'
+                                type='date'
+                            />
+                        </div>
+                    </>
+                }
                 addBtnText='Add Job'
                 itemWrapperClass='bg-base-200'
-                defaultChild={{
+                defaultItem={{
                     name: 'Untitled Company',
                     position: resume.basics.label || 'Job',
                     startDate: '',
