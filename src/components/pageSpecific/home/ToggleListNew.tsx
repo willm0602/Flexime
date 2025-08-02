@@ -44,11 +44,11 @@ export default function ToggleList() {
 
     const sections = [
         ResumeConfigureSection.Basics,
+        ResumeConfigureSection.Work,
         ResumeConfigureSection.Education,
         ResumeConfigureSection.Profiles,
         ResumeConfigureSection.Projects,
         ResumeConfigureSection.Skills,
-        ResumeConfigureSection.Work,
     ];
 
     return (
@@ -62,7 +62,7 @@ export default function ToggleList() {
                     setActiveSection={setActiveSection}
                     className='btn btn-primary mt-4 capitalize'
                 >
-                    Edit {ConfigureSectionNames[section]}
+                    Configure {ConfigureSectionNames[section]}
                 </ModalTrigger>
             ))}
         </div>
