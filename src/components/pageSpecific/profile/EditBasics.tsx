@@ -187,7 +187,38 @@ export default function EditBasics() {
                 setList={setProfiles}
                 RenderItem={EditProfile}
                 addBtnText='Add Profile'
-                defaultChild={{
+                NewItemFormBody={
+                    <>
+                        <h4>Add a new profile</h4>
+                        <div className='flex'>
+                            <fieldset className='fieldset'>
+                                <legend className='fieldset-legend'>
+                                    Network
+                                </legend>
+                                <input
+                                    id='add-profile-network'
+                                    required
+                                    type='text'
+                                    className='input'
+                                    placeholder='Network'
+                                    name='network'
+                                />
+                            </fieldset>
+                            <fieldset className='fieldset ml-4'>
+                                <legend className='fieldset-legend'>URL</legend>
+                                <input
+                                    id='add-profile-url'
+                                    type='text'
+                                    required
+                                    className='input'
+                                    name='url'
+                                    placeholder='URL'
+                                />
+                            </fieldset>
+                        </div>
+                    </>
+                }
+                defaultItem={{
                     network: '',
                     url: '',
                 }}
