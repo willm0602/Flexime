@@ -17,7 +17,11 @@ export default function ToggleList() {
                     return;
 
                 return (
-                    <li key={`toggle-field-${key}`} className='list-none'>
+                    <li
+                        key={`toggle-field-${key}`}
+                        className='list-none'
+                        title={val.title}
+                    >
                         <ToggleField
                             fieldName={key as keyof Resume}
                             // @ts-expect-error type needs to be generic
