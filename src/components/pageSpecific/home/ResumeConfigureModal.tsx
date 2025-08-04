@@ -162,6 +162,8 @@ function ToggleChild({
 }: ToggleChildProps) {
     const id = `${lastID}-${idx}` || `edit-resume-${idx}`;
     const subchildren = child.children || [];
+    const { val } = child;
+    const isString = typeof val === 'string';
 
     return (
         <div className={`pl-${2 * indent}`}>
@@ -181,6 +183,7 @@ function ToggleChild({
                 <label
                     className='ml-2 mb-2 text-up capitalize cursor-pointer'
                     htmlFor={id}
+                    title={isString ? val : undefined}
                 >
                     {child.title}
                 </label>
