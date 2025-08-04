@@ -10,7 +10,7 @@ export default function TitleWithRemove(props: {
     const TitleHeader: React.ElementType = `h${level}`;
 
     return (
-        <div className='flex'>
+        <>
             <TitleHeader className='mt-0 pt-0 mr-4'>{title}</TitleHeader>
             <button
                 className='btn btn-error btn-xs'
@@ -19,6 +19,6 @@ export default function TitleWithRemove(props: {
             >
                 Remove
             </button>
-        </div>
+        </>
     );
 }

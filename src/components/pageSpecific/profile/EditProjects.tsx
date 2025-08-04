@@ -6,6 +6,7 @@ import EditableText from '@/components/EditableText';
 import EditableTextArea from '@/components/EditableTextArea';
 import JSONResumeContext from './JSONResumeContext';
 import Input from '@/components/Input';
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
 
 const DefaultProject: Project = {
     name: 'Untitled Project',
@@ -32,6 +33,7 @@ const EditProject: ListItem<Project> = (props) => {
     const { removeItem, setItem } = props;
     const project = props.val;
     const [name, dispatchName] = useState<string>(project.name);
+    const [isCollapsed, setIsCollapsed] = useState(true);
 
     const setHighlights = (newHighlights: string[]) => {
         setItem({
@@ -64,46 +66,65 @@ const EditProject: ListItem<Project> = (props) => {
 
     return (
         <>
-            <TitleWithRemove title={name} remove={removeItem} />
-            <div className='flex max-w-full flex-wrap'>
-                <EditableText
-                    className='mr-12'
-                    defaultVal={name}
-                    dispatch={setName}
-                    label='Title'
-                />
-                <EditableText
-                    className='mr-12'
-                    defaultVal={project.url || ''}
-                    dispatch={setURL}
-                    label='Project URL'
-                />
-                <EditableText
-                    className='mr-12'
-                    defaultVal={project.repository || ''}
-                    dispatch={setSourceCode}
-                    label='Source Code'
-                />
+            <div className='flex'>
+                <TitleWithRemove title={name} remove={removeItem} />
+                <button
+                    className='btn btn-xs'
+                    type='button'
+                    onClick={() => {
+                        setIsCollapsed(!isCollapsed);
+                    }}
+                >
+                    {!isCollapsed ? (
+                        <ChevronUpIcon width={24} />
+                    ) : (
+                        <ChevronDownIcon width={24} />
+                    )}
+                </button>
             </div>
-            <EditList
-                vals={project.highlights}
-                setList={setHighlights}
-                RenderItem={EditHighlight}
-                NewItemFormBody={
-                    <>
-                        <h4>Add Highlight</h4>
-                        <textarea
-                            className='textarea w-full resize-none'
-                            name='text'
-                            placeholder='Highlight'
+            {!isCollapsed && (
+                <>
+                    <div className='flex max-w-full flex-wrap'>
+                        <EditableText
+                            className='mr-12'
+                            defaultVal={name}
+                            dispatch={setName}
+                            label='Title'
                         />
-                    </>
-                }
-                defaultItem='Untitled Highlight'
-                addBtnText='Add Highlight'
-                containerClassName='mb-4'
-                itemWrapperClass='mb-0 mt-2'
-            />
+                        <EditableText
+                            className='mr-12'
+                            defaultVal={project.url || ''}
+                            dispatch={setURL}
+                            label='Project URL'
+                        />
+                        <EditableText
+                            className='mr-12'
+                            defaultVal={project.repository || ''}
+                            dispatch={setSourceCode}
+                            label='Source Code'
+                        />
+                    </div>
+                    <EditList
+                        vals={project.highlights}
+                        setList={setHighlights}
+                        RenderItem={EditHighlight}
+                        NewItemFormBody={
+                            <>
+                                <h4>Add Highlight</h4>
+                                <textarea
+                                    className='textarea w-full resize-none'
+                                    name='text'
+                                    placeholder='Highlight'
+                                />
+                            </>
+                        }
+                        defaultItem='Untitled Highlight'
+                        addBtnText='Add Highlight'
+                        containerClassName='mb-4'
+                        itemWrapperClass='mb-0 mt-2'
+                    />
+                </>
+            )}
         </>
     );
 };

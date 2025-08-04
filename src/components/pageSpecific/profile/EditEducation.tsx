@@ -7,6 +7,7 @@ import EditableNumber from '@/components/EditableNumber';
 import EditDate from '@/components/EditDate';
 import JSONResumeContext from './JSONResumeContext';
 import Input from '@/components/Input';
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
 
 const DEFAULT_EDUCATION: Education = {
     institution: 'Untitled School',
@@ -17,84 +18,102 @@ const DEFAULT_EDUCATION: Education = {
 
 const EditDegree: ListItem<Education> = (props) => {
     const { val, setItem, removeItem } = props;
+    const [isCollapsed, setIsCollapsed] = useState(true);
 
     return (
         <>
-            <TitleWithRemove title={val.institution} remove={removeItem} />
-
-            <div className='flex gap-x-24 flex-wrap gap-y-12'>
-                <EditableText
-                    defaultVal={val.institution}
-                    dispatch={(newInstitutionName) => {
-                        setItem({
-                            ...val,
-                            institution: newInstitutionName,
-                        });
+            <div className='flex'>
+                <TitleWithRemove title={val.institution} remove={removeItem} />
+                <button
+                    type='button'
+                    className='btn btn-xs mr-2'
+                    onClick={() => {
+                        setIsCollapsed(!isCollapsed);
                     }}
-                    label={'Institution Name'}
-                />
-
-                <EditableText
-                    defaultVal={val.area}
-                    dispatch={(area) => {
-                        setItem({
-                            ...val,
-                            area,
-                        });
-                    }}
-                    label={'Area'}
-                />
-
-                <EditableText
-                    defaultVal={val.studyType}
-                    dispatch={(studyType) => {
-                        setItem({
-                            ...val,
-                            studyType,
-                        });
-                    }}
-                    label={'Study Type'}
-                />
-
-                <EditableNumber
-                    defaultVal={Number.parseFloat(val.score || '4')}
-                    dispatch={(newGPA) => {
-                        setItem({
-                            ...val,
-                            score: `${newGPA} / 4.0`,
-                        });
-                    }}
-                    label='GPA'
-                    step={0.1}
-                    digits={2}
-                    minVal={0}
-                    maxVal={5}
-                />
-
-                <div className='flex flex-wrap max-w-full gap-x-8'>
-                    <EditDate
-                        dispatch={(startDate) => {
-                            setItem({
-                                ...val,
-                                startDate,
-                            });
-                        }}
-                        label='Start Date'
-                        defaultDate={val.startDate}
-                    />
-
-                    <EditDate
-                        dispatch={(endDate) => {
-                            setItem({
-                                ...val,
-                                endDate,
-                            });
-                        }}
-                        label='End Date'
-                        defaultDate={val.endDate}
-                    />
-                </div>
+                >
+                    {isCollapsed ? (
+                        <ChevronUpIcon width={24} />
+                    ) : (
+                        <ChevronDownIcon width={24} />
+                    )}
+                </button>
             </div>
+
+            {!isCollapsed && (
+                <div className='flex gap-x-24 flex-wrap gap-y-12'>
+                    <EditableText
+                        defaultVal={val.institution}
+                        dispatch={(newInstitutionName) => {
+                            setItem({
+                                ...val,
+                                institution: newInstitutionName,
+                            });
+                        }}
+                        label={'Institution Name'}
+                    />
+
+                    <EditableText
+                        defaultVal={val.area}
+                        dispatch={(area) => {
+                            setItem({
+                                ...val,
+                                area,
+                            });
+                        }}
+                        label={'Area'}
+                    />
+
+                    <EditableText
+                        defaultVal={val.studyType}
+                        dispatch={(studyType) => {
+                            setItem({
+                                ...val,
+                                studyType,
+                            });
+                        }}
+                        label={'Study Type'}
+                    />
+
+                    <EditableNumber
+                        defaultVal={Number.parseFloat(val.score || '4')}
+                        dispatch={(newGPA) => {
+                            setItem({
+                                ...val,
+                                score: `${newGPA} / 4.0`,
+                            });
+                        }}
+                        label='GPA'
+                        step={0.1}
+                        digits={2}
+                        minVal={0}
+                        maxVal={5}
+                    />
+
+                    <div className='flex flex-wrap max-w-full gap-x-8'>
+                        <EditDate
+                            dispatch={(startDate) => {
+                                setItem({
+                                    ...val,
+                                    startDate,
+                                });
+                            }}
+                            label='Start Date'
+                            defaultDate={val.startDate}
+                        />
+
+                        <EditDate
+                            dispatch={(endDate) => {
+                                setItem({
+                                    ...val,
+                                    endDate,
+                                });
+                            }}
+                            label='End Date'
+                            defaultDate={val.endDate}
+                        />
+                    </div>
+                </div>
+            )}
         </>
     );
 };

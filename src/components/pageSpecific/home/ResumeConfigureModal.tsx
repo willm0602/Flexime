@@ -5,6 +5,12 @@ import type Resume from '@/lib/resume';
 import type Togglable from '@/lib/togglable';
 import { ReactSortable } from 'react-sortablejs';
 import { replaceAtIndex } from '@/lib/utils'; // 👈 new helper import
+import {
+    ArrowDownCircleIcon,
+    ArrowUpCircleIcon,
+    ChevronDownIcon,
+    ChevronUpIcon,
+} from '@heroicons/react/24/solid';
 
 function ConfigureBasics({
     resume,
@@ -164,6 +170,7 @@ function ToggleChild({
     const subchildren = child.children || [];
     const { val } = child;
     const isString = typeof val === 'string';
+    const [isCollapsed, setIsCollapsed] = useState(true);
 
     return (
         <div className={`pl-${2 * indent}`}>
@@ -187,9 +194,24 @@ function ToggleChild({
                 >
                     {child.title}
                 </label>
+                {subchildren.length && (
+                    <button
+                        onClick={() => {
+                            setIsCollapsed(!isCollapsed);
+                        }}
+                        type='button'
+                        className='btn btn-xs'
+                    >
+                        {isCollapsed ? (
+                            <ChevronUpIcon width={24} />
+                        ) : (
+                            <ChevronDownIcon height={24} />
+                        )}
+                    </button>
+                )}
             </span>
 
-            {child.isOn && subchildren.length > 0 && (
+            {child.isOn && !isCollapsed && subchildren.length > 0 && (
                 <ReactSortable<Togglable<unknown, unknown>>
                     className='mb-2'
                     list={child.children}
