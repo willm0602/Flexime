@@ -1,3 +1,7 @@
+/**
+ * Component used to modify the basics section of a resume in JSON Resume schema
+ */
+
 import type Resume from '@/lib/jsonResume';
 import type { Profile } from '@/lib/jsonResume';
 import { useContext, useState } from 'react';

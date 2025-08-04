@@ -1,3 +1,7 @@
+/**
+ * DEPRECATED
+ * profiles should be obtained using getClient instead
+ */
 import getUser from '@/lib/auth/getUser';
 import { createClient } from '@/lib/supabase/server';
 import type { UserProfile } from '@/lib/types/userprofile';

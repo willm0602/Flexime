@@ -1,7 +1,14 @@
+/**
+ * API route to generate PDF from JSON Resume schema
+ */
+
 import { type NextRequest, NextResponse } from 'next/server';
 import type Resume from '@/lib/jsonResume';
 import Templates from '@/lib/templates';
 
+/**
+ * converts a NodeJS stream to a Buffer
+ */
 async function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buffer> {
     return new Promise((res, rej) => {
         const chunks: Buffer[] = [];
@@ -11,6 +18,18 @@ async function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buffer> {
     });
 }
 
+/**
+ * API route to generate resumes as PDF from JSON data
+ *
+ * req body:
+ *  resume_data: string
+ *      the stringified version of the JSON Resume
+ *  download: 'true' | undefined
+ *      whether or not the resume should be downloaded when returned
+ *  templateName: string (of Templates names)
+ *      name of template to use to generate resume
+ *
+ */
 export async function POST(req: NextRequest) {
     const body = await req.formData();
 
@@ -32,7 +51,9 @@ export async function POST(req: NextRequest) {
         const generatedResumeStream = await template(resume);
         const generatedResume = await streamToBuffer(generatedResumeStream);
 
-        const blob = new Blob([generatedResume], { type: 'application/pdf' });
+        const blob = new Blob([new Uint8Array(generatedResume)], {
+            type: 'application/pdf',
+        });
         const contentDispositon = shouldDownload ? 'attachment' : 'inline';
 
         const resp = new NextResponse(blob, {
