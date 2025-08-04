@@ -33,7 +33,7 @@ const EditProject: ListItem<Project> = (props) => {
     const { removeItem, setItem } = props;
     const project = props.val;
     const [name, dispatchName] = useState<string>(project.name);
-    const [isCollapsed, setIsCollapsed] = useState(true);
+    const [isCollapsed, setIsCollapsed] = useState(false);
 
     const setHighlights = (newHighlights: string[]) => {
         setItem({

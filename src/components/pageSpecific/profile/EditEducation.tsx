@@ -18,7 +18,7 @@ const DEFAULT_EDUCATION: Education = {
 
 const EditDegree: ListItem<Education> = (props) => {
     const { val, setItem, removeItem } = props;
-    const [isCollapsed, setIsCollapsed] = useState(true);
+    const [isCollapsed, setIsCollapsed] = useState(false);
 
     return (
         <>
