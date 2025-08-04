@@ -1,3 +1,8 @@
+/**
+ * DEPRECATED
+ * Users should update resume directly from client instead
+ */
+
 import { createClient } from '@/lib/supabase/server';
 import { NextResponse } from 'next/server';
 

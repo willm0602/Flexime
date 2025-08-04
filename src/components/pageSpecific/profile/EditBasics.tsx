@@ -1,3 +1,7 @@
+/**
+ * Component used to modify the basics section of a resume in JSON Resume schema
+ */
+
 import type Resume from '@/lib/jsonResume';
 import type { Profile } from '@/lib/jsonResume';
 import { useContext, useState } from 'react';
@@ -9,6 +13,13 @@ import EditList, {
 import EditableText from '@/components/EditableText';
 import EditLocation from '@/components/EditLocation';
 import JSONResumeContext from './JSONResumeContext';
+import {
+    ArrowDownCircleIcon,
+    ArrowDownIcon,
+    ArrowUpIcon,
+    ChevronDownIcon,
+    ChevronUpIcon,
+} from '@heroicons/react/24/solid';
 
 type EditFieldProps = {
     defaultValue: string;
@@ -49,6 +60,7 @@ const EditProfile: ListItem<Profile> = (props: ListItemProps<Profile>) => {
     const [profile, setCurrProfile] = useState<Profile>(val);
     const [network, $setNetwork] = useState<string>(profile.network);
     const [url, $setURL] = useState<string>(profile.url);
+    const [isCollapsed, setIsCollapsed] = useState(true);
 
     const setNetwork = (newNetwork: string) => {
         $setNetwork(network);
@@ -85,21 +97,36 @@ const EditProfile: ListItem<Profile> = (props: ListItemProps<Profile>) => {
                 >
                     Remove
                 </button>
+                <button
+                    type='button'
+                    className='btn btn-xs mr-2'
+                    onClick={() => {
+                        setIsCollapsed(!isCollapsed);
+                    }}
+                >
+                    {isCollapsed ? (
+                        <ChevronUpIcon width={24} />
+                    ) : (
+                        <ChevronDownIcon width={24} />
+                    )}
+                </button>
             </h3>
-            <div className='flex max-w-full flex-wrap gap-y-4'>
-                <EditField
-                    defaultValue={network}
-                    placeholder='Network / Site Name'
-                    onChange={setNetwork}
-                    onSave={updateResume}
-                />
-                <EditField
-                    defaultValue={url}
-                    placeholder='URL'
-                    onChange={setURL}
-                    onSave={updateResume}
-                />
-            </div>
+            {!isCollapsed && (
+                <div className='flex max-w-full flex-wrap gap-y-4'>
+                    <EditField
+                        defaultValue={network}
+                        placeholder='Network / Site Name'
+                        onChange={setNetwork}
+                        onSave={updateResume}
+                    />
+                    <EditField
+                        defaultValue={url}
+                        placeholder='URL'
+                        onChange={setURL}
+                        onSave={updateResume}
+                    />
+                </div>
+            )}
         </div>
     );
 };

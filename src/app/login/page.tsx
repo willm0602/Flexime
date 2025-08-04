@@ -1,3 +1,7 @@
+/**
+ * Page allowing users to login to application
+ */
+
 import ErrorBanner from '@/components/ErrorBanner';
 import Input from '@/components/pageSpecific/auth/input';
 import { login } from '@/lib/auth/actions';

@@ -1,5 +1,5 @@
 /**
- * API route to parse a
+ * API route to parse a resume using Google Gemini
  */
 
 import { NextResponse } from 'next/server';

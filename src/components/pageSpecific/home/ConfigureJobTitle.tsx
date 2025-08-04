@@ -9,7 +9,7 @@ export default function ConfigureJobTitle() {
             <input
                 className='input input-bordered'
                 placeholder='Job Title'
-                value={resume.title.val}
+                defaultValue={resume.title.val}
                 onChange={(e) => {
                     const val = e.target.value;
                     setResume({
