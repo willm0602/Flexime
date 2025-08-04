@@ -1,3 +1,7 @@
+/**
+ * API route to parse a
+ */
+
 import { NextResponse } from 'next/server';
 import readPDF from 'pdf-parse/lib/pdf-parse';
 import { parseResumeFromText } from '@/lib/llmutils';
@@ -62,4 +66,3 @@ export async function POST(request: Request) {
         return NextResponse.json({ msg: e }, { status: 500 });
     }
 }
-

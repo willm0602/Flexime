@@ -1,7 +1,14 @@
+/**
+ * @returns an hr component with consistent style to be used throughout the rest of the About
+ * page
+ */
 const HR = () => {
     return <hr className='my-4' />;
 };
 
+/**
+ * Static page to describe how to use certain portions of the app
+ */
 export default function AboutPage() {
     return (
         <div className='flex px-8 py-12 max-w-7xl mx-auto gap-12'>
