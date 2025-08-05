@@ -1,12 +1,9 @@
 'use client';
 
 import { useRef } from 'react';
-import type Resume from '@/lib/resume';
 import { useEffect, useState } from 'react';
 import { resumeFromJSONResume } from '@/lib/resume';
 import { ArrowPathIcon } from '@heroicons/react/24/solid';
-import useLocalStorage from '@/lib/hooks/useLocalStorage';
-import { DEFAULT_RESUME } from '@/lib/resumeUtils';
 import OpenResumeNewTab from './OpenResumeNewTab';
 import ResumeContext from './ResumeContext';
 import ResumeHiddenInput from './ResumeHiddenInput';
@@ -14,29 +11,18 @@ import DownloadResume from './DownloadResume';
 import ResumePreview from './ResumePreview';
 import ConfigureJobTitle from './ConfigureJobTitle';
 import ToggleList from './ToggleListNew';
-import type JSONResume from '@/lib/jsonResume';
 import SaveConfig from './SaveConfig';
 import SelectConfiguration from './SelectConfiguration';
 import type { User } from '@supabase/supabase-js';
+import useResume from '@/lib/hooks/useResume';
+import getUser from '@/lib/auth/getUser';
 
-interface ResumeConfigProps {
-    initResume: JSONResume | undefined;
-    user: User | null;
-}
-
-export default function ResumeConfig(props: ResumeConfigProps) {
-    const [isClient, setIsClient] = useState(false);
-    const [resume, setResume] = useState<Resume | null>(null);
-    const [storedResume] = useLocalStorage('saved-resume', DEFAULT_RESUME);
-    const initResume = props.initResume ?? storedResume;
+export default function ResumeConfig() {
+    const [initResume] = useResume();
+    const [resume, setResume] = useState(resumeFromJSONResume());
+    const [user, setUser] = useState<User | null>(null);
 
     const formRef = useRef<HTMLFormElement>(null);
-
-    useEffect(() => {
-        setIsClient(true);
-    }, []);
-
-    // Ensure configuredResume is set only on the client
     useEffect(() => {
         if (initResume) {
             setResume(resumeFromJSONResume(initResume));
@@ -44,10 +30,12 @@ export default function ResumeConfig(props: ResumeConfigProps) {
     }, [initResume]);
 
     useEffect(() => {
-        if (isClient && formRef.current) formRef.current.requestSubmit();
-    }, [isClient]);
+        getUser().then((user) => {
+            setUser(user);
+        });
+    }, []);
 
-    if (!resume || !isClient) {
+    if (!resume) {
         return <span className='loading loading-spinner w-1/4 mx-auto' />;
     }
 
@@ -58,10 +46,10 @@ export default function ResumeConfig(props: ResumeConfigProps) {
                 <div className='flex-1'>
                     <div className='flex'>
                         <OpenResumeNewTab />
-                        <SaveConfig user={props.user} />
+                        <SaveConfig user={user} />
                     </div>
                     <ConfigureJobTitle />
-                    <SelectConfiguration user={props.user} />
+                    <SelectConfiguration user={user} />
                     <ToggleList />
                 </div>
                 <form
