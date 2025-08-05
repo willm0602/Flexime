@@ -33,7 +33,6 @@ const EditProject: ListItem<Project> = (props) => {
     const { removeItem, setItem } = props;
     const project = props.val;
     const [name, dispatchName] = useState<string>(project.name);
-    const [isCollapsed, setIsCollapsed] = useState(false);
 
     const setHighlights = (newHighlights: string[]) => {
         setItem({
@@ -68,63 +67,46 @@ const EditProject: ListItem<Project> = (props) => {
         <>
             <div className='flex'>
                 <TitleWithRemove title={name} remove={removeItem} />
-                <button
-                    className='btn btn-xs'
-                    type='button'
-                    onClick={() => {
-                        setIsCollapsed(!isCollapsed);
-                    }}
-                >
-                    {!isCollapsed ? (
-                        <ChevronUpIcon width={24} />
-                    ) : (
-                        <ChevronDownIcon width={24} />
-                    )}
-                </button>
             </div>
-            {!isCollapsed && (
-                <>
-                    <div className='flex max-w-full flex-wrap'>
-                        <EditableText
-                            className='mr-12'
-                            defaultVal={name}
-                            dispatch={setName}
-                            label='Title'
+            <div className='flex max-w-full flex-wrap'>
+                <EditableText
+                    className='mr-12'
+                    defaultVal={name}
+                    dispatch={setName}
+                    label='Title'
+                />
+                <EditableText
+                    className='mr-12'
+                    defaultVal={project.url || ''}
+                    dispatch={setURL}
+                    label='Project URL'
+                />
+                <EditableText
+                    className='mr-12'
+                    defaultVal={project.repository || ''}
+                    dispatch={setSourceCode}
+                    label='Source Code'
+                />
+            </div>
+            <EditList
+                vals={project.highlights}
+                setList={setHighlights}
+                RenderItem={EditHighlight}
+                NewItemFormBody={
+                    <>
+                        <h4>Add Highlight</h4>
+                        <textarea
+                            className='textarea w-full resize-none'
+                            name='text'
+                            placeholder='Highlight'
                         />
-                        <EditableText
-                            className='mr-12'
-                            defaultVal={project.url || ''}
-                            dispatch={setURL}
-                            label='Project URL'
-                        />
-                        <EditableText
-                            className='mr-12'
-                            defaultVal={project.repository || ''}
-                            dispatch={setSourceCode}
-                            label='Source Code'
-                        />
-                    </div>
-                    <EditList
-                        vals={project.highlights}
-                        setList={setHighlights}
-                        RenderItem={EditHighlight}
-                        NewItemFormBody={
-                            <>
-                                <h4>Add Highlight</h4>
-                                <textarea
-                                    className='textarea w-full resize-none'
-                                    name='text'
-                                    placeholder='Highlight'
-                                />
-                            </>
-                        }
-                        defaultItem='Untitled Highlight'
-                        addBtnText='Add Highlight'
-                        containerClassName='mb-4'
-                        itemWrapperClass='mb-0 mt-2'
-                    />
-                </>
-            )}
+                    </>
+                }
+                defaultItem='Untitled Highlight'
+                addBtnText='Add Highlight'
+                containerClassName='mb-4'
+                itemWrapperClass='mb-0 mt-2'
+            />
         </>
     );
 };
