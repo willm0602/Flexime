@@ -170,7 +170,7 @@ function ToggleChild({
     const subchildren = child.children || [];
     const { val } = child;
     const isString = typeof val === 'string';
-    const [isCollapsed, setIsCollapsed] = useState(true);
+    const [isCollapsed, setIsCollapsed] = useState(false);
 
     return (
         <div className={`pl-${2 * indent}`}>
@@ -194,7 +194,7 @@ function ToggleChild({
                 >
                     {child.title}
                 </label>
-                {subchildren.length && (
+                {subchildren.length > 0 && (
                     <button
                         onClick={() => {
                             setIsCollapsed(!isCollapsed);

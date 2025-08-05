@@ -40,7 +40,7 @@ function parseDate(date: string | undefined): string {
 const EditPosition: ListItem<Work> = (props) => {
     const job = props.val;
     const { setItem, removeItem } = props;
-    const [isCollapsed, setIsCollapsed] = useState(true);
+    const [isCollapsed, setIsCollapsed] = useState(false);
 
     const setHighlights = (newHighlights: string[]) => {
         setItem({

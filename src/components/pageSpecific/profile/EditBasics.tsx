@@ -60,7 +60,7 @@ const EditProfile: ListItem<Profile> = (props: ListItemProps<Profile>) => {
     const [profile, setCurrProfile] = useState<Profile>(val);
     const [network, $setNetwork] = useState<string>(profile.network);
     const [url, $setURL] = useState<string>(profile.url);
-    const [isCollapsed, setIsCollapsed] = useState(true);
+    const [isCollapsed, setIsCollapsed] = useState(false);
 
     const setNetwork = (newNetwork: string) => {
         $setNetwork(network);
