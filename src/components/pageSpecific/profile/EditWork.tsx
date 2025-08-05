@@ -40,7 +40,6 @@ function parseDate(date: string | undefined): string {
 const EditPosition: ListItem<Work> = (props) => {
     const job = props.val;
     const { setItem, removeItem } = props;
-    const [isCollapsed, setIsCollapsed] = useState(false);
 
     const setHighlights = (newHighlights: string[]) => {
         setItem({
@@ -62,92 +61,73 @@ const EditPosition: ListItem<Work> = (props) => {
                 >
                     Delete
                 </button>
-                <button
-                    type='button'
-                    className='btn btn-xs mr-2'
-                    onClick={() => {
-                        setIsCollapsed(!isCollapsed);
-                    }}
-                >
-                    {isCollapsed ? (
-                        <ChevronUpIcon width={24} />
-                    ) : (
-                        <ChevronDownIcon width={24} />
-                    )}
-                </button>
             </div>
-            {!isCollapsed && (
-                <div className='flex gap-x-12 max-w-full flex-wrap'>
-                    <EditableText
-                        defaultVal={job.name}
-                        dispatch={(newName) => {
+            <div className='flex gap-x-12 max-w-full flex-wrap'>
+                <EditableText
+                    defaultVal={job.name}
+                    dispatch={(newName) => {
+                        setItem({
+                            ...job,
+                            name: newName,
+                        });
+                    }}
+                    label='Company Name'
+                />
+                <EditableText
+                    defaultVal={job.position}
+                    dispatch={(positionName) => {
+                        setItem({
+                            ...job,
+                            position: positionName,
+                        });
+                    }}
+                    label='Role'
+                />
+                <div className='flex-col flex'>
+                    <EditDate
+                        defaultDate={parseDate(job.startDate)}
+                        dispatch={(startDate) => {
                             setItem({
                                 ...job,
-                                name: newName,
+                                startDate,
                             });
                         }}
-                        label='Company Name'
+                        label='Start Date'
                     />
-                    <EditableText
-                        defaultVal={job.position}
-                        dispatch={(positionName) => {
-                            setItem({
-                                ...job,
-                                position: positionName,
-                            });
-                        }}
-                        label='Role'
-                    />
-                    <div className='flex-col flex'>
-                        <EditDate
-                            defaultDate={parseDate(job.startDate)}
-                            dispatch={(startDate) => {
-                                setItem({
-                                    ...job,
-                                    startDate,
-                                });
-                            }}
-                            label='Start Date'
-                        />
-                    </div>
-
-                    <div className='flex-col flex'>
-                        <EditDate
-                            defaultDate={parseDate(job.endDate)}
-                            dispatch={(endDate) => {
-                                setItem({
-                                    ...job,
-                                    endDate,
-                                });
-                            }}
-                            label='End Date'
-                        />
-                    </div>
                 </div>
-            )}
-            {!isCollapsed && (
-                <>
-                    <h3 className='mb-0'>Highlights</h3>
-                    <EditList
-                        vals={job.highlights}
-                        setList={setHighlights}
-                        RenderItem={EditHighlight}
-                        NewItemFormBody={
-                            <>
-                                <h4>Add Highlight</h4>
-                                <textarea
-                                    className='textarea w-full resize-none'
-                                    name='text'
-                                    placeholder='Highlight'
-                                />
-                            </>
-                        }
-                        itemWrapperClass='bg-base-300 mb-0 mt-3'
-                        defaultItem={''}
-                        addBtnText='Add Highlight'
+
+                <div className='flex-col flex'>
+                    <EditDate
+                        defaultDate={parseDate(job.endDate)}
+                        dispatch={(endDate) => {
+                            setItem({
+                                ...job,
+                                endDate,
+                            });
+                        }}
+                        label='End Date'
                     />
-                </>
-            )}
+                </div>
+            </div>
+            <h3 className='mb-0'>Highlights</h3>
+            <EditList
+                vals={job.highlights}
+                setList={setHighlights}
+                RenderItem={EditHighlight}
+                NewItemFormBody={
+                    <>
+                        <h4>Add Highlight</h4>
+                        <textarea
+                            className='textarea w-full resize-none'
+                            name='text'
+                            placeholder='Highlight'
+                        />
+                    </>
+                }
+                itemWrapperClass='bg-base-300 mb-0 mt-3'
+                defaultItem={''}
+                addBtnText='Add Highlight'
+            />
         </>
     );
 };

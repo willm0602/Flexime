@@ -17,7 +17,6 @@ export default function ToggleField<P, F extends keyof P, C = unknown>(
     const { parent, togglable, fieldName, setParent, indent = 0 } = props;
     const [currTogglable, $setCurrentTogglable] =
         useState<Togglable<P[F], C>>(togglable);
-    const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
 
     const setCurrentTogglable = (updatedTogglable: Togglable<P[F]>) => {
         $setCurrentTogglable(updatedTogglable);
@@ -37,10 +36,6 @@ export default function ToggleField<P, F extends keyof P, C = unknown>(
         };
 
         setCurrentTogglable(updatedTogglable);
-    };
-
-    const toggleCollapsed = () => {
-        setIsCollapsed(!isCollapsed);
     };
 
     return (
@@ -64,20 +59,10 @@ export default function ToggleField<P, F extends keyof P, C = unknown>(
                 >
                     {togglable.title}
                 </label>
-                <button onClick={toggleCollapsed} type='button'>
-                    {currTogglable.isOn &&
-                        currTogglable.children &&
-                        (isCollapsed ? (
-                            <ChevronDownIcon width={24} height={24} />
-                        ) : (
-                            <ChevronUpIcon width={24} height={24} />
-                        ))}
-                </button>
             </div>
 
             {/* Render nested fields if currTogglable.val is a TogglableList */}
             <ReactSortable
-                className={isCollapsed ? 'hidden' : ''}
                 list={(currTogglable.children || []).map((child, idx) => {
                     return { ...child, id: `togglable-${idx}` };
                 })}
@@ -117,11 +102,6 @@ type ToggleChildFieldProps<C> = {
 
 function ToggleChildField<C>(props: ToggleChildFieldProps<C>) {
     const { indent, togglable, setTogglable, index, fieldName } = props;
-    const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
-
-    function toggleIsCollapsed() {
-        setIsCollapsed(!isCollapsed);
-    }
 
     const toggleField = () => {
         const childToUpdate = (togglable.children || [])[index];
@@ -170,17 +150,8 @@ function ToggleChildField<C>(props: ToggleChildFieldProps<C>) {
                 >
                     {togglable.children?.[index]?.title}
                 </label>
-                <button type='button' onClick={toggleIsCollapsed}>
-                    {subchildren.length > 0 &&
-                        togglable.children?.[index]?.isOn &&
-                        (isCollapsed ? (
-                            <ChevronDownIcon width={24} height={24} />
-                        ) : (
-                            <ChevronUpIcon width={24} height={24} />
-                        ))}
-                </button>
             </div>
-            <div className={isCollapsed ? 'hidden' : ''}>
+            <div>
                 <ReactSortable
                     list={subchildren.map((child, subidx) => {
                         return { ...child, id: `togglable-${subidx}` };

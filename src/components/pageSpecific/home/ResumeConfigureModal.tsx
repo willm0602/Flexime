@@ -170,7 +170,6 @@ function ToggleChild({
     const subchildren = child.children || [];
     const { val } = child;
     const isString = typeof val === 'string';
-    const [isCollapsed, setIsCollapsed] = useState(false);
 
     return (
         <div className={`pl-${2 * indent}`}>
@@ -194,24 +193,9 @@ function ToggleChild({
                 >
                     {child.title}
                 </label>
-                {subchildren.length > 0 && (
-                    <button
-                        onClick={() => {
-                            setIsCollapsed(!isCollapsed);
-                        }}
-                        type='button'
-                        className='btn btn-xs'
-                    >
-                        {isCollapsed ? (
-                            <ChevronUpIcon width={24} />
-                        ) : (
-                            <ChevronDownIcon height={24} />
-                        )}
-                    </button>
-                )}
             </span>
 
-            {child.isOn && !isCollapsed && subchildren.length > 0 && (
+            {child.isOn && subchildren.length > 0 && (
                 <ReactSortable<Togglable<unknown, unknown>>
                     className='mb-2'
                     list={child.children}
