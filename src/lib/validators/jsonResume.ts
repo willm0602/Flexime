@@ -7,7 +7,7 @@ const jsonResumeSchema = z.object({
             .array(
                 z.object({
                     network: z.string(),
-                    url: z.string().url(),
+                    url: z.string(),
                 }),
             )
             .optional(),
@@ -19,6 +19,7 @@ const jsonResumeSchema = z.object({
         }),
         email: z.string().email(),
         phone: z.string(),
+        label: z.string().optional(),
     }),
     education: z
         .array(
