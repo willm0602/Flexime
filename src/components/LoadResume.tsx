@@ -86,7 +86,7 @@ export default function LoadResume(props: LoadResumeProps) {
             <input
                 type='file'
                 className='hidden'
-                accept='.json, .txt, .html, .doc, .docx, .pdf'
+                accept='.json'
                 name='import-resume'
                 id='load-resume'
                 onChange={loadFile}
