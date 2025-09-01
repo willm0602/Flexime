@@ -1,7 +1,6 @@
 import type React from 'react';
 import { type JSX, useEffect, useMemo, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
-import { ReactSortable } from 'react-sortablejs';
 
 const DEFAULT_ADD_BTN_TEXT = 'Add';
 const DEFAULT_WRAPPER_CLASS = 'w-full flex flex-col';
@@ -31,16 +30,6 @@ type EditListProps<T> = {
     itemWrapperClass?: string;
 };
 
-function getAnnotatedItems<T>(vals: T[]) {
-    const annotatedItems = vals.map((val, idx) => {
-        return {
-            data: val,
-            id: `edit-list-${idx}-${JSON.stringify(val)}`,
-        };
-    });
-    return annotatedItems;
-}
-
 export default function EditList<T>(props: EditListProps<T>) {
     const {
         setList,
@@ -54,26 +43,8 @@ export default function EditList<T>(props: EditListProps<T>) {
 
     const vals = useMemo(() => props.vals || [], [props.vals]);
 
-    type AnnotatedItem = {
-        data: T;
-        id: string;
-    };
-
-    const [annotatedItems, dispatchAnnotatedItems] = useState<AnnotatedItem[]>(
-        getAnnotatedItems(vals),
-    );
-
-    useEffect(() => {
-        dispatchAnnotatedItems(getAnnotatedItems(vals));
-    }, [vals]);
-
     const addNew = (item: T) => {
         setList([...vals, item]);
-    };
-
-    const setAnnotatedItems = (annotatedItems: AnnotatedItem[]) => {
-        const newList: T[] = annotatedItems.map((annotated) => annotated.data);
-        setList(newList);
     };
 
     const confirmThenRemoveAtIdx = () => () => {
@@ -88,11 +59,7 @@ export default function EditList<T>(props: EditListProps<T>) {
     };
     return (
         <>
-            <ReactSortable
-                className={twMerge(containerClassName, DEFAULT_WRAPPER_CLASS)}
-                list={annotatedItems}
-                setList={setAnnotatedItems}
-            >
+            <div className={twMerge(containerClassName, DEFAULT_WRAPPER_CLASS)}>
                 {vals.map((val, idx) => {
                     const id =
                         typeof val === 'string' ? val : JSON.stringify(val);
@@ -124,7 +91,7 @@ export default function EditList<T>(props: EditListProps<T>) {
                         </div>
                     );
                 })}
-            </ReactSortable>
+            </div>
             <form
                 onSubmit={(e) => {
                     e.preventDefault();
