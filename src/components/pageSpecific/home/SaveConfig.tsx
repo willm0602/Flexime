@@ -3,7 +3,6 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import ResumeContext from './ResumeContext';
 import type { Configuration } from '@/lib/types/configuration';
 import type { User } from '@supabase/supabase-js';
-import { resume } from '../../../generated/prisma/index';
 import {
     addConfigurationToLS,
     addConfigurationToSupabase,
