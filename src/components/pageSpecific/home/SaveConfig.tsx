@@ -7,6 +7,7 @@ import {
     addConfigurationToLS,
     addConfigurationToSupabase,
     getSavedConfigurationsForUser,
+    overwriteConfig,
 } from '@/lib/configurations';
 
 export default function SaveConfig({ user }: { user: User | null }) {
@@ -59,14 +60,14 @@ export default function SaveConfig({ user }: { user: User | null }) {
         }
     };
 
-    const overwrite = () => {
-        const newConfigurations = [...configurations];
-        newConfigurations[configIDX].resume = resumeContext.resume;
-        setConfigurations(newConfigurations);
-        window.localStorage.setItem(
-            'resume-configurations',
-            JSON.stringify(newConfigurations),
+    const overwrite = async () => {
+        const newConfigurations = await overwriteConfig(
+            resumeContext.resume,
+            configIDX,
+            configurations[configIDX].id,
+            configurations,
         );
+        setConfigurations(newConfigurations);
         dialog.current?.close();
         setConfigIDX(0);
     };

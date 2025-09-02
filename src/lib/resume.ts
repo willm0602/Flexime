@@ -206,3 +206,94 @@ export function jsonResumeFromResume(resume: Resume): JSONResume {
 
     return jsonResume;
 }
+
+export function resyncFromJSONResume(
+    togglableResume: Resume,
+    jsonResume: JSONResume,
+): Resume {
+    function resyncList<T>(
+        togglableList: TogglableList<T>,
+        newItems: T[],
+        getId: (item: T) => string,
+        getChildren?: (item: T) => string[],
+    ) {
+        if (!togglableList.children) togglableList.children = [];
+
+        // biome-ignore lint/complexity/noForEach: <explanation>
+        newItems.forEach((item) => {
+            const id = getId(item);
+            const existing = togglableList.children?.find(
+                (child) => child.id === id,
+            );
+
+            if (!existing) {
+                // New item → add as togglable
+                togglableList.children?.push(togglable(item, id));
+            } else if (getChildren) {
+                // Resync highlights or nested items
+                if (!existing.children) existing.children = [];
+                const highlights = getChildren(item);
+                // biome-ignore lint/complexity/noForEach: <explanation>
+                highlights.forEach((hl) => {
+                    if (!existing?.children?.some((c) => c.val === hl)) {
+                        existing?.children?.push(
+                            togglable(hl, truncate(hl, 30)),
+                        );
+                    }
+                });
+            }
+        });
+    }
+
+    // Resync profiles
+    resyncList(
+        togglableResume.profiles,
+        jsonResume.basics?.profiles || [],
+        (p) => p.network,
+    );
+
+    // Resync education
+    resyncList(
+        togglableResume.education,
+        jsonResume.education || [],
+        (e) => e.institution,
+    );
+
+    // Resync skills
+    resyncList(togglableResume.skills, jsonResume.skills || [], (s) => s.name);
+
+    // Resync work experience and highlights
+    resyncList(
+        togglableResume.workExperience,
+        jsonResume.work || [],
+        (w) => `${w.name} (${w.position})`,
+        (w) => w.highlights || [],
+    );
+
+    // Resync projects and highlights
+    resyncList(
+        togglableResume.personalProjects,
+        jsonResume.projects || [],
+        (p) => p.name,
+        (p) => p.highlights || [],
+    );
+
+    // Resync top-level fields (only if missing)
+    if (!togglableResume.title.val && jsonResume.basics?.label) {
+        togglableResume.title.val = jsonResume.basics.label;
+    }
+    if (!togglableResume.summary.val && jsonResume.basics?.summary) {
+        togglableResume.summary.val = jsonResume.basics.summary;
+    }
+    if (!togglableResume.email.val && jsonResume.basics?.email) {
+        togglableResume.email.val = jsonResume.basics.email;
+    }
+    if (!togglableResume.phone.val && jsonResume.basics?.phone) {
+        togglableResume.phone.val = jsonResume.basics.phone;
+    }
+    if (!togglableResume.location.val && jsonResume.basics?.location) {
+        togglableResume.location.val = jsonResume.basics.location;
+    }
+
+    return togglableResume;
+}

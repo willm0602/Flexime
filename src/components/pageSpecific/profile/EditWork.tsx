@@ -139,11 +139,11 @@ export default function EditWork() {
     const [work, dispatchWork] = useState(resume.work);
 
     const setWork = (newWork: Work[]) => {
-        dispatchWork(newWork);
         setResume({
             ...resume,
             work: newWork,
         });
+        dispatchWork(newWork);
     };
 
     return (
