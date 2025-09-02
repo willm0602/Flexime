@@ -97,7 +97,6 @@ export default function EditList<T>(props: EditListProps<T>) {
                     e.preventDefault();
                     const form = e.target as HTMLFormElement;
                     const formData = new FormData(form);
-                    form.reset();
                     const data = Object.fromEntries(formData.entries());
                     if (typeof defaultItem === 'string') {
                         const text = data.text || defaultItem || '';
@@ -110,6 +109,7 @@ export default function EditList<T>(props: EditListProps<T>) {
                         ...data,
                     };
                     addNew(newItem);
+                    form.reset();
                 }}
             >
                 {NewItemFormBody}

@@ -113,13 +113,14 @@ const EditProject: ListItem<Project> = (props) => {
 
 export default function EditProjects() {
     const { resume, setResume } = useContext(JSONResumeContext);
-    const projects = resume.projects || [];
+    const [projects, dispatchProjects] = useState(resume.projects || []);
 
     const setProjects = (newProjects: Project[]) => {
         setResume({
             ...resume,
             projects: newProjects,
         });
+        dispatchProjects(newProjects);
     };
     return (
         <div role='tabpanel' className='mt-12'>
