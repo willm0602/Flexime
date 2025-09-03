@@ -1,8 +1,8 @@
 'use client';
 
-import { useRef } from 'react';
+import { SetStateAction, useRef } from 'react';
 import { useEffect, useState } from 'react';
-import { resumeFromJSONResume } from '@/lib/resume';
+import Resume, { resumeFromJSONResume } from '@/lib/resume';
 import { ArrowPathIcon } from '@heroicons/react/24/solid';
 import OpenResumeNewTab from './OpenResumeNewTab';
 import ResumeContext from './ResumeContext';
@@ -19,8 +19,13 @@ import getUser from '@/lib/auth/getUser';
 
 export default function ResumeConfig() {
     const [initResume] = useResume();
-    const [resume, setResume] = useState(resumeFromJSONResume());
+    const [resume, dispatchResume] = useState(resumeFromJSONResume());
     const [user, setUser] = useState<User | null>(null);
+
+    const setResume = (newResume: SetStateAction<Resume>) => {
+        dispatchResume(newResume);
+        console.log(newResume);
+    };
 
     const formRef = useRef<HTMLFormElement>(null);
     useEffect(() => {
