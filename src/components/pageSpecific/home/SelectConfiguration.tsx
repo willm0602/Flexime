@@ -1,22 +1,31 @@
+'use client';
+
 import type { Configuration } from '@/lib/types/configuration';
 import { useContext, useEffect, useState } from 'react';
 import ResumeContext from './ResumeContext';
 import type { User } from '@supabase/supabase-js';
 import { getSavedConfigurationsForUser } from '@/lib/configurations';
+import { DEFAULT_RESUME } from '@/lib/resumeUtils';
+import { resumeFromJSONResume } from '@/lib/resume';
+import getResume from '@/lib/auth/getResume';
 
 export default function SelectConfiguration({ user }: { user: User | null }) {
     const [configurations, setConfigurations] = useState<Configuration[]>([]);
     const { setResume } = useContext(ResumeContext);
 
     useEffect(() => {
-        getSavedConfigurationsForUser(user).then((configurations) => {
-            setConfigurations(configurations);
+        if (!window) return;
+        getSavedConfigurationsForUser(user).then(async (configurations) => {
+            const resume = await getResume();
+            const defaultConfig: Configuration = {
+                id: 0,
+                name: 'Everything',
+                user_id: user?.id || '',
+                resume: resumeFromJSONResume(resume || DEFAULT_RESUME),
+            };
+            setConfigurations([defaultConfig, ...configurations]);
         });
-    }, [user]);
-
-    getSavedConfigurationsForUser(user).then((configurations) => {
-        console.log(configurations);
-    });
+    }, [user, window]);
 
     if ((configurations?.length || 0) === 0) return null;
 
