@@ -62,6 +62,12 @@ export default function SigninPage() {
                             Return Home
                         </Link>
                     </div>
+                    <Link
+                        href='/reset'
+                        className='btn no-underline flex-1 text-black btn-warning'
+                    >
+                        Reset Password
+                    </Link>
                     <div className='alert alert-info'>
                         <span>Third-party auth coming soon</span>
                     </div>

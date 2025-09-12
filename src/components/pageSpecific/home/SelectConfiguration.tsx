@@ -14,7 +14,7 @@ export default function SelectConfiguration({ user }: { user: User | null }) {
     const { setResume } = useContext(ResumeContext);
 
     useEffect(() => {
-        if (!window) return;
+        if (typeof window === 'undefined') return;
         getSavedConfigurationsForUser(user).then(async (configurations) => {
             const resume = await getResume();
             const defaultConfig: Configuration = {

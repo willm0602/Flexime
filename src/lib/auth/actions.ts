@@ -78,6 +78,21 @@ export async function signup(formData: FormData) {
     redirect('/');
 }
 
+export async function resetPassword(formData: FormData) {
+    const supabase = await createClient();
+    if (!supabase) return;
+    const email = formData.get('email') as string;
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+    const redirectURL = new URL('/login', baseUrl);
+    redirectURL.searchParams.set('error', 'Sent Password Reset');
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `/reset/password`,
+    });
+    if (error) throw error;
+    revalidatePath('/', 'layout');
+    redirect(redirectURL.href);
+}
+
 async function makeUserProfileFor(user: User | null) {
     if (!user) {
         console.error(
