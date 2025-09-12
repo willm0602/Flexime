@@ -1,8 +1,7 @@
 'use client';
 
 import type Resume from '@/lib/jsonResume';
-import React, { useState } from 'react';
-import { resumeFromJSONResume } from '../../../lib/resume';
+import React from 'react';
 import { DEFAULT_RESUME } from '@/lib/resumeUtils';
 
 type JSONResumeContextValue = {
