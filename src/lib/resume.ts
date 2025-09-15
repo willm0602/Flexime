@@ -228,7 +228,9 @@ export function resyncFromJSONResume(
 
             if (!existing) {
                 // New item → add as togglable
-                togglableList.children?.push(togglable(item, id));
+                const toggToAdd = togglable(item, id);
+                toggToAdd.isOn = false;
+                togglableList.children?.push(toggToAdd);
             } else if (getChildren) {
                 // Resync highlights or nested items
                 if (!existing.children) existing.children = [];
@@ -236,9 +238,9 @@ export function resyncFromJSONResume(
                 // biome-ignore lint/complexity/noForEach: <explanation>
                 highlights.forEach((hl) => {
                     if (!existing?.children?.some((c) => c.val === hl)) {
-                        existing?.children?.push(
-                            togglable(hl, truncate(hl, 30)),
-                        );
+                        const toggHL = togglable(hl, truncate(hl, 30));
+                        toggHL.isOn = false;
+                        existing?.children?.push(toggHL);
                     }
                 });
             }

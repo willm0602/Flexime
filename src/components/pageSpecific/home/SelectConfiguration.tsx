@@ -17,6 +17,7 @@ export default function SelectConfiguration({ user }: { user: User | null }) {
         if (typeof window === 'undefined') return;
         getSavedConfigurationsForUser(user).then(async (configurations) => {
             const resume = await getResume();
+            console.log('RESUME IS', resume);
             const defaultConfig: Configuration = {
                 id: 0,
                 name: 'Everything',
