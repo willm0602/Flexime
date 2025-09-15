@@ -37,7 +37,6 @@ export default function useResume(): [
 
     const save = (newResume: Resume) => {
         setResume(newResume);
-        console.log('PROFILE IS', profile);
         if (profile) {
             setResumeForUser(newResume, profile).catch((err) => {
                 console.error(err);

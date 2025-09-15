@@ -6,7 +6,6 @@ export default async function setResumeForUser(
     resume: Resume,
     user: UserProfile,
 ) {
-    console.log(resume);
     const supabase = createClient();
     if (!supabase) {
         console.error(

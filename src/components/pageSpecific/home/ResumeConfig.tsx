@@ -24,7 +24,6 @@ export default function ResumeConfig() {
 
     const setResume = (newResume: SetStateAction<Resume>) => {
         dispatchResume(newResume);
-        console.log(newResume);
     };
 
     const formRef = useRef<HTMLFormElement>(null);
