@@ -1,4 +1,4 @@
-'use server';
+'use client';
 
 import type Resume from '@/lib/jsonResume';
 import useProfile from '@/lib/auth/getProfile';
