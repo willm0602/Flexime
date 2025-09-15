@@ -25,7 +25,7 @@ export default function SelectConfiguration({ user }: { user: User | null }) {
             };
             setConfigurations([defaultConfig, ...configurations]);
         });
-    }, [user, window]);
+    }, [user]);
 
     if ((configurations?.length || 0) === 0) return null;
 
@@ -41,7 +41,7 @@ export default function SelectConfiguration({ user }: { user: User | null }) {
             </option>
             {configurations.map((configuration, idx) => {
                 return (
-                    <option key={configuration.id} value={idx}>
+                    <option key={configuration.name} value={idx}>
                         {configuration.name}
                     </option>
                 );
