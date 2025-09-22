@@ -3,6 +3,7 @@ import type { Configuration } from './types/configuration';
 import { createClient } from './supabase/client';
 import type Resume from './resume';
 import getUser from './auth/getUser';
+import { configuration } from '../generated/prisma/index';
 
 const LSKey = 'resume-configurations';
 
@@ -102,4 +103,42 @@ function overwriteConfigInLS(
         JSON.stringify(newConfigurations),
     );
     return newConfigurations;
+}
+
+async function removeConfigFromSupabase(configuration: Configuration) {
+    const supabase = createClient();
+    if (!supabase) return;
+    const { error } = await supabase
+        .from('configuration')
+        .delete()
+        .eq('id', configuration.id);
+    if (error) {
+        console.error(error);
+    }
+}
+
+/**
+ * Removes a configuration and returns the updated list of configurations
+ * @param configuration
+ * @param configurations
+ * @param idx
+ */
+export async function removeConfig(
+    configuration: Configuration,
+    configurations: Configuration[],
+    idx: number,
+) {
+    const user = await getUser();
+    if (user) {
+        await removeConfigFromSupabase(configuration);
+        return configurations.filter(
+            (config) => config.id !== configuration.id,
+        );
+    }
+    console.log(configurations);
+    const updatedConfigs = configurations.filter((_, i) => {
+        return idx !== i;
+    });
+    window.localStorage.setItem(LSKey, JSON.stringify(updatedConfigs));
+    return updatedConfigs;
 }

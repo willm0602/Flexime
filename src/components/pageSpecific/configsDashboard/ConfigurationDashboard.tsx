@@ -1,5 +1,6 @@
 import type { Configuration } from '@/lib/types/configuration';
 import ConfigRow from './ConfigRow';
+import { useState } from 'react';
 
 interface ConfigurationDashboardProps {
     configurations: Configuration[];
@@ -8,6 +9,7 @@ interface ConfigurationDashboardProps {
 export default function ConfigDashboard({
     configurations,
 }: ConfigurationDashboardProps) {
+    const [currConfigurations, setConfigurations] = useState(configurations);
     return (
         <table className='table table-zebra max-w-2/3 mx-auto'>
             <thead>
@@ -23,7 +25,8 @@ export default function ConfigDashboard({
                         config={config}
                         key={config.id}
                         idx={idx}
-                        configurations={configurations}
+                        configurations={currConfigurations}
+                        setConfigurations={setConfigurations}
                     />
                 ))}
             </tbody>

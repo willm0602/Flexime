@@ -1,25 +1,26 @@
 'use client';
 
+import AsyncButton from '@/components/AsyncButton';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import useProfile from '@/lib/auth/getProfile';
-import { overwriteConfig } from '@/lib/configurations';
+import { overwriteConfig, removeConfig } from '@/lib/configurations';
 import useResume from '@/lib/hooks/useResume';
-import Resume from '@/lib/jsonResume';
 import { resyncFromJSONResume } from '@/lib/resume';
 import { DEFAULT_RESUME } from '@/lib/resumeUtils';
 import type { Configuration } from '@/lib/types/configuration';
-import { ArrowPathIcon } from '@heroicons/react/24/solid';
+import { ArrowPathIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { useState } from 'react';
 
 interface ConfigRowProps {
     config: Configuration;
     configurations: Configuration[];
     idx: number;
+    setConfigurations: (configs: Configuration[]) => unknown;
 }
 export default function ConfigRow({
     config,
     configurations,
     idx,
+    setConfigurations,
 }: ConfigRowProps) {
     const [isResyncing, setIsResyncing] = useState(false);
     const [resume] = useResume();
@@ -33,29 +34,34 @@ export default function ConfigRow({
     };
 
     const ResyncButton = (
-        <button
+        <AsyncButton
             type='button'
             className='btn btn-square'
-            onClick={() => {
-                setIsResyncing(true);
-                resyncConfig()
-                    .catch(console.error)
-                    .finally(() => {
-                        setIsResyncing(false);
-                    });
-            }}
+            promise={resyncConfig()}
         >
-            {isResyncing ? (
-                <LoadingSpinner className='w-24 h-24' />
-            ) : (
-                <ArrowPathIcon width={24} height={24} />
-            )}
-        </button>
+            <ArrowPathIcon width={24} height={24} />
+        </AsyncButton>
     );
+
+    const removeThisConfig = () => {
+        removeConfig(config, configurations, idx).then((options) => {
+            console.log(options);
+            setConfigurations(options);
+        });
+    };
+
     return (
         <tr>
-            <td className='w-24'>{ResyncButton}</td>
-            <td />
+            <td className='w-20'>{ResyncButton}</td>
+            <td className='w-20'>
+                <button
+                    type='button'
+                    className='btn btn-error btn-sm'
+                    onClick={removeThisConfig}
+                >
+                    <TrashIcon width={24} height={24} />
+                </button>
+            </td>
             <td>{config.name}</td>
         </tr>
     );

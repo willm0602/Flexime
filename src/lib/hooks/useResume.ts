@@ -5,7 +5,7 @@ import useLocalStorage from '../hooks/useLocalStorage';
 import getProfile from '@/lib/auth/getProfile';
 import setResumeForUser from '@/lib/auth/setResumeForUser';
 import { DEFAULT_RESUME } from '@/lib/resumeUtils';
-import { UserProfile } from '../types/userprofile';
+import type { UserProfile } from '../types/userprofile';
 
 const LS_KEY = 'saved-resume';
 

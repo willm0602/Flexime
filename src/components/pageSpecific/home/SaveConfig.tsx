@@ -48,7 +48,10 @@ export default function SaveConfig({ user }: { user: User | null }) {
                 user_id: '',
                 resume: resumeContext.resume,
                 name: configName,
-                id: 0, // not used
+                id:
+                    configurations.length > 0
+                        ? configurations[configurations.length - 1].id + 1
+                        : 0,
             })
                 .then(() => {
                     setConfigName('');
