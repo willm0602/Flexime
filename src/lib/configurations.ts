@@ -61,7 +61,7 @@ export async function addConfigurationToLS(configuration: Configuration) {
 }
 
 export async function overwriteConfig(
-    newConfig: Resume,
+    newConfig: Configuration,
     configIdx: number,
     configID: number,
     configurations: Configuration[],
@@ -71,33 +71,27 @@ export async function overwriteConfig(
         await overwriteConfigInSupabase(newConfig, configID);
         return {
             ...configurations,
-            [configIdx]: {
-                ...configurations[configIdx],
-                resume: newConfig,
-            },
+            [configIdx]: newConfig,
         };
     }
     return overwriteConfigInLS(configurations, configIdx, newConfig);
 }
 
-async function overwriteConfigInSupabase(newConfig: Resume, id: number) {
+async function overwriteConfigInSupabase(newConfig: Configuration, id: number) {
     const client = createClient();
     if (!client) {
         return;
     }
-    await client
-        .from('configuration')
-        .update({ resume: newConfig })
-        .eq('id', id);
+    await client.from('configuration').update(newConfig).eq('id', id);
 }
 
 function overwriteConfigInLS(
     configurations: Configuration[],
     configIDX: number,
-    resume: Resume,
+    config: Configuration,
 ) {
     const newConfigurations = [...configurations];
-    newConfigurations[configIDX].resume = resume;
+    newConfigurations[configIDX] = config;
     window.localStorage.setItem(
         'resume-configurations',
         JSON.stringify(newConfigurations),

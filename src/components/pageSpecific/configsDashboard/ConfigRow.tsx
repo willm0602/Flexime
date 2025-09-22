@@ -1,6 +1,7 @@
 'use client';
 
 import AsyncButton from '@/components/AsyncButton';
+import EditableText from '@/components/EditableText';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { overwriteConfig, removeConfig } from '@/lib/configurations';
 import useResume from '@/lib/hooks/useResume';
@@ -8,7 +9,7 @@ import { resyncFromJSONResume } from '@/lib/resume';
 import { DEFAULT_RESUME } from '@/lib/resumeUtils';
 import type { Configuration } from '@/lib/types/configuration';
 import { ArrowPathIcon, TrashIcon } from '@heroicons/react/24/solid';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 interface ConfigRowProps {
     config: Configuration;
@@ -23,13 +24,19 @@ export default function ConfigRow({
     setConfigurations,
 }: ConfigRowProps) {
     const [resume] = useResume();
+    const TitleInputElem = useRef<HTMLInputElement | null>(null);
 
     const resyncConfig = async () => {
         const resyncedResume = resyncFromJSONResume(
             config.resume,
             resume || DEFAULT_RESUME,
         );
-        await overwriteConfig(resyncedResume, idx, config.id, configurations);
+        await overwriteConfig(
+            { ...config, resume: resyncedResume },
+            idx,
+            config.id,
+            configurations,
+        );
     };
 
     const removeThisConfig = async () => {
@@ -61,7 +68,25 @@ export default function ConfigRow({
         <tr>
             <td className='w-20'>{ResyncButton}</td>
             <td className='w-20'>{RemoveButton}</td>
-            <td>{config.name}</td>
+            <td>
+                <div className='flex items-center join'>
+                    <input
+                        id={`edit-configuration-${config.name}`}
+                        defaultValue={config.name}
+                        className='input input-sm max-w-80 join-item'
+                        aria-label={`Edit title of configuration ${config.name}`}
+                        ref={TitleInputElem}
+                    />
+                    <AsyncButton
+                        className='btn btn-sm btn-secondary join-item'
+                        promise={async () => {
+                            console.log('Clicked!');
+                        }}
+                    >
+                        Save Title
+                    </AsyncButton>
+                </div>
+            </td>
         </tr>
     );
 }
