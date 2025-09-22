@@ -13,7 +13,7 @@ import LoadingSpinner from './LoadingSpinner';
 const TIMEOUT_TIME = 3000;
 
 type AsyncButtonProps<T> = React.HTMLProps<HTMLButtonElement> & {
-    promise: Promise<T>;
+    promise: () => Promise<T>;
     onSuccess?: CallableFunction;
     onError?: CallableFunction;
 };
@@ -21,16 +21,16 @@ type AsyncButtonProps<T> = React.HTMLProps<HTMLButtonElement> & {
 type AsyncButtonStatus = 'IDLE' | 'RUNNING' | 'PASSED' | 'FAILED';
 
 export default function AsyncButton<T>(props: AsyncButtonProps<T>) {
-    const { children, promise, onSuccess, onError } = props;
+    const { children, promise, onSuccess, onError, ...buttonProps } = props;
     const [status, setStatus] = useState<AsyncButtonStatus>('IDLE');
 
     return (
         <button
-            {...props}
+            {...buttonProps}
             type='button'
             onClick={() => {
                 setStatus('RUNNING');
-                promise
+                promise()
                     .then((resp) => {
                         onSuccess?.(resp);
                         setStatus('PASSED');

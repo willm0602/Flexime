@@ -22,7 +22,6 @@ export default function ConfigRow({
     idx,
     setConfigurations,
 }: ConfigRowProps) {
-    const [isResyncing, setIsResyncing] = useState(false);
     const [resume] = useResume();
 
     const resyncConfig = async () => {
@@ -33,35 +32,35 @@ export default function ConfigRow({
         await overwriteConfig(resyncedResume, idx, config.id, configurations);
     };
 
+    const removeThisConfig = async () => {
+        const newConfigs = await removeConfig(config, configurations, idx);
+        window.location.reload();
+    };
+
     const ResyncButton = (
         <AsyncButton
             type='button'
             className='btn btn-square'
-            promise={resyncConfig()}
+            promise={resyncConfig}
         >
             <ArrowPathIcon width={24} height={24} />
         </AsyncButton>
     );
 
-    const removeThisConfig = () => {
-        removeConfig(config, configurations, idx).then((options) => {
-            console.log(options);
-            setConfigurations(options);
-        });
-    };
+    const RemoveButton = (
+        <AsyncButton
+            type='button'
+            className='btn btn-error btn-sm'
+            promise={removeThisConfig}
+        >
+            <TrashIcon width={24} height={24} />
+        </AsyncButton>
+    );
 
     return (
         <tr>
             <td className='w-20'>{ResyncButton}</td>
-            <td className='w-20'>
-                <button
-                    type='button'
-                    className='btn btn-error btn-sm'
-                    onClick={removeThisConfig}
-                >
-                    <TrashIcon width={24} height={24} />
-                </button>
-            </td>
+            <td className='w-20'>{RemoveButton}</td>
             <td>{config.name}</td>
         </tr>
     );
