@@ -49,7 +49,7 @@ export default function AsyncButton<T>(props: AsyncButtonProps<T>) {
             {status === 'IDLE' ? (
                 children
             ) : status === 'RUNNING' ? (
-                <LoadingSpinner />
+                <LoadingSpinner className='w-12 h-12' />
             ) : status === 'PASSED' ? (
                 <CheckBadgeIcon width={24} height={24} />
             ) : (

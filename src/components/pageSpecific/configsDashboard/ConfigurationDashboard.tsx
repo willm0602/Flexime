@@ -11,25 +11,28 @@ export default function ConfigDashboard({
 }: ConfigurationDashboardProps) {
     const [currConfigurations, setConfigurations] = useState(configurations);
     return (
-        <table className='table table-zebra max-w-2/3 mx-auto'>
-            <thead>
-                <tr>
-                    <th />
-                    <th />
-                    <th>Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                {configurations.map((config, idx) => (
-                    <ConfigRow
-                        config={config}
-                        key={config.id}
-                        idx={idx}
-                        configurations={currConfigurations}
-                        setConfigurations={setConfigurations}
-                    />
-                ))}
-            </tbody>
-        </table>
+        <div className='overflow-x-auto mx-auto'>
+            <table className='table table-zebra'>
+                <thead>
+                    <tr>
+                        <th />
+                        <th />
+                        <th />
+                        <th>Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {configurations.map((config, idx) => (
+                        <ConfigRow
+                            config={config}
+                            key={config.id}
+                            idx={idx}
+                            configurations={currConfigurations}
+                            setConfigurations={setConfigurations}
+                        />
+                    ))}
+                </tbody>
+            </table>
+        </div>
     );
 }

@@ -136,3 +136,35 @@ export async function removeConfig(
     window.localStorage.setItem(LSKey, JSON.stringify(updatedConfigs));
     return updatedConfigs;
 }
+
+async function copyConfigInSupabase(config: Configuration) {
+    const copiedConfig = {
+        ...config,
+        id: undefined,
+        created_at: undefined,
+    };
+
+    const client = createClient();
+    if (!client) {
+        return;
+    }
+
+    return await client.from('configuration').insert(copiedConfig);
+}
+
+function copyConfigInLS(config: Configuration) {
+    const configsUnparsed = window.localStorage.getItem(LSKey) || '[]';
+    const configurations = JSON.parse(configsUnparsed) as Configuration[];
+    configurations.push(config);
+    const updatedConfigrationsStringified = JSON.stringify(configurations);
+    window.localStorage.setItem(LSKey, updatedConfigrationsStringified);
+}
+
+export async function copyConfig(config: Configuration) {
+    const newConfig = { ...config, id: undefined };
+    const user = await getUser();
+    if (user) {
+        return await copyConfigInSupabase(config);
+    }
+    copyConfigInLS(config);
+}
