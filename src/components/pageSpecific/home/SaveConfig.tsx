@@ -93,7 +93,7 @@ export default function SaveConfig({ user }: { user: User | null }) {
                             >
                                 {configurations.map((config, idx) => (
                                     <option
-                                        key={config.name}
+                                        key={`${config.name}-${config.id}-${idx}`}
                                         value={idx}
                                         className='min-h-4'
                                     >

@@ -41,8 +41,9 @@ export default function SelectConfiguration({ user }: { user: User | null }) {
                 Load Resume
             </option>
             {configurations.map((configuration, idx) => {
+                const key = `${configuration.id}-${configuration.name}-${idx}`;
                 return (
-                    <option key={configuration.name} value={idx}>
+                    <option key={key} value={idx}>
                         {configuration.name}
                     </option>
                 );
