@@ -48,7 +48,10 @@ export default function SaveConfig({ user }: { user: User | null }) {
                 user_id: '',
                 resume: resumeContext.resume,
                 name: configName,
-                id: 0, // not used
+                id:
+                    configurations.length > 0
+                        ? configurations[configurations.length - 1].id + 1
+                        : 0,
             })
                 .then(() => {
                     setConfigName('');
@@ -90,7 +93,7 @@ export default function SaveConfig({ user }: { user: User | null }) {
                             >
                                 {configurations.map((config, idx) => (
                                     <option
-                                        key={config.name}
+                                        key={`${config.name}-${config.id}-${idx}`}
                                         value={idx}
                                         className='min-h-4'
                                     >

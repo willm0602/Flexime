@@ -5,7 +5,7 @@ import useLocalStorage from '../hooks/useLocalStorage';
 import getProfile from '@/lib/auth/getProfile';
 import setResumeForUser from '@/lib/auth/setResumeForUser';
 import { DEFAULT_RESUME } from '@/lib/resumeUtils';
-import { UserProfile } from '../types/userprofile';
+import type { UserProfile } from '../types/userprofile';
 
 const LS_KEY = 'saved-resume';
 
@@ -37,7 +37,6 @@ export default function useResume(): [
 
     const save = (newResume: Resume) => {
         setResume(newResume);
-        console.log('PROFILE IS', profile);
         if (profile) {
             setResumeForUser(newResume, profile).catch((err) => {
                 console.error(err);

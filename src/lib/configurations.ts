@@ -3,6 +3,7 @@ import type { Configuration } from './types/configuration';
 import { createClient } from './supabase/client';
 import type Resume from './resume';
 import getUser from './auth/getUser';
+import { configuration } from '../generated/prisma/index';
 
 const LSKey = 'resume-configurations';
 
@@ -60,7 +61,7 @@ export async function addConfigurationToLS(configuration: Configuration) {
 }
 
 export async function overwriteConfig(
-    newConfig: Resume,
+    newConfig: Configuration,
     configIdx: number,
     configID: number,
     configurations: Configuration[],
@@ -70,36 +71,99 @@ export async function overwriteConfig(
         await overwriteConfigInSupabase(newConfig, configID);
         return {
             ...configurations,
-            [configIdx]: {
-                ...configurations[configIdx],
-                resume: newConfig,
-            },
+            [configIdx]: newConfig,
         };
     }
     return overwriteConfigInLS(configurations, configIdx, newConfig);
 }
 
-async function overwriteConfigInSupabase(newConfig: Resume, id: number) {
+async function overwriteConfigInSupabase(newConfig: Configuration, id: number) {
     const client = createClient();
     if (!client) {
         return;
     }
-    await client
-        .from('configuration')
-        .update({ resume: newConfig })
-        .eq('id', id);
+    await client.from('configuration').update(newConfig).eq('id', id);
 }
 
 function overwriteConfigInLS(
     configurations: Configuration[],
     configIDX: number,
-    resume: Resume,
+    config: Configuration,
 ) {
     const newConfigurations = [...configurations];
-    newConfigurations[configIDX].resume = resume;
+    newConfigurations[configIDX] = config;
     window.localStorage.setItem(
         'resume-configurations',
         JSON.stringify(newConfigurations),
     );
     return newConfigurations;
+}
+
+async function removeConfigFromSupabase(configuration: Configuration) {
+    const supabase = createClient();
+    if (!supabase) return;
+    const { error } = await supabase
+        .from('configuration')
+        .delete()
+        .eq('id', configuration.id);
+    if (error) {
+        console.error(error);
+    }
+}
+
+/**
+ * Removes a configuration and returns the updated list of configurations
+ * @param configuration
+ * @param configurations
+ * @param idx
+ */
+export async function removeConfig(
+    configuration: Configuration,
+    configurations: Configuration[],
+    idx: number,
+) {
+    const user = await getUser();
+    if (user) {
+        await removeConfigFromSupabase(configuration);
+        return configurations.filter(
+            (config) => config.id !== configuration.id,
+        );
+    }
+    const updatedConfigs = configurations.filter((_, i) => {
+        return idx !== i;
+    });
+    window.localStorage.setItem(LSKey, JSON.stringify(updatedConfigs));
+    return updatedConfigs;
+}
+
+async function copyConfigInSupabase(config: Configuration) {
+    const copiedConfig = {
+        ...config,
+        id: undefined,
+        created_at: undefined,
+    };
+
+    const client = createClient();
+    if (!client) {
+        return;
+    }
+
+    return await client.from('configuration').insert(copiedConfig);
+}
+
+function copyConfigInLS(config: Configuration) {
+    const configsUnparsed = window.localStorage.getItem(LSKey) || '[]';
+    const configurations = JSON.parse(configsUnparsed) as Configuration[];
+    configurations.push(config);
+    const updatedConfigrationsStringified = JSON.stringify(configurations);
+    window.localStorage.setItem(LSKey, updatedConfigrationsStringified);
+}
+
+export async function copyConfig(config: Configuration) {
+    const newConfig = { ...config, id: undefined };
+    const user = await getUser();
+    if (user) {
+        return await copyConfigInSupabase(config);
+    }
+    copyConfigInLS(config);
 }

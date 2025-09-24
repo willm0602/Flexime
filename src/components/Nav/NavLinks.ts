@@ -10,6 +10,10 @@ const navLinks: NavLinkData[] = [
         text: 'Modify Profile',
     },
     {
+        route: '/configurations',
+        text: 'Manage Configurations',
+    },
+    {
         route: '/about',
         text: 'About',
     },

@@ -25,7 +25,7 @@ export default function SelectConfiguration({ user }: { user: User | null }) {
             };
             setConfigurations([defaultConfig, ...configurations]);
         });
-    }, [user, window]);
+    }, [user]);
 
     if ((configurations?.length || 0) === 0) return null;
 
@@ -40,8 +40,9 @@ export default function SelectConfiguration({ user }: { user: User | null }) {
                 Load Resume
             </option>
             {configurations.map((configuration, idx) => {
+                const key = `${configuration.id}-${configuration.name}-${idx}`;
                 return (
-                    <option key={configuration.id} value={idx}>
+                    <option key={key} value={idx}>
                         {configuration.name}
                     </option>
                 );

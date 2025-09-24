@@ -32,7 +32,6 @@ export async function POST(request: Request) {
     }
     const profiles = profilesReq.data;
     if (profiles.length === 0) {
-        console.log('No profiles');
         return NextResponse.json({}, { status: 401 });
     }
     if (profiles.length === 2) {

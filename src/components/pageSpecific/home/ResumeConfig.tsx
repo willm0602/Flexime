@@ -16,16 +16,18 @@ import SelectConfiguration from './SelectConfiguration';
 import type { User } from '@supabase/supabase-js';
 import useResume from '@/lib/hooks/useResume';
 import getUser from '@/lib/auth/getUser';
+import type { Configuration } from '@/lib/types/configuration';
+import ConfigsContext from '@/components/ConfigurationsProvider';
+import { config } from '../../../app/api/parse_resume/route';
 
 export default function ResumeConfig() {
     const [initResume] = useResume();
-    const [resume, dispatchResume] = useState(resumeFromJSONResume());
+    const [resume, setResume] = useState(resumeFromJSONResume());
+    const [configs, setConfigs] = useState<Configuration[]>([]);
+    const [config, dispatchConfig] = useState<Configuration | undefined>(
+        undefined,
+    );
     const [user, setUser] = useState<User | null>(null);
-
-    const setResume = (newResume: SetStateAction<Resume>) => {
-        dispatchResume(newResume);
-        console.log(newResume);
-    };
 
     const formRef = useRef<HTMLFormElement>(null);
     useEffect(() => {
@@ -40,49 +42,65 @@ export default function ResumeConfig() {
         });
     }, []);
 
+    const setConfig = (newConfig: Configuration | undefined) => {
+        if (newConfig) {
+            setResume(resumeFromJSONResume(initResume));
+        }
+        dispatchConfig(newConfig);
+    };
+
     if (!resume) {
         return <span className='loading loading-spinner w-1/4 mx-auto' />;
     }
 
     return (
         <ResumeContext.Provider value={{ resume, setResume }}>
-            <div className='w-full flex flex-col lg:flex-row gap-y-8'>
-                <ResumeHiddenInput />
-                <div className='flex-1'>
-                    <div className='flex'>
-                        <OpenResumeNewTab />
-                        <SaveConfig user={user} />
-                    </div>
-                    <ConfigureJobTitle />
-                    <SelectConfiguration user={user} />
-                    <ToggleList />
-                </div>
-                <form
-                    className='flex-4'
-                    method='POST'
-                    target='resume-preview'
-                    action={'/api/pdf'}
-                    id='resume-config-form'
-                    ref={formRef}
-                >
+            <ConfigsContext.Provider
+                value={{
+                    configs,
+                    setConfigs,
+                    activeConfig: config,
+                    setActiveConfig: setConfig,
+                }}
+            >
+                <div className='w-full flex flex-col lg:flex-row gap-y-8'>
                     <ResumeHiddenInput />
-                    <div className='flex flex-col md:flex-row'>
-                        <button
-                            className='btn btn-primary md:ml-12 mb-4 w-full md:w-24'
-                            type='submit'
-                        >
-                            <ArrowPathIcon
-                                width={24}
-                                height={24}
-                                title='Preview Resume'
-                            />
-                        </button>
-
-                        <DownloadResume />
+                    <div className='flex-1'>
+                        <div className='flex'>
+                            <OpenResumeNewTab />
+                            <SaveConfig user={user} />
+                        </div>
+                        <ConfigureJobTitle />
+                        <SelectConfiguration user={user} />
+                        <ToggleList />
                     </div>
-                    <ResumePreview />
-                </form>
-            </div>
+                    <form
+                        className='flex-4'
+                        method='POST'
+                        target='resume-preview'
+                        action={'/api/pdf'}
+                        id='resume-config-form'
+                        ref={formRef}
+                    >
+                        <ResumeHiddenInput />
+                        <div className='flex flex-col md:flex-row'>
+                            <button
+                                className='btn btn-primary md:ml-12 mb-4 w-full md:w-24'
+                                type='submit'
+                            >
+                                <ArrowPathIcon
+                                    width={24}
+                                    height={24}
+                                    title='Preview Resume'
+                                />
+                            </button>
+
+                            <DownloadResume />
+                        </div>
+                        <ResumePreview />
+                    </form>
+                </div>
+            </ConfigsContext.Provider>
         </ResumeContext.Provider>
     );
 }
