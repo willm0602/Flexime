@@ -129,7 +129,6 @@ export async function removeConfig(
             (config) => config.id !== configuration.id,
         );
     }
-    console.log(configurations);
     const updatedConfigs = configurations.filter((_, i) => {
         return idx !== i;
     });
